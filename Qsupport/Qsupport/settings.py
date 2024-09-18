@@ -119,6 +119,7 @@ USE_TZ = True
 # Localização de ficheiros estáticos (CSS, JavaScript, Imagens)
 
 STATIC_URL = 'static/'
+AUTH_USER_MODEL = 'ticket.Usuarios'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

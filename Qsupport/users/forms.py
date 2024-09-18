@@ -8,16 +8,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserRegisterForm(UserCreationForm):
-    email = forms.EmailField()
-    nome = forms.CharField(max_length=120)
-    #foto = forms.ImageField()
-    descricao = forms.CharField(max_length=250)
-    role = forms.CharField(max_length=50)
-    entidade = forms.CharField(max_length=200)
-    telefone = PhoneNumberField()
-    
-    #ideia: criar outro Register Form abaixo deste com as credenciais da tabela Usuarios
     class Meta:
-        model = User
-        fields = ['username','nome','email','password1','password2']
+        model = Usuarios
+        fields = ['nome','email','password1','password2','date_of_birth','descricao','role','entidade','foto','telefone']
         exclude = ['']

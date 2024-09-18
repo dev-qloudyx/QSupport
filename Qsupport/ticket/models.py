@@ -1,6 +1,9 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+
+
 class Estado(models.Model):
     estado = models.CharField(max_length=20)
     cor = models.CharField(max_length=30)
@@ -14,29 +17,74 @@ class Entidades(models.Model):
     def __str__(self):
         return self.nome
 
-class Usuarios(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    nome = models.CharField(max_length=100)
+class MyUserManager(BaseUserManager):
+    def create_user(self, nome, email, date_of_birth, password=None):
+       
+        if not nome:
+            raise ValueError('O utilizador têm de ter um nome!')
+        if not email:
+            raise ValueError('O utilizador têm de ter um e-mail valido!')
+
+        user = self.model(
+            nome = nome,
+            email= self.normalize_email(email),
+            date_of_birth=date_of_birth,
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+    
+    def create_superuser(self,nome, email, date_of_birth, password=None):
+        user = self.create_user(
+            nome = nome,
+            email = self.normalize_email(email),
+            password=password,
+            date_of_birth=date_of_birth,
+        )
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+    
+class Usuarios(AbstractBaseUser):
+    nome = models.CharField(max_length=100, unique=True)
     email = models.EmailField()
     foto = models.ImageField(null=True, blank=True)
     descricao = models.CharField(max_length=250, null=True)
-    ativo = models.BooleanField(default=True)
-    role = models.CharField(max_length=50)
-    entidade = models.ForeignKey(Entidades, on_delete=models.CASCADE)
-    telefone = PhoneNumberField(null=False, blank=False, unique=True)
-    
-    def __str__(self):
-        return self.user.username
-    
-    #Utilizado para ir buscar o id do User base para poder ir buscar mais tarde se necessário
-    #Returnando o id se o user existir, ou nada se não.
 
-    def get_user(self, user_id):
-        try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
-            return None
-    
+    EscolhasRole = {
+    ("QLOUDYX", "Qloudyx"),
+    ("OPERADOR", "Operador"),
+    ("CLIENTE", "Cliente"),
+    }
+
+    role = models.CharField(max_length=50,choices= EscolhasRole)
+    entidade = models.ForeignKey(Entidades, on_delete=models.CASCADE)
+    telefone = PhoneNumberField(null=True, blank=False, unique=True)
+    date_of_birth = models.DateField()
+
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+
+    objects = MyUserManager()
+
+    USERNAME_FIELD = 'nome'
+    REQUIRED_FIELDS = ['date_of_birth','email']
+
+    def __str__(self):
+        return self.nome
+
+    def has_perm(self, perm, obj=None):
+        "Permissões especificas para o utilizador"
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
+    @property
+    def is_staff(self):
+        "Membro da empresa?"
+        return self.is_admin
 class Resolucao(models.Model):
     nome = models.CharField(max_length=150)
 
