@@ -1,0 +1,14 @@
+<!-- Perguntar ao Rodrigo a utilidade do csrf_token aqui em vez de redirect automático -->
+
+{% extends "ticket/base.html" %}
+{% block content %}
+    <div class="content-section">
+        {% csrf_token %}
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Queres entrar novamente?
+                <a class="ml-2" href="{% url 'login' %}">Login</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}
