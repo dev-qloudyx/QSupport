@@ -49,7 +49,7 @@ class MyUserManager(BaseUserManager):
 class Usuarios(AbstractBaseUser):
     nome = models.CharField(max_length=100, unique=True)
     email = models.EmailField()
-    foto = models.ImageField(null=True, blank=True)
+    foto = models.ImageField(null=True, blank=True, upload_to='users/uploads/fotos')
     descricao = models.CharField(max_length=250, null=True)
 
     EscolhasRole = {

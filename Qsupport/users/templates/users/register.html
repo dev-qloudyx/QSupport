@@ -1,7 +1,7 @@
 {% extends "ticket/base.html" %}
 {% block content %}
     <div class="content-section">
-        <form method="post">
+        <form method="post" action="{% url 'register' %}" enctype="multipart/form-data" >
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Crie um utilizador</legend>

@@ -2,14 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
+from ticket.models import Usuarios
 
 
 def register(request):
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            nome = form.cleaned_data.get('nome')
             messages.success(request, f'Conta criada com sucesso, já pode logar!')
             return redirect ('login')
         

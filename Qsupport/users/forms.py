@@ -6,8 +6,11 @@ from ticket.models import Usuarios,Entidades
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-
+class InputData(forms.DateInput):
+    input_type = 'date'
 class UserRegisterForm(UserCreationForm):
+    foto = forms.ImageField()
+    date_of_birth = forms.DateField(widget=InputData)
     class Meta:
         model = Usuarios
         fields = ['nome','email','password1','password2','date_of_birth','descricao','role','entidade','foto','telefone']
