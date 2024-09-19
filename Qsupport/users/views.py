@@ -5,6 +5,7 @@ from .forms import UserRegisterForm
 from ticket.models import Usuarios
 
 
+
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST, request.FILES)
