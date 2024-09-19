@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 
 
+
 class Estado(models.Model):
     estado = models.CharField(max_length=20)
     cor = models.CharField(max_length=30)
