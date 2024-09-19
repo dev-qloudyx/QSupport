@@ -1,13 +1,136 @@
 {% extends "ticket/base.html" %}
 {% block content %}
-    <div class="content-section">
-        <div class="media">
-            <img class="rounded-circle account-img" src="{{ user.profile.image.url }}" alt="">
-            <div class="media-body">
-                <h2 class="account-Heading">{{ user.username }}</h2>
-                <p class="text-secondary">{{ user.email }}</p>
+    <div class="row gutters-sm">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <img src= "{{ user.foto.url }} " alt="Admin" class="rounded-circle" width="150" />
+                        <div class="mt-3">
+                        <h4 class="account-Heading">{{ user.nome }}</h4>
+                        <p style="text-align: center" class="text-secondary mb-1">{{user.role}}</p>
+                        <p style="text-align: center" class="text-muted font-size-sm">{{user.entidade}}</p>
+                        <button class="btn btn-outline-primary">Message</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- um form aqui -->
+        <div class="card mt-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>Website</h6>
+                    <span class="text-secondary">Exemplo.com</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                            <h6 class="mb-0">Nome</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{ user.nome }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{ user.email }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Telefone</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{ user.telefone }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Entidade</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{ user.entidade }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Descrição</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{ user.descricao }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="btn btn-info " target="__blank" href="">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gutters-sm">
+                <div class="col-sm-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">{{user.entidade}}</i>Estado dos Tickets</h6>
+                            <small>Atlas: Acesso Negado (Feito)</small>
+                            <div class="progress mb-3" style="height: 5px">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small>Atlas: Dimensões erradas (Em Progresso)</small>
+                            <div class="progress mb-3" style="height: 5px">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small>Atlas: Acesso Negado (Fechado)</small>
+                            <div class="progress mb-3" style="height: 5px">
+                                <div class="progress-bar bg-secondary" role="progressbar" style="width: 0%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">Admin</i>Tickets em curso</h6>
+                            <small>Tickets Resolvidos</small>
+                            <div class="progress mb-3" style="height: 5px">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 100%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div> 
+                            </div>
+                            <small>Criticos</small>
+                            <div class="progress mb-3" style="height: 5px">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small>Alta Prioridade</small>
+                            <div class="progress mb-3" style="height: 5px">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small>Media Prioridade</small>
+                            <div class="progress mb-3" style="height: 5px">
+                                <div class="progress-bar bg-secondary" role="progressbar" style="width: 100%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small>Baixa Prioridade</small>
+                            <div class="progress mb-3" style="height: 5px">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 100%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
     </div>
 {% endblock content %}

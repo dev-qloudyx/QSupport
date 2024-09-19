@@ -86,6 +86,8 @@ class Usuarios(AbstractBaseUser):
     def is_staff(self):
         "Membro da empresa?"
         return self.is_admin
+
+
 class Resolucao(models.Model):
     nome = models.CharField(max_length=150)
 

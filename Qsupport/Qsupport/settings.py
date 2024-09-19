@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -119,12 +120,19 @@ USE_TZ = True
 # Localização de ficheiros estáticos (CSS, JavaScript, Imagens)
 
 STATIC_URL = 'static/'
+
+
+MEDIA_ROOT = (BASE_DIR)
+MEDIA_URL = '/users/uploads/fotos/'
+
 AUTH_USER_MODEL = 'ticket.Usuarios'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'ticket-home'
+LOGIN_REDIRECT_URL = 'profile'
 LOGIN_URL = 'ticket'
 
 LOGOUT_REDIRECT_URL = 'login'
 LOGOUT_URL = 'users'
+
+

@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
 from ticket.models import Usuarios
+from django.http import Http404
 
 
 
@@ -20,4 +21,4 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render (request, 'users/profile.html')
+        return render (request, 'users/profile.html')
