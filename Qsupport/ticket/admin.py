@@ -14,7 +14,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = Usuarios
-        fields = ('nome','email', 'date_of_birth','descricao','role','foto','telefone')
+        fields = ('nome','email','date_of_birth','descricao','role','foto','telefone')
 
     def clean_password2(self):
         # Verifica se as 2 passwords coincidem
@@ -37,7 +37,7 @@ class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField()
     class Meta:
         model = Usuarios
-        fields = ('nome','email', 'password', 'date_of_birth', 'is_active', 'is_admin')
+        fields = ('nome','email', 'password','descricao','date_of_birth','is_active','is_admin')
 
 
 class UserAdmin(BaseUserAdmin):
@@ -62,12 +62,16 @@ class UserAdmin(BaseUserAdmin):
         add_fieldsets = (
             (None, {
                 'classes': ('wide',),
-                'fields': ('nome','email','foto','date_of_birth', 'password1', 'password2','desricao','role','telefone'),
+                'fields': ('nome','email','foto','date_of_birth', 'password1', 'password2','descricao','role','telefone'),
             }),
         )
         search_fields = ('nome',)
         ordering = ('nome',)
         filter_horizontal = ()
+
+class EntidadeAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+
 
 
 # Registo do utilizador Admin, para fazer override do role do Django e meter o modelo de Users customizado
@@ -75,7 +79,7 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(Usuarios, UserAdmin)
 admin.site.unregister(Group)
 admin.site.register(Estado)
-admin.site.register(Entidades)
+admin.site.register(Entidades,EntidadeAdmin)
 admin.site.register(Resolucao)
 admin.site.register(Prioridade)
 admin.site.register(TiposPedidos)
