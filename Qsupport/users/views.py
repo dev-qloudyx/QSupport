@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm
-from ticket.models import Usuarios
+from .forms import UserRegisterForm, TicketForm
+from ticket.models import Usuarios, Ticket
 from django.http import Http404
 
 
@@ -23,3 +23,17 @@ def register(request):
 def profile(request):
         
     return render (request, 'users/profile.html')
+
+def ticket_list(request):
+    tickets = Ticket.objects.all()
+    return render(request, 'ticket/gestaodeticket.html', {'tickets': tickets})
+
+def create_ticket(request):
+    if request.method == 'POST':
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('ticket_list')
+    else:
+        form = TicketForm()
+    return render(request, 'ticket/novoticket.html', {'form': form})
