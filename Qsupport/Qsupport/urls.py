@@ -20,13 +20,14 @@ from django.urls import path, include
 from users import views as users_views
 from django.conf.urls.static import static
 from django.conf import settings
+from ticket import views as ticket_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ticket.urls')),
     path('register/', users_views.register, name ='register'),
     path('login/', auth_views.LoginView.as_view(template_name ='users/login.html'), name ='login'),
-    path('novoticket/', auth_views.LoginView.as_view(template_name ='ticket/novoticket.html'), name ='novoticket'),
+    path('novoticket/', ticket_views.create_ticket, name ='novoticket'),
     path('gestaodeticket/', auth_views.LoginView.as_view(template_name ='ticket/gestaodeticket.html'), name ='gestaodeticket'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('profile/', users_views.profile, name='profile'),

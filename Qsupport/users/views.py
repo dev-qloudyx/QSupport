@@ -23,17 +23,3 @@ def register(request):
 def profile(request):
         
     return render (request, 'users/profile.html')
-
-def ticket_list(request):
-    tickets = Ticket.objects.all()
-    return render(request, 'ticket/gestaodeticket.html', {'tickets': tickets})
-
-def create_ticket(request):
-    if request.method == 'POST':
-        form = TicketForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('ticket_list')
-    else:
-        form = TicketForm()
-    return render(request, 'ticket/novoticket.html', {'form': form})

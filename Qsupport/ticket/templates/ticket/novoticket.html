@@ -4,7 +4,7 @@
         <h2>Criar Novo Ticket</h2>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form }}
             <button type="submit">Enviar</button>
         </form>
         <a href="{% url 'ticket-gestao' %}">Voltar à lista de tickets</a>

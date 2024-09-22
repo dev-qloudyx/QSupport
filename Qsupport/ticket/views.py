@@ -25,7 +25,7 @@ def create_ticket(request):
         if form.is_valid():
             form.save()
             form.instance.usuarios = request.user
-            return redirect('ticket_list')
+            return redirect('gestao-ticket')
     else:
         form = TicketForm()
     return render(request, 'ticket/novoticket.html', {'form': form})
