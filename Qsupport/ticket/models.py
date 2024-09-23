@@ -2,6 +2,7 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+from django.utils import timezone
 
 
 
@@ -10,6 +11,9 @@ class Estado(models.Model):
     cor = models.CharField(max_length=30)
     font_color = models.CharField(max_length=30)
     descricao = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.estado
 
 class Entidades(models.Model):
     nome = models.CharField(max_length=100)
@@ -91,17 +95,29 @@ class Usuarios(AbstractBaseUser):
 class Resolucao(models.Model):
     nome = models.CharField(max_length=150)
 
+    def __str__(self):
+        return self.nome
+
 class Prioridade(models.Model):
     nome = models.CharField(max_length=100)
     peso = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.nome
 
 class TiposPedidos(models.Model):
     nome = models.CharField(max_length=100)
     descricao = models.CharField(max_length=300)
 
+    def __str__(self):
+        return self.nome
+
 class Apps(models.Model):
     nome = models.CharField(max_length=150)
     ativo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nome
 
 class Usuarios_Apps(models.Model):
     usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
@@ -111,15 +127,22 @@ class Apps_tpPedidos(models.Model):
     apps = models.ForeignKey(Apps, on_delete=models.CASCADE)
     tipoPedidos = models.ForeignKey(TiposPedidos, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.tipoPedidos}"
+    
+
 class Ticket(models.Model):
     nome = models.CharField(max_length=50)
-    dataCriacao = models.DateTimeField()
+    dataCriacao = models.DateTimeField(default=timezone.now())
     descricao = models.CharField(max_length=300)
-    usuarios = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
+    usuarios = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE)
     app_tpPedidos = models.ForeignKey(Apps_tpPedidos, on_delete=models.CASCADE)
-    prioridade = models.ForeignKey(Prioridade, on_delete=models.CASCADE)
-    resolucao = models.ForeignKey(Resolucao, on_delete=models.CASCADE)
-    id_Proprietario = models.IntegerField()
+    prioridade = models.ForeignKey(Prioridade, null = True , on_delete=models.CASCADE)
+    resolucao = models.ForeignKey(Resolucao, null = True, on_delete=models.CASCADE)
+    id_Proprietario = models.IntegerField(null = True)
+
+    def __str__(self):
+        return self.nome
 
 class StatusLog(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)

@@ -72,6 +72,9 @@ class UserAdmin(BaseUserAdmin):
 class EntidadeAdmin(admin.ModelAdmin):
     readonly_fields = ('id',)
 
+class AppsTpAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+    list_display = ('id','apps','tipoPedidos')
 
 
 # Registo do utilizador Admin, para fazer override do role do Django e meter o modelo de Users customizado
@@ -85,6 +88,6 @@ admin.site.register(Prioridade)
 admin.site.register(TiposPedidos)
 admin.site.register(Apps)
 admin.site.register(Usuarios_Apps)
-admin.site.register(Apps_tpPedidos)
+admin.site.register(Apps_tpPedidos,AppsTpAdmin)
 admin.site.register(Ticket)
 admin.site.register(StatusLog)

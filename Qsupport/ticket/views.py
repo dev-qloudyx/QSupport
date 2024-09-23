@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponse
-from .models import Usuarios, Ticket
+from .models import Usuarios, Ticket,Estado
 from users.forms import TicketForm
 
 def index(request):
     listauser = Usuarios.objects.count()
+    corEstado = Estado.objects.filter(cor='Vermelha')
     #Inserir role aqui em vez de nome: nome apenas esta a titulo de exemplo
     filtro = Usuarios.objects.filter(nome="Admin")
     listaadmin = filtro.count()
@@ -12,6 +14,7 @@ def index(request):
         {
             "listaadmin":listaadmin,
             "listauser":listauser,
+            "corEstado":corEstado,
         })
 
 
@@ -25,7 +28,8 @@ def create_ticket(request):
         if form.is_valid():
             form.save()
             form.instance.usuarios = request.user
-            return redirect('gestao-ticket')
+            messages.success(request, f'Ticket enviado com sucesso, espere por feedback do nosso operador em serviço.')
+            return redirect('ticket-gestao')
     else:
         form = TicketForm()
     return render(request, 'ticket/novoticket.html', {'form': form})
