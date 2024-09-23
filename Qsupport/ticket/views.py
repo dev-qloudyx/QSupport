@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Usuarios, Ticket
 from users.forms import TicketForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     listauser = Usuarios.objects.count()
@@ -16,15 +17,16 @@ def index(request):
 
 
 def ticket_list(request):
-    tickets = Ticket.objects.all()
+    tickets = Ticket.objects.all(usuarios=request.user)
     return render(request, 'ticket/gestaodeticket.html', {'tickets': tickets})
 
 def create_ticket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST)
         if form.is_valid():
-            form.save()
-            form.instance.usuarios = request.user
+            ticket = form.save(commit=False)
+            ticket.usuario = request.user
+            ticket.save()
             return redirect('gestao-ticket')
     else:
         form = TicketForm()
