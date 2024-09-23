@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Usuarios, Ticket
+from .models import Usuarios, Ticket, StatusLog
 from users.forms import TicketForm
 from django.contrib.auth.decorators import login_required
 
@@ -19,6 +19,10 @@ def index(request):
 def ticket_list(request):
     tickets = Ticket.objects.all(usuarios=request.user)
     return render(request, 'ticket/gestaodeticket.html', {'tickets': tickets})
+
+def ticket_estatus(request):
+    estado = StatusLog.objects.all(usuarios=request.user)
+    return render(request, 'ticket/gestaodeticket.html', {'estado': estado})
 
 def create_ticket(request):
     if request.method == 'POST':
