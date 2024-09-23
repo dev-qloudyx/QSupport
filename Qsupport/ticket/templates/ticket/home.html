@@ -8,8 +8,16 @@
 <p>Numero de Admins:
     {{ listaadmin }}
 </p>
+
+<p> Ultimo user criado: 
+    {{ lastuser }}
+</p>
+
+<p> Ultimo Admin criado:
+    {{ lastadmin }}
+</p>
 <p>Estado Atual:
-    <p style = "color:{{corEstado}}">{{corEstado}}</p>
+    <p style = "color:{{corEstado.font_color}}">{{corEstado.estado}}</p>
 </p>
 
 

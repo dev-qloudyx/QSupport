@@ -6,14 +6,19 @@ from users.forms import TicketForm
 
 def index(request):
     listauser = Usuarios.objects.count()
+    lastuser = Usuarios.objects.last()
     corEstado = Estado.objects.filter(cor='Vermelha')
+    corEstado = corEstado.last()
     #Inserir role aqui em vez de nome: nome apenas esta a titulo de exemplo
     filtro = Usuarios.objects.filter(nome="Admin")
+    lastadmin = filtro.last()
     listaadmin = filtro.count()
     return render(request, 'ticket/home.html', context=
         {
             "listaadmin":listaadmin,
             "listauser":listauser,
+            "lastadmin":lastadmin,
+            "lastuser":lastuser,
             "corEstado":corEstado,
         })
 
