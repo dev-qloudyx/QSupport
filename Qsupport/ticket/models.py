@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.utils import timezone
 
 
-
+#Estado de cada ticket
 class Estado(models.Model):
     estado = models.CharField(max_length=20)
     cor = models.CharField(max_length=30)
@@ -15,6 +15,7 @@ class Estado(models.Model):
     def __str__(self):
         return self.estado
 
+#Empresas cadastradas
 class Entidades(models.Model):
     nome = models.CharField(max_length=100)
     externo = models.BooleanField(default=False)
@@ -50,7 +51,8 @@ class MyUserManager(BaseUserManager):
         user.is_admin = True
         user.save(using=self._db)
         return user
-    
+
+#Os resposáveis na hora de contacto sobre as entidades    
 class Usuarios(AbstractBaseUser):
     nome = models.CharField(max_length=100, unique=True)
     email = models.EmailField()
@@ -91,12 +93,13 @@ class Usuarios(AbstractBaseUser):
         "Membro da empresa?"
         return self.is_admin
 
-
+#Que tipo de solução foi aplicada
 class Resolucao(models.Model):
     nome = models.CharField(max_length=150)
 
     def __str__(self):
         return self.nome
+
 
 class Prioridade(models.Model):
     nome = models.CharField(max_length=100)
@@ -112,6 +115,7 @@ class TiposPedidos(models.Model):
     def __str__(self):
         return self.nome
 
+
 class Apps(models.Model):
     nome = models.CharField(max_length=150)
     ativo = models.BooleanField(default=True)
@@ -119,9 +123,11 @@ class Apps(models.Model):
     def __str__(self):
         return self.nome
 
+
 class Usuarios_Apps(models.Model):
     usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
     app = models.ForeignKey(Apps, on_delete=models.CASCADE)
+
 
 class Apps_tpPedidos(models.Model):
     apps = models.ForeignKey(Apps, on_delete=models.CASCADE)
@@ -130,6 +136,12 @@ class Apps_tpPedidos(models.Model):
     def __str__(self):
         return f"{self.tipoPedidos}"
     
+
+class StatusLog(models.Model):
+    estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
+    dataHora = models.DateTimeField()
+
 
 class Ticket(models.Model):
     nome = models.CharField(max_length=50)
@@ -140,12 +152,7 @@ class Ticket(models.Model):
     prioridade = models.ForeignKey(Prioridade, null = True , on_delete=models.CASCADE)
     resolucao = models.ForeignKey(Resolucao, null = True, on_delete=models.CASCADE)
     id_Proprietario = models.IntegerField(null = True)
+    estado = models.ForeignKey(StatusLog, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
-
-class StatusLog(models.Model):
-    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
-    estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
-    dataHora = models.DateTimeField()
