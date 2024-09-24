@@ -1,0 +1,53 @@
+{% extends "ticket/base.html" %}
+{% block content %}
+<body>
+    
+    <style>
+    </style>
+
+    <h2 style="margin-bottom:25px">Lista de Tickets</h2>
+
+    {% if user.is_authenticated %}
+    
+
+    {% if tickets %}
+
+    <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Criar Novo Ticket</a></button>
+    <hr>
+    
+    <table class="table table-striped table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Título</th>
+            <th scope="col">Data Criação</th>
+            <th scope="col">Responsável</th>
+            <th class="col-2 col-sm-1">Estado</th>
+            <th class="col-2 col-sm-1"></th>
+            <th class="col-2 col-sm-1"></th>
+            <th class="col-2 col-sm-1"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ticket in tickets %}  
+          <tr>
+            <th scope="row">{{ ticket.nome }}</th>
+            <td>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</td>
+            <td>{{ ticket.usuarios.nome }}</td>
+            <td><button type="button" class="btn btn-primary">{{ statuslog.estado }}</button></td>
+            <td><button type="button" class="btn btn-primary"><a href="#">Ver Detalhes</a></button></td>
+            <td><button type="button" class="btn btn-success"><a href="#">Editar</a></button></td>
+            <td><button type="button" class="btn btn-danger"><a href="#">Apagar</a></button></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+        
+    {% else %}
+        <p>Nenhum ticket encontrado.</p>
+    {% endif %}
+
+    
+
+    {% endif %}
+</body>
+{% endblock content %}

@@ -25,7 +25,9 @@ def index(request):
 
 def ticket_list(request):
     tickets = Ticket.objects.all()
-    return render(request, 'ticket/gestaodeticket.html', {'tickets': tickets})
+    tickuser = request.user
+    tickets = Ticket.objects.filter(usuarios=tickuser)
+    return render(request, 'ticket/listaticket.html', {'tickets': tickets})
 
 def create_ticket(request):
     if request.method == 'POST':

@@ -5,8 +5,10 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Enviar</button>
+            <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
-        <a href="{% url 'ticket-gestao' %}">Voltar à lista de tickets</a>
+        <hr>
+        <button type="button" class="btn btn"><a href="{% url 'ticket-gestao' %}">Voltar à lista de tickets</a></button>
+        
     </div>
 {% endblock content %}
