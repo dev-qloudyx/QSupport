@@ -33,7 +33,7 @@
             <th scope="row">{{ ticket.nome }}</th>
             <td>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</td>
             <td>{{ ticket.usuarios.nome }}</td>
-            <td><button type="button" class="btn btn-primary">{{ statuslog.estado }}</button></td>
+            <td><button style="background-color:{{ticket.estado.estado.font_color}}; border-color:{{ticket.estado.estado.font_color}}"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></td>
             <td><button type="button" class="btn btn-primary"><a href="#">Ver Detalhes</a></button></td>
             <td><button type="button" class="btn btn-success"><a href="#">Editar</a></button></td>
             <td><button type="button" class="btn btn-danger"><a href="#">Apagar</a></button></td>
