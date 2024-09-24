@@ -9,6 +9,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 class InputData(forms.DateInput):
     input_type = 'date'
 
+#Formulário para novos users
 class UserRegisterForm(UserCreationForm):
     foto = forms.ImageField()
     date_of_birth = forms.DateField(widget=InputData)
@@ -17,7 +18,7 @@ class UserRegisterForm(UserCreationForm):
         fields = ['nome','email','password1','password2','date_of_birth','descricao','role','entidade','foto','telefone']
         exclude = ['']
 
-
+#Formúlário para os tickets
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket

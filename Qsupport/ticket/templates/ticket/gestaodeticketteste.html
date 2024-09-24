@@ -1,10 +1,27 @@
 {% extends "ticket/base.html" %}
 {% block content %}
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+</style>
 <body>
     <h2>Lista de Tickets</h2>
 
     {% if user.is_authenticated %}
-        <p>Olá, {{ user.username }}! <a href="{% url 'logout' %}">Sair</a></p>
+        <p>Os seus tickets</p>
     {% else %}
         <p><a href="{% url 'login' %}">Entrar</a></p>
     {% endif %}
@@ -23,7 +40,7 @@
                 {% for ticket in tickets %}
                     <tr>
                         <td>{{ ticket.nome }}</td>
-                        <td>{{ statuslog.estado }}</td>
+                        <td>{{ ticket.estado.estado }}</td>
                         <td>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</td>
                         <td>{{ ticket.usuarios.nome }}</td>
                     </tr>

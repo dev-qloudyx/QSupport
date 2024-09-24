@@ -27,6 +27,11 @@ def ticket_list(request):
     tickets = Ticket.objects.all()
     return render(request, 'ticket/gestaodeticket.html', {'tickets': tickets})
 
+def ticket_listteste(request):
+    tickets = Ticket.objects.all()
+    return render(request, 'ticket/gestaodeticketteste.html', {'tickets': tickets})
+
+
 def create_ticket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST)
