@@ -6,6 +6,7 @@ from ticket.models import Usuarios,Entidades,Ticket
 from phonenumber_field.modelfields import PhoneNumberField
 
 
+
 class InputData(forms.DateInput):
     input_type = 'date'
 
