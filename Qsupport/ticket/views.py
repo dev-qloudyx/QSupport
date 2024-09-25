@@ -4,9 +4,10 @@ from django.http import HttpResponse
 from .models import Usuarios, Ticket,Estado
 from users.forms import TicketForm
 from django.shortcuts import get_object_or_404
-from django.views.generic import UpdateView,DetailView
+from django.views.generic import UpdateView, DetailView, DeleteView
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def index(request):
     listauser = Usuarios.objects.count()
@@ -33,11 +34,6 @@ def ticket_list(request):
     tickets = Ticket.objects.filter(usuarios=tickuser)
     return render(request, 'ticket/listaticket.html', {'tickets': tickets})
 
-def ticket_listteste(request):
-    tickets = Ticket.objects.all()
-    return render(request, 'ticket/gestaodeticketteste.html', {'tickets': tickets})
-
-
 def create_ticket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST)
@@ -50,30 +46,21 @@ def create_ticket(request):
         form = TicketForm()
     return render(request, 'ticket/novoticket.html', {'form': form})
 
-#class TicketDetalhe(DetailView):
-    #model = Ticket
-    #template_name = 'ticket/detalheticket.html'
-    #context_object_name = 'ticket'
-    #reverse ('ticket-gestao')
-    #utilizar ticket.id no template 
+#Ver detalhes do ticket
+@login_required
+def ticket_detalhe(request, pk):
+    ticket = get_object_or_404(Ticket, pk=pk, usuarios=request.user)
+    return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
     
-
-
-def profile_ticket(request):
-    #tickets = Ticket.objects.all()
-    #tickets = Ticket.objects.filter(id=pk)
-    #tickets = tickets.last()
-    return render (request, 'ticket/detalheticket.html')
-
 #Editar Ticket    
 @login_required
 def editar_ticket(request, pk):
-    ticket = get_object_or_404(Ticket, pk=pk, usuarios=request.user)
+    ticket = get_object_or_404(Ticket, pk=pk, usuarios=request.user)  # Verifica se o ticket pertence ao usuário logado
     if request.method == 'POST':
         form = TicketForm(request.POST, instance=ticket)
         if form.is_valid():
             form.save()
-            return redirect('listaticket')
+            return redirect(reverse('listaticket'))  # Usando reverse
     else:
         form = TicketForm(instance=ticket)
     return render(request, 'ticket/editar_ticket.html', {'form': form, 'ticket': ticket})

@@ -18,6 +18,7 @@
     <table class="table table-striped table-dark">
         <thead>
           <tr>
+            <th scope="col">ID#</th>
             <th scope="col">Título</th>
             <th scope="col">Data Criação</th>
             <th scope="col">Responsável</th>
@@ -30,13 +31,14 @@
         <tbody>
           {% for ticket in tickets %}  
           <tr>
+            <th>{{ ticket.id }}</th>
             <th scope="row">{{ ticket.nome }}</th>
             <td>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</td>
             <td>{{ ticket.usuarios.nome }}</td>
             <td><button style="background-color:{{ticket.estado.estado.font_color}}; border-color:{{ticket.estado.estado.font_color}}"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></td>
-            <td><button type="button" class="btn btn-primary"><a href="{% url 'ticket-detalhe' %}">Ver Detalhes</a></button></td>
-            <td><button type="button" class="btn btn-success"><a href="{% url 'editar-ticket' %}">Editar</a></button></td>
-            <td><button type="button" class="btn btn-danger"><a href="#">Apagar</a></button></td>
+            <td><button type="button" class="btn btn-primary"><a href="{% url 'detalheticket' ticket.pk %}">Ver Detalhes</a></button></td>
+            <td><button type="button" class="btn btn-success"><a href="{% url 'editar_ticket' ticket.pk %}">Editar</a></button></td>
+            <td><button type="button" class="btn btn-danger"><a href="{% url 'apagar_ticket' ticket.pk %}">Apagar</a></button></td>
           </tr>
           {% endfor %}
         </tbody>
