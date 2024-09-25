@@ -24,3 +24,8 @@ class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = ['nome', 'descricao','app_tpPedidos']
+
+class TicketFormAdmin(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['nome','usuarios','descricao','app_tpPedidos','estado','prioridade']

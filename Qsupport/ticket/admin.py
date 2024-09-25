@@ -76,6 +76,12 @@ class AppsTpAdmin(admin.ModelAdmin):
     readonly_fields = ('id',)
     list_display = ('id','apps','tipoPedidos')
 
+class TicketAdmin(admin.ModelAdmin):
+    def get_changeform_initial_data(self, request):
+        get_data = super(TicketAdmin, self).get_changeform_initial_data(request)
+        get_data['id_Proprietario'] = request.user.pk
+        return get_data
+
 
 # Registo do utilizador Admin, para fazer override do role do Django e meter o modelo de Users customizado
 # no lugar dele
@@ -89,5 +95,5 @@ admin.site.register(TiposPedidos)
 admin.site.register(Apps)
 admin.site.register(Usuarios_Apps)
 admin.site.register(Apps_tpPedidos,AppsTpAdmin)
-admin.site.register(Ticket)
+admin.site.register(Ticket,TicketAdmin)
 admin.site.register(StatusLog)

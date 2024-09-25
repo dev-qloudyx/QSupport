@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
 from .models import Usuarios, Ticket,Estado
-from users.forms import TicketForm
+from users.forms import TicketForm,TicketFormAdmin
 from django.shortcuts import get_object_or_404
 from django.views.generic import UpdateView, DetailView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 def index(request):
     listauser = Usuarios.objects.count()
@@ -27,19 +28,21 @@ def index(request):
             "corEstado":corEstado,
         })
 
-#Ver a lista de tickets
-def ticket_list(request):
-    tickets = Ticket.objects.all()
-    tickuser = request.user
-    tickets = Ticket.objects.filter(usuarios=tickuser)
-    return render(request, 'ticket/listaticket.html', {'tickets': tickets})
 
-#Criar novo ticket
+def ticket_list(request):
+    ticketall = Ticket.objects.all()
+    tickuser = request.user
+    tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
+    return render(request, 'ticket/listaticket.html', {'tickets': tickets,'ticketall': ticketall})
+
 def create_ticket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST)
         if form.is_valid():
-            form.save()
+            ticket = form.save(commit=False)
+            ticket.id_Proprietario = request.user
+            ticket = ticket.save()
+            #form.save()
             form.instance.usuarios = request.user
             messages.success(request, f'Ticket enviado com sucesso, espere por feedback do nosso operador em serviço.')
             return redirect('ticket-gestao')
@@ -50,27 +53,53 @@ def create_ticket(request):
 #Ver detalhes do ticket
 @login_required
 def ticket_detalhe(request, pk):
-    ticket = get_object_or_404(Ticket, pk=pk, usuarios=request.user)
-    return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
+    if request.user.nome == "Admin":
+        ticket = get_object_or_404(Ticket, pk=pk)
+        return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
+    else:
+        ticket = get_object_or_404(Ticket, pk=pk, usuarios=request.user)
+        return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
+#Editar Ticket
     
-#Editar Ticket    
 @login_required
 def editar_ticket(request, pk):
-    ticket = get_object_or_404(Ticket, pk=pk, usuarios=request.user)
-    if request.method == 'POST':
-        form = TicketForm(request.POST, instance=ticket)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse('listaticket'))
+    if request.user.nome == "Admin":
+        ticket = get_object_or_404(Ticket,pk=pk)  # Verifica se o ticket pertence ao usuário logado
+        if request.method == 'POST':
+            form = TicketFormAdmin(request.POST, instance=ticket)
+            if form.is_valid():
+                form.save()
+                return redirect(reverse('listaticket'))  # Usando reverse
+        else:
+            form = TicketFormAdmin(instance=ticket)
+        return render(request, 'ticket/editar_ticket.html', {'form': form, 'ticket': ticket})
+    
     else:
-        form = TicketForm(instance=ticket)
-    return render(request, 'ticket/editar_ticket.html', {'form': form, 'ticket': ticket})
+        ticket = get_object_or_404(Ticket,pk=pk,usuarios=request.user)  # Verifica se o ticket pertence ao usuário logado
+        if request.method == 'POST':
+            form = TicketForm(request.POST, instance=ticket)
+            if form.is_valid():
+                form.save()
+                return redirect(reverse('listaticket'))  # Usando reverse
+        else:
+            form = TicketForm(instance=ticket)
+        return render(request, 'ticket/editar_ticket.html', {'form': form, 'ticket': ticket})
+    
+
+
 
 #Apagar Ticket
 @login_required
 def apagar_ticket(request, pk):
-    ticket = get_object_or_404(Ticket, pk=pk, usuarios=request.user)
-    if request.method == 'POST':
-        ticket.delete()
-        return redirect('listaticket')
-    return render(request, 'ticket/apagar_ticket.html', {'ticket': ticket})
+    if request.user.nome == "Admin":
+        ticket = get_object_or_404(Ticket, pk=pk)
+        if request.method == 'POST':
+            ticket.delete()
+            return redirect('listaticket')
+        return render(request, 'ticket/apagar_ticket.html', {'ticket': ticket})
+    else:
+        ticket = get_object_or_404(Ticket, pk=pk ,usuarios=request.user)
+        if request.method == 'POST':
+            ticket.delete()
+            return redirect('listaticket')
+        return render(request, 'ticket/apagar_ticket.html', {'ticket': ticket})

@@ -147,12 +147,12 @@ class Ticket(models.Model):
     nome = models.CharField(max_length=50)
     dataCriacao = models.DateTimeField(default=timezone.now())
     descricao = models.CharField(max_length=300)
-    usuarios = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE)
+    usuarios = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="responsavel")
     app_tpPedidos = models.ForeignKey(Apps_tpPedidos, on_delete=models.CASCADE)
     prioridade = models.ForeignKey(Prioridade, null = True , on_delete=models.CASCADE)
     resolucao = models.ForeignKey(Resolucao, null = True, on_delete=models.CASCADE)
-    id_Proprietario = models.IntegerField(null = True)
-    estado = models.ForeignKey(StatusLog, on_delete=models.CASCADE)
+    id_Proprietario = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="criador")
+    estado = models.ForeignKey(StatusLog,null = True,default = 1, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
