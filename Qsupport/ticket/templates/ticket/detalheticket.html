@@ -1,12 +1,12 @@
 {% extends "ticket/base.html" %}
 {% block content %}
-    <body class="container">
-        <h2 class="mt-5">Detalhes do Ticket: {{ ticket.titulo }}</h2>
-        
-        <p><strong>Status:</strong> {{ ticket.estado.estado.font_color }} </p>
+    <body>
+        <h2 class="mt-2">Detalhes do Ticket: {{ ticket.titulo }}</h2>
+    
+        <p><strong>Status:</strong> <button style="background-color:{{ticket.estado.estado.font_color}}; border-color:{{ticket.estado.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado.estado }}</button>
         <p><strong>Data de Criação:</strong> {{ ticket.dataCriacao|date:"d/m/Y H:i" }}</p>
         <p><strong>Descrição:</strong> {{ ticket.descricao }}</p>
-        <p><strong>Criado por:</strong> {{ ticket.usuario.username }}</p>
+        <p><strong>Criado por:</strong> {{ ticket.id_Proprietario.nome }}</p>
         
         <a href="{% url 'editar_ticket' ticket.pk %}" class="btn btn-primary">Editar</a>
         <a href="{% url 'apagar_ticket' ticket.pk %}" class="btn btn-danger">Apagar</a>
