@@ -100,7 +100,7 @@ class Resolucao(models.Model):
     def __str__(self):
         return self.nome
 
-
+#Classificação da prioridade do Ticket
 class Prioridade(models.Model):
     nome = models.CharField(max_length=100)
     peso = models.CharField(max_length=50)

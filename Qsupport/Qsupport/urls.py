@@ -25,12 +25,12 @@ from ticket import views as ticket_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ticket.urls')),
-    path('register/', users_views.register, name ='register'),
-    path('login/', auth_views.LoginView.as_view(template_name ='users/login.html'), name ='login'),
-    path('novoticket/', ticket_views.create_ticket, name ='novoticket'),
-    path('listaticket/', ticket_views.ticket_list, name ='listaticket'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
-    path('profile/', users_views.profile, name='profile'),
+    path('register/', users_views.register, name ='register'), #URL para registar novos usuários
+    path('login/', auth_views.LoginView.as_view(template_name ='users/login.html'), name ='login'), #URL para logar
+    path('novoticket/', ticket_views.create_ticket, name ='novoticket'), #URL para criar novos tickets
+    path('listaticket/', ticket_views.ticket_list, name ='listaticket'), #URL para a gestão de tickets
+    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'), #URL para o logout
+    path('profile/', users_views.profile, name='profile'), #URL para os perfís
     
 ]
 

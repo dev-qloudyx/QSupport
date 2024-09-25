@@ -27,13 +27,14 @@ def index(request):
             "corEstado":corEstado,
         })
 
-
+#Ver a lista de tickets
 def ticket_list(request):
     tickets = Ticket.objects.all()
     tickuser = request.user
     tickets = Ticket.objects.filter(usuarios=tickuser)
     return render(request, 'ticket/listaticket.html', {'tickets': tickets})
 
+#Criar novo ticket
 def create_ticket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST)
