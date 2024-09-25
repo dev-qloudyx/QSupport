@@ -56,12 +56,12 @@ def ticket_detalhe(request, pk):
 #Editar Ticket    
 @login_required
 def editar_ticket(request, pk):
-    ticket = get_object_or_404(Ticket, pk=pk, usuarios=request.user)  # Verifica se o ticket pertence ao usuário logado
+    ticket = get_object_or_404(Ticket, pk=pk, usuarios=request.user)
     if request.method == 'POST':
         form = TicketForm(request.POST, instance=ticket)
         if form.is_valid():
             form.save()
-            return redirect(reverse('listaticket'))  # Usando reverse
+            return redirect(reverse('listaticket'))
     else:
         form = TicketForm(instance=ticket)
     return render(request, 'ticket/editar_ticket.html', {'form': form, 'ticket': ticket})
