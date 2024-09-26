@@ -45,7 +45,7 @@ def create_ticket(request):
             #form.save()
             form.instance.usuarios = request.user
             messages.success(request, f'Ticket enviado com sucesso, espere por feedback do nosso operador em serviço.')
-            return redirect('ticket-gestao')
+            return redirect('listaticket')
     else:
         form = TicketForm()
     return render(request, 'ticket/novoticket.html', {'form': form})
