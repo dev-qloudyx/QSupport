@@ -76,11 +76,26 @@ class AppsTpAdmin(admin.ModelAdmin):
     readonly_fields = ('id',)
     list_display = ('id','apps','tipoPedidos')
 
+class UserAppsAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+    list_display = ('id','usuario','app')
+
+class StatusLogAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+    list_display = ('id','usuario','estado','dataHora')
+    ordering = ('id','usuario')
+
 class TicketAdmin(admin.ModelAdmin):
     def get_changeform_initial_data(self, request):
         get_data = super(TicketAdmin, self).get_changeform_initial_data(request)
         get_data['id_Proprietario'] = request.user.pk
         return get_data
+    
+    readonly_fields = ('id',)
+    list_display = ('id','nome','usuarios','estado','dataCriacao','id_Proprietario')
+    ordering = ('id','usuarios')
+    search_fields = ('id','usuarios','nome','id_Proprietario')
+    list_filter = ('nome','usuarios','id_Proprietario')
 
 
 # Registo do utilizador Admin, para fazer override do role do Django e meter o modelo de Users customizado
@@ -93,7 +108,7 @@ admin.site.register(Resolucao)
 admin.site.register(Prioridade)
 admin.site.register(TiposPedidos)
 admin.site.register(Apps)
-admin.site.register(Usuarios_Apps)
+admin.site.register(Usuarios_Apps,UserAppsAdmin)
 admin.site.register(Apps_tpPedidos,AppsTpAdmin)
 admin.site.register(Ticket,TicketAdmin)
-admin.site.register(StatusLog)
+admin.site.register(StatusLog,StatusLogAdmin)

@@ -53,17 +53,17 @@ def create_ticket(request):
 #Ver detalhes do ticket
 @login_required
 def ticket_detalhe(request, pk):
-    if request.user.nome == "Admin":
+    if request.user.nome == "Admin" or request.user.role == "Interno":
         ticket = get_object_or_404(Ticket, pk=pk)
         return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
     else:
-        ticket = get_object_or_404(Ticket, pk=pk, usuarios=request.user)
+        ticket = get_object_or_404(Ticket, pk=pk)
         return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
 
 #Editar Ticket
 @login_required
 def editar_ticket(request, pk):
-    if request.user.nome == "Admin":
+    if request.user.nome == "Admin" or request.user.role == "Interno":
         ticket = get_object_or_404(Ticket,pk=pk)
         if request.method == 'POST':
             form = TicketFormAdmin(request.POST, instance=ticket)
@@ -88,7 +88,7 @@ def editar_ticket(request, pk):
 #Apagar Ticket
 @login_required
 def apagar_ticket(request, pk):
-    if request.user.nome == "Admin":
+    if request.user.nome == "Admin" or request.user.role == "Interno":
         ticket = get_object_or_404(Ticket, pk=pk)
         if request.method == 'POST':
             ticket.delete()

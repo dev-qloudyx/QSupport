@@ -54,24 +54,24 @@ class MyUserManager(BaseUserManager):
 
 #Os resposáveis na hora de contacto sobre as entidades    
 class Usuarios(AbstractBaseUser):
-    nome = models.CharField(max_length=100, unique=True)
-    email = models.EmailField()
-    foto = models.ImageField(null=True, blank=True, upload_to='users/uploads/fotos')
+    nome = models.CharField(max_length=100, unique=True,verbose_name='Utilizador')
+    email = models.EmailField(verbose_name='E-mail')
+    foto = models.ImageField(null=True, blank=True, upload_to='users/uploads/fotos',verbose_name='Foto')
     descricao = models.CharField(max_length=250, null=True)
 
     EscolhasRole = {
-    ("QLOUDYX", "Qloudyx"),
-    ("OPERADOR", "Operador"),
-    ("CLIENTE", "Cliente"),
+    ("Interno", "Interno"),
+    ("Operador", "Operador"),
+    ("Cliente", "Cliente"),
     }
 
-    role = models.CharField(max_length=50,choices= EscolhasRole)
-    entidade = models.ForeignKey(Entidades, on_delete=models.CASCADE)
-    telefone = PhoneNumberField(null=True, blank=False, unique=True)
-    date_of_birth = models.DateField()
+    role = models.CharField(max_length=50,choices= EscolhasRole ,verbose_name='Cargo')
+    entidade = models.ForeignKey(Entidades, on_delete=models.CASCADE, verbose_name='Entidade')
+    telefone = PhoneNumberField(null=True, blank=False, unique=True, verbose_name='Telefone')
+    date_of_birth = models.DateField(verbose_name='Data de Nascimento')
 
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True, verbose_name='Ativo?')
+    is_admin = models.BooleanField(default=False, verbose_name='Admin?')
 
     objects = MyUserManager()
 
@@ -93,7 +93,6 @@ class Usuarios(AbstractBaseUser):
         "Membro da empresa?"
         return self.is_admin
 
-#Que tipo de solução foi aplicada
 class Resolucao(models.Model):
     nome = models.CharField(max_length=150)
 
@@ -102,57 +101,62 @@ class Resolucao(models.Model):
 
 #Classificação da prioridade do Ticket
 class Prioridade(models.Model):
-    nome = models.CharField(max_length=100)
-    peso = models.CharField(max_length=50)
+    nome = models.CharField(max_length=100, verbose_name='Tipo')
+    peso = models.CharField(max_length=50, verbose_name='Peso')
 
     def __str__(self):
         return self.nome
 
 class TiposPedidos(models.Model):
-    nome = models.CharField(max_length=100)
-    descricao = models.CharField(max_length=300)
+    nome = models.CharField(max_length=100, verbose_name='Pedido')
+    descricao = models.CharField(max_length=300, verbose_name='Descrição')
 
     def __str__(self):
         return self.nome
 
 
 class Apps(models.Model):
-    nome = models.CharField(max_length=150)
-    ativo = models.BooleanField(default=True)
+    nome = models.CharField(max_length=150, verbose_name='Aplicação')
+    ativo = models.BooleanField(default=True, verbose_name='Ativo?')
 
     def __str__(self):
         return self.nome
 
 
 class Usuarios_Apps(models.Model):
-    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
-    app = models.ForeignKey(Apps, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE,verbose_name='Utilizador')
+    app = models.ForeignKey(Apps, on_delete=models.CASCADE,verbose_name='Aplicação')
+
+    def __str__(self):
+        return f"{self.usuario} + {self.app}"
 
 
 class Apps_tpPedidos(models.Model):
-    apps = models.ForeignKey(Apps, on_delete=models.CASCADE)
-    tipoPedidos = models.ForeignKey(TiposPedidos, on_delete=models.CASCADE)
+    apps = models.ForeignKey(Apps, on_delete=models.CASCADE, verbose_name='Aplicação')
+    tipoPedidos = models.ForeignKey(TiposPedidos, on_delete=models.CASCADE, verbose_name='Tipo de Pedido')
 
     def __str__(self):
         return f"{self.tipoPedidos}"
     
 
 class StatusLog(models.Model):
-    estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
-    dataHora = models.DateTimeField()
+    estado = models.ForeignKey(Estado, on_delete=models.CASCADE, verbose_name='Estado')
+    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, verbose_name='Utilizador')
+    dataHora = models.DateTimeField(default=timezone.now(), verbose_name='Data de Criação')
 
+    def __str__(self):
+        return f"{self.estado} - Por {self.usuario}"
 
 class Ticket(models.Model):
-    nome = models.CharField(max_length=50)
-    dataCriacao = models.DateTimeField(default=timezone.now())
-    descricao = models.CharField(max_length=300)
-    usuarios = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="responsavel")
-    app_tpPedidos = models.ForeignKey(Apps_tpPedidos, on_delete=models.CASCADE)
-    prioridade = models.ForeignKey(Prioridade, null = True , on_delete=models.CASCADE)
-    resolucao = models.ForeignKey(Resolucao, null = True, on_delete=models.CASCADE)
-    id_Proprietario = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="criador")
-    estado = models.ForeignKey(StatusLog,null = True,default = 1, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=50, verbose_name='Titulo')
+    dataCriacao = models.DateTimeField(default=timezone.now(), verbose_name='Data de Criação')
+    descricao = models.CharField(max_length=300, verbose_name='Descrição')
+    usuarios = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="responsavel", verbose_name='Responsável')
+    app_tpPedidos = models.ForeignKey(Apps_tpPedidos, on_delete=models.CASCADE, verbose_name='Tipo de Problema')
+    prioridade = models.ForeignKey(Prioridade, null = True , on_delete=models.CASCADE, verbose_name='Prioridade')
+    resolucao = models.ForeignKey(Resolucao, null = True, on_delete=models.CASCADE, verbose_name='Resolução')
+    id_Proprietario = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="criador", verbose_name='Criador do Ticket')
+    estado = models.ForeignKey(StatusLog,null = True,default = 1, on_delete=models.CASCADE, verbose_name='Estado Atual')
 
     def __str__(self):
         return self.nome

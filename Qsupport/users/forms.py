@@ -13,19 +13,43 @@ class InputData(forms.DateInput):
 #Formulário para novos users
 class UserRegisterForm(UserCreationForm):
     foto = forms.ImageField()
-    date_of_birth = forms.DateField(widget=InputData)
+    date_of_birth = forms.DateField(widget=InputData,label="Data de Nascimento")
     class Meta:
         model = Usuarios
         fields = ['nome','email','password1','password2','date_of_birth','descricao','role','entidade','foto','telefone']
         exclude = ['']
+        labels = {
+        "nome": "Nome de Utilizador",
+        "email":"E-mail",
+        "date_of_birth": "Data de Nascimento",
+        "descricao": "Descrição",
+        "role":"Cargo",
+        "entidade":"Entidade",
+        "foto":"Foto",
+        "telefone":"Telefone",
+    }
+
+        
 
 #Formúlário para os tickets
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = ['nome', 'descricao','app_tpPedidos']
+        labels = {
+        "nome": "Titulo",
+        "descricao":"Descrição",
+        "app_tpPedidos": "Tipo de problema"
+    }
 
 class TicketFormAdmin(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = ['nome','usuarios','descricao','app_tpPedidos','estado','prioridade']
+        labels = {
+        "nome": "Titulo",
+        "descricao":"Descrição",
+        "app_tpPedidos": "Tipo de problema",
+        "estado": "Estado",
+        "prioridade":"Prioridade",
+    }
