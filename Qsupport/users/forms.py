@@ -2,8 +2,9 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from ticket.models import Usuarios,Entidades,Ticket,Apps
+from ticket.models import Usuarios,Entidades,Ticket,Apps,Usuarios_Apps
 from phonenumber_field.modelfields import PhoneNumberField
+from django.db.models import Q
 
 
 
@@ -33,6 +34,10 @@ class UserRegisterForm(UserCreationForm):
 
 #Formulário para os tickets
 class TicketForm(forms.ModelForm):
+    
+    def __init__(self,current_user,*args, **kwargs):
+        super(TicketForm, self).__init__(*args, **kwargs)
+        self.fields['usuario_app'].queryset = self.fields['usuario_app'].queryset.exclude(~Q(usuario=current_user))
     class Meta:
         model = Ticket
         fields = ['nome', 'descricao','app_tpPedidos', 'usuario_app']

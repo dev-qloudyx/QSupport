@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
-from .models import Usuarios, Ticket,Estado
+from .models import Usuarios, Ticket,Estado, Usuarios_Apps
 from users.forms import TicketForm,TicketFormAdmin, AppsForm, EntidadeForm
 from django.shortcuts import get_object_or_404
 from django.views.generic import UpdateView, DetailView, DeleteView
@@ -37,9 +37,13 @@ def ticket_list(request):
 
 #Registar um ticket
 def create_ticket(request):
+
     if request.method == 'POST':
-        form = TicketForm(request.POST)
+        
+        form = TicketForm(request.POST,current_user=request.user)
+
         if form.is_valid():
+            
             ticket = form.save(commit=False)
             ticket.id_Proprietario = request.user
             ticket = ticket.save()
@@ -48,7 +52,7 @@ def create_ticket(request):
             messages.success(request, f'Ticket enviado com sucesso, espere por feedback do nosso operador em serviço.')
             return redirect('listaticket')
     else:
-        form = TicketForm()
+        form = TicketForm(current_user=request.user)
     return render(request, 'ticket/novoticket.html', {'form': form})
 
 #Ver detalhes do ticket
