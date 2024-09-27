@@ -50,6 +50,8 @@
                         {% if user.is_admin or user.role == "Interno"%}
                         <li>
                             <a href="{% url 'register' %}">Registar outro Utilizador</a>
+                            <a href="{% url 'criar_entidades' %}">Registar Entidade</a>
+                            <a href="{% url 'criar_app' %}">Registar Apps</a>
                         </li>
                         {% endif %}
                             

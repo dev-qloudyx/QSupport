@@ -28,6 +28,8 @@ urlpatterns = [
     path('register/', users_views.register, name ='register'), #URL para registar novos usuários
     path('login/', auth_views.LoginView.as_view(template_name ='users/login.html'), name ='login'), #URL para logar
     path('novoticket/', ticket_views.create_ticket, name ='novoticket'), #URL para criar novos tickets
+    path('criar_entidades/', ticket_views.create_entidade, name ='criar_entidades'), #URL para criar novos entidades
+    path('criar_app/', ticket_views.create_apps, name ='criar_app'), #URL para criar novos apps
     path('listaticket/', ticket_views.ticket_list, name ='listaticket'), #URL para a gestão de tickets
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'), #URL para o logout
     path('profile/', users_views.profile, name='profile'), #URL para os perfís

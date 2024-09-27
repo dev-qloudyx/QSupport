@@ -157,6 +157,7 @@ class Ticket(models.Model):
     resolucao = models.ForeignKey(Resolucao, null = True, on_delete=models.CASCADE, verbose_name='Resolução')
     id_Proprietario = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="criador", verbose_name='Criador do Ticket')
     estado = models.ForeignKey(StatusLog,null = True,default = 1, on_delete=models.CASCADE, verbose_name='Estado Atual')
+    usuario_app = models.ForeignKey(Usuarios_Apps,null = True, on_delete=models.CASCADE, limit_choices_to={'usuario': "4"})
 
     def __str__(self):
         return self.nome
