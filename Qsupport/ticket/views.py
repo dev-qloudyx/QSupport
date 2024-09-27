@@ -11,21 +11,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
 def index(request):
-    listauser = Usuarios.objects.count()
-    lastuser = Usuarios.objects.last()
     corEstado = Estado.objects.filter(cor='Vermelha')
     corEstado = corEstado.last()
-    #Inserir role aqui em vez de nome: nome apenas esta a titulo de exemplo
-    filtro = Usuarios.objects.filter(nome="Admin")
-    lastadmin = filtro.last()
-    listaadmin = filtro.count()
+    total = Ticket.objects.count()
+    filtro = Ticket.objects.filter(estado="1")
+    filtroex = Ticket.objects.exclude(estado="1")
+    aberto = filtro.count()
+    por_abrir = filtroex.count()
     return render(request, 'ticket/home.html', context=
         {
-            "listaadmin":listaadmin,
-            "listauser":listauser,
-            "lastadmin":lastadmin,
-            "lastuser":lastuser,
-            "corEstado":corEstado,
+            "total":total,
+            "aberto":aberto,
+            "por_abrir":por_abrir,
         })
 
 #Ver lista de tickets
