@@ -37,7 +37,7 @@ def create_ticket(request):
 
     if request.method == 'POST':
         
-        form = TicketForm(request.POST,current_user=request.user)
+        form = TicketForm(data=request.POST,current_user=request.user)
 
         if form.is_valid():
             
@@ -71,6 +71,7 @@ def editar_ticket(request, pk):
             form = TicketFormAdmin(request.POST, instance=ticket)
             if form.is_valid():
                 form.save()
+                messages.success(request, f'Ticket editado com sucesso.')
                 return redirect(reverse('listaticket'))
         else:
             form = TicketFormAdmin(instance=ticket)
@@ -81,6 +82,7 @@ def editar_ticket(request, pk):
             form = TicketForm(request.POST, instance=ticket)
             if form.is_valid():
                 form.save()
+                messages.success(request, f'Ticket editado com sucesso.')
                 return redirect(reverse('listaticket'))
         else:
             form = TicketForm(instance=ticket)
@@ -94,12 +96,14 @@ def apagar_ticket(request, pk):
         ticket = get_object_or_404(Ticket, pk=pk)
         if request.method == 'POST':
             ticket.delete()
+            messages.success(request, f'Ticket apagado com sucesso.')
             return redirect('listaticket')
         return render(request, 'ticket/apagar_ticket.html', {'ticket': ticket})
     else:
         ticket = get_object_or_404(Ticket, pk=pk ,usuarios=request.user)
         if request.method == 'POST':
             ticket.delete()
+            messages.success(request, f'Ticket apagado com sucesso.')
             return redirect('listaticket')
         return render(request, 'ticket/apagar_ticket.html', {'ticket': ticket})
     
@@ -109,7 +113,8 @@ def create_entidade(request):
         form = EntidadeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('listaentidades')
+            messages.success(request, f'Nova entidade criada.')
+            return redirect('ticket-home')
     else:
         form = EntidadeForm()
     return render(request, 'ticket/criar_entidades.html', {'form': form})
@@ -120,7 +125,8 @@ def create_apps(request):
         form = AppsForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('listaticket')
+            messages.success(request, f'Nova aplicação criada.')
+            return redirect('ticket-home')
     else:
         form = AppsForm()
     return render(request, 'ticket/criar_app.html', {'form': form})

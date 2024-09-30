@@ -77,7 +77,7 @@ class EntidadeForm(forms.ModelForm):
         model = Entidades
         fields = ['nome', 'externo']
         labels = {
-        "nome": "Nome da App",
+        "nome": "Nome da Entidade",
         "externo": "A entidade é externa:"
     } 
 

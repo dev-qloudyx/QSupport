@@ -13,7 +13,7 @@ def register(request):
         if form.is_valid():
             form.save()
             messages.success(request, f'Conta criada com sucesso, já pode logar!')
-            return redirect ('login')
+            return redirect ('ticket-home')
         
     else:
         form = UserRegisterForm()

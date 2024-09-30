@@ -67,84 +67,91 @@
     }
 </style>
 
-<h2 style="margin-bottom:25px">Qsupport - Pagina Inicial</h2>
+{% if user.is_authenticated %}
+    
+  {% if user.is_admin or user.role == "Interno"%}
 
-<hr>
+  <h2 style="margin-bottom:25px">Qsupport - Pagina Inicial</h2>
 
-<h3 style="margin-bottom:25px">Estatisticas</h3>
+  <hr>
 
-<div align="center">
-    <div class="row">
-      <div class="col-md-4">
-         <button type="button" class="btn btn-primary" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px">
-            <font size="6">Tickets Abertos:
-            <div id="animate" style="margin-left:150px ; text-align: right; font-weight: bold; font-size:200px">
+  <h3 style="margin-bottom:25px">Estatisticas</h3>
+
+  <div align="center">
+      <div class="row">
+        <div class="col-md-4">
+          <button type="button" class="btn btn-primary" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px">
+              <font size="6">Tickets Abertos:
+              <div id="animate" style="margin-left:150px ; text-align: right; font-weight: bold; font-size:200px">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-ticket-detailed-fill" viewBox="0 0 16 16">
+                  <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zm4 1a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m0 5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5M4 8a1 1 0 0 0 1 1h6a1 1 0 1 0 0-2H5a1 1 0 0 0-1 1"/>
+                  </svg>
+              </div>
+            </font></button>
+        </div>
+
+        <div class="col-md-4">
+            <button type="button" class="btn btn-secondary" ng-click="Proceed()" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px">
+            <font size="6">Tickets por Abrir:
+              <div id="animate2" style="margin-left:150px ; text-align: right; color:white; font-weight: bold; font-size:200px">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-ticket-detailed-fill" viewBox="0 0 16 16">
+                  <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zm4 1a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m0 5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5M4 8a1 1 0 0 0 1 1h6a1 1 0 1 0 0-2H5a1 1 0 0 0-1 1"/>
+                  </svg>
+              </div>
+            </font></button>
+        </div>
+
+        <div class="col-md-4">
+          <button type="button" class="btn btn-dark" ng-click="Proceed()" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px">
+          <font size="6">Total de Tickets:
+            <div id="animate3" style="margin-left:150px ; text-align: right; color:white; font-weight: bold; font-size:200px">
                 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-ticket-detailed-fill" viewBox="0 0 16 16">
                 <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zm4 1a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m0 5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5M4 8a1 1 0 0 0 1 1h6a1 1 0 1 0 0-2H5a1 1 0 0 0-1 1"/>
                 </svg>
             </div>
           </font></button>
+        </div>
       </div>
 
-      <div class="col-md-4">
-          <button type="button" class="btn btn-secondary" ng-click="Proceed()" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px">
-          <font size="6">Tickets por Abrir:
-            <div id="animate2" style="margin-left:150px ; text-align: right; color:white; font-weight: bold; font-size:200px">
-                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-ticket-detailed-fill" viewBox="0 0 16 16">
-                <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zm4 1a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m0 5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5M4 8a1 1 0 0 0 1 1h6a1 1 0 1 0 0-2H5a1 1 0 0 0-1 1"/>
-                </svg>
-            </div>
-          </font></button>
-      </div>
+  <hr>
 
-      <div class="col-md-4">
-        <button type="button" class="btn btn-dark" ng-click="Proceed()" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px">
-        <font size="6">Total de Tickets:
-          <div id="animate3" style="margin-left:150px ; text-align: right; color:white; font-weight: bold; font-size:200px">
-              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-ticket-detailed-fill" viewBox="0 0 16 16">
-              <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zm4 1a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m0 5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5M4 8a1 1 0 0 0 1 1h6a1 1 0 1 0 0-2H5a1 1 0 0 0-1 1"/>
-              </svg>
-          </div>
-        </font></button>
-      </div>
-    </div>
-
- <hr>
-
- <div align="center">
-    <div class="row">
+  <div align="center">
+      <div class="row">
+        <div class="col-md-6">
+          <button type="button" class="btn btn-warning" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px"><font size="6">Cancel</font></button>
+        </div>
       <div class="col-md-6">
-         <button type="button" class="btn btn-warning" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px"><font size="6">Cancel</font></button>
-      </div>
-     <div class="col-md-6">
-          <button type="button" class="btn btn-success" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px"><a href={% url 'ticket-novo' %}><font size="6">Criar Ticket Interno</font></a></button>
-      </div>
- </div>
+            <button type="button" class="btn btn-success" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px"><a href={% url 'ticket-novo' %}><font size="6">Criar Ticket Interno</font></a></button>
+        </div>
+  </div>
 
-<!--
-<p>Numero de Users:
-    {{ listauser }}
-</p>
-<p>Numero de Admins:
-    {{ listaadmin }}
-</p>
+  <!--
+  <p>Numero de Users:
+      {{ listauser }}
+  </p>
+  <p>Numero de Admins:
+      {{ listaadmin }}
+  </p>
 
-<p> Ultimo user criado: 
-    {{ lastuser }}
-</p>
+  <p> Ultimo user criado: 
+      {{ lastuser }}
+  </p>
 
-<p> Ultimo Admin criado:
-    {{ lastadmin }}
-</p>
-<p>Estado Atual:
-    <p style = "color:{{corEstado.font_color}}">{{corEstado.estado}}</p>
-</p>
+  <p> Ultimo Admin criado:
+      {{ lastadmin }}
+  </p>
+  <p>Estado Atual:
+      <p style = "color:{{corEstado.font_color}}">{{corEstado.estado}}</p>
+  </p>
 
 
-{% if listaadmin %}
-        Admin esteve aqui!
+  {% if listaadmin %}
+          Admin esteve aqui!
+  {% endif %}
+  -->
+
+  {% endif %}
+
 {% endif %}
--->
-
 
 {% endblock content %}
