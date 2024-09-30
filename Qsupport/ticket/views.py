@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
 from .models import Usuarios, Ticket,Estado, Usuarios_Apps
-from users.forms import TicketForm,TicketFormAdmin, AppsForm, EntidadeForm
+from users.forms import TicketForm,TicketFormAdmin, AppsForm, EntidadeForm, AppUserForm
 from django.shortcuts import get_object_or_404
 from django.views.generic import UpdateView, DetailView, DeleteView
 from django.contrib.auth.decorators import login_required
@@ -94,17 +94,17 @@ def editar_ticket(request, pk):
 def apagar_ticket(request, pk):
     if request.user.nome == "Admin" or request.user.role == "Interno":
         ticket = get_object_or_404(Ticket, pk=pk)
-        if request.method == 'POST':
-            ticket.delete()
-            messages.success(request, f'Ticket apagado com sucesso.')
-            return redirect('listaticket')
+        #if request.method == 'POST':
+        ticket.delete()
+        messages.success(request, f'Ticket apagado com sucesso.')
+        return redirect('listaticket')
         return render(request, 'ticket/apagar_ticket.html', {'ticket': ticket})
     else:
         ticket = get_object_or_404(Ticket, pk=pk ,usuarios=request.user)
-        if request.method == 'POST':
-            ticket.delete()
-            messages.success(request, f'Ticket apagado com sucesso.')
-            return redirect('listaticket')
+        #if request.method == 'POST':
+        ticket.delete()
+        messages.success(request, f'Ticket apagado com sucesso.')
+        return redirect('listaticket')
         return render(request, 'ticket/apagar_ticket.html', {'ticket': ticket})
     
 #Registar nova entidade
@@ -130,3 +130,15 @@ def create_apps(request):
     else:
         form = AppsForm()
     return render(request, 'ticket/criar_app.html', {'form': form})
+
+#Registar nova app
+def create_appuser(request):
+    if request.method == 'POST':
+        form = AppUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Nova aplicação criada.')
+            return redirect('ticket-home')
+    else:
+        form = AppUserForm()
+    return render(request, 'ticket/criar_appuser.html', {'form': form})

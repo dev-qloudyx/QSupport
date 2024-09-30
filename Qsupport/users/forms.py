@@ -63,6 +63,16 @@ class TicketFormAdmin(forms.ModelForm):
     }
         
 #Formulário para registar apps para entidades
+class AppUserForm(forms.ModelForm):
+    class Meta:
+        model = Usuarios_Apps
+        fields = ['usuario','app']
+        labels = {
+        "usuario": "Utilizador",
+        "app":"Aplicação",
+    }
+        
+#Formulário para registar apps para entidades
 class AppsForm(forms.ModelForm):
     class Meta:
         model = Apps
@@ -70,6 +80,7 @@ class AppsForm(forms.ModelForm):
         labels = {
         "nome": "Nome da App"
     }
+        
         
 #Formulário para registar as entidades
 class EntidadeForm(forms.ModelForm):
