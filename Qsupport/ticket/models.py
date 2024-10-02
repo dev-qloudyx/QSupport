@@ -145,7 +145,7 @@ class StatusLog(models.Model):
     dataHora = models.DateTimeField(default=timezone.now(), verbose_name='Data de Criação')
 
     def __str__(self):
-        return f"{self.estado} - Por {self.usuario}"
+        return f"{self.estado}"
 
 class Ticket(models.Model):
     nome = models.CharField(max_length=50, verbose_name='Titulo')

@@ -72,6 +72,12 @@ class UserAdmin(BaseUserAdmin):
 class EntidadeAdmin(admin.ModelAdmin):
     readonly_fields = ('id',)
 
+class PrioridadeAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+
+class EstadoAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+
 class AppsTpAdmin(admin.ModelAdmin):
     readonly_fields = ('id',)
     list_display = ('id','apps','tipoPedidos')
@@ -102,10 +108,10 @@ class TicketAdmin(admin.ModelAdmin):
 # no lugar dele
 admin.site.register(Usuarios, UserAdmin)
 admin.site.unregister(Group)
-admin.site.register(Estado)
+admin.site.register(Estado, EstadoAdmin)
 admin.site.register(Entidades,EntidadeAdmin)
 admin.site.register(Resolucao)
-admin.site.register(Prioridade)
+admin.site.register(Prioridade, PrioridadeAdmin)
 admin.site.register(TiposPedidos)
 admin.site.register(Apps)
 admin.site.register(Usuarios_Apps,UserAppsAdmin)

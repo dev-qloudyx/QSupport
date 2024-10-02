@@ -22,4 +22,40 @@ def register(request):
 #Acesso ao perfil apenas quando logado
 @login_required
 def profile(request):
-    return render (request, 'users/profile.html')
+    total = Ticket.objects.count()
+    
+    #Tickets Resolvidos
+    filtroresolvido = Ticket.objects.filter(estado="3")
+    resolvido = filtroresolvido.count()
+    percentresolvido = int(resolvido / total * 100)
+
+    #Tickets Criticos
+    filtrocritico = Ticket.objects.filter(prioridade="4")
+    critico = filtrocritico.count()
+    percentcritico = int(critico / total * 100)
+
+    #Ticket Prioridade Alta
+    filtroalto = Ticket.objects.filter(prioridade="3")
+    alto = filtroalto.count()
+    percentalto = int(alto / total * 100)
+
+    #Tickets Prioridade Media
+    filtromedio = Ticket.objects.filter(prioridade="2")
+    medio = filtromedio.count()
+    percentmedio = int(medio / total * 100)
+
+    #Tickets Prioridade Baixa
+    filtrobaixo = Ticket.objects.filter(prioridade="1")
+    baixo = filtrobaixo.count()
+    percentbaixo = int(baixo / total * 100)
+
+
+    return render (request, 'users/profile.html',context = 
+                   {
+                    'resolvido':percentresolvido,
+                    'critico':percentcritico,
+                    'alto':percentalto,
+                    'medio':percentmedio,
+                    'baixo':percentbaixo,
+                   }
+                   )
