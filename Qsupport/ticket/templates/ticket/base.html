@@ -18,6 +18,32 @@
         <title>Qsupport - Aplicação de Suporte</title>
     {% endif %}
 
+    <!-- CSS para dropdown de foto de perfil  -->
+    <style>
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
+        
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+        
+        .dropdown:hover .dropdown-content {
+          display: block;
+        }
+        
+        .desc {
+          padding: 15px;
+          text-align: center;
+        }
+        </style>
+
 </head>
 <body>
 
@@ -76,7 +102,6 @@
                             <a href="{% url 'listausuarios' %}">Utilizadores</a>
                             <a href="{% url 'listaentidades' %}">Entidades</a>
                             <a href="{% url 'listaaplicacoes' %}">Apps</a>
-                            <a href="{% url 'criar_appuser' %}">Associar Utilizador a Aplicação</a>
                         </li>
                         {% endif %}
                             
@@ -117,6 +142,20 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item active">
+                                <!-- Menú dropdown com foto de perfil  -->
+                                <div class="dropdown">
+                                    <img src= "{{ user.foto.url }} " alt="Menu" class="rounded-circle" width="150" />
+                                    <div class="dropdown-content">
+                                    <img src= "{{ user.foto.url }} " alt="Menu" class="rounded-circle" width="150" />
+                                    <h2>{{user.nome}}</h2>
+                                    <hr>
+                                    <a href="{% url 'profile' %}">Perfil</a>
+                                    <form method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <a><button class="astext" type="submit">Logout</button></a>
+                                    </form>
+                                    </div>
+                                </div>
                                 <a class="nav-link" href="#">Bem-Vindo {{user.nome}}</a>
                             </li>
                         </ul>
