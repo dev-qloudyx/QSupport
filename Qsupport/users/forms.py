@@ -12,12 +12,12 @@ class InputData(forms.DateInput):
     input_type = 'date'
 
 #Formulário para novos users
-class UserRegisterForm(UserCreationForm):
+class UserRegisterFormAdmin(forms.ModelForm):
     foto = forms.ImageField()
     date_of_birth = forms.DateField(widget=InputData,label="Data de Nascimento")
     class Meta:
         model = Usuarios
-        fields = ['nome','email','password1','password2','date_of_birth','descricao','role','entidade','foto','telefone']
+        fields = ['nome','email','date_of_birth','descricao','role','entidade','foto','telefone']
         exclude = ['']
         labels = {
         "nome": "Nome de Utilizador",
@@ -30,6 +30,21 @@ class UserRegisterForm(UserCreationForm):
         "telefone":"Telefone",
     }
 
+class UserRegisterForm(forms.ModelForm):
+
+    foto = forms.ImageField()
+    date_of_birth = forms.DateField(widget=InputData,label="Data de Nascimento")
+    class Meta:
+        model = Usuarios
+        fields = ['nome','email','date_of_birth','foto','telefone']
+        exclude = ['password1','password2']
+        labels = {
+        "nome": "Nome de Utilizador",
+        "email":"E-mail",
+        "date_of_birth": "Data de Nascimento",
+        "foto":"Foto",
+        "telefone":"Telefone",
+    }
         
 
 #Formulário para os tickets

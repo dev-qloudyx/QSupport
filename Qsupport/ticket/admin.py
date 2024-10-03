@@ -6,18 +6,23 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from .models import Usuarios,Estado,Entidades,Resolucao,Prioridade,TiposPedidos,Apps,Usuarios_Apps,Apps_tpPedidos,Ticket,StatusLog 
 
+#Classe redundante por agora, visto que a password não é criada por este form mas sim no proprio forms.py
+#Possivel reutilização no form unico de password
+"""
 class UserCreationForm(forms.ModelForm):
-    """A form for creating new users. Includes all the required
-    fields, plus a repeated password."""
+
+    #A form for creating new users. Includes all the required
+    #fields, plus a repeated password.
+
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
-        model = Usuarios
+       model = Usuarios
         fields = ('nome','email','date_of_birth','descricao','role','foto','telefone')
-
+        
     def clean_password2(self):
-        # Verifica se as 2 passwords coincidem
+        #Verifica se as 2 passwords coincidem
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
@@ -31,7 +36,7 @@ class UserCreationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-    
+"""   
 class UserChangeForm(forms.ModelForm):
     
     password = ReadOnlyPasswordHashField()
@@ -43,7 +48,7 @@ class UserChangeForm(forms.ModelForm):
 class UserAdmin(BaseUserAdmin):
         
         form = UserChangeForm
-        add_form = UserCreationForm
+        #add_form = UserCreationForm
             
         list_display = ('nome','id','email', 'date_of_birth', 'administrador','descricao','role','telefone','foto')
 

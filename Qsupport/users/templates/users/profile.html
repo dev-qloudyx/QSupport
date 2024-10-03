@@ -10,7 +10,6 @@
                         <h4 class="account-Heading">{{ user.nome }}</h4>
                         <p style="text-align: center" class="text-secondary mb-1">{{user.role}}</p>
                         <p style="text-align: center" class="text-muted font-size-sm">{{user.entidade}}</p>
-                        <button class="btn btn-outline-primary">Message</button>
                     </div>
                 </div>
             </div>
@@ -74,7 +73,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-sm-12">
-                            <a class="btn btn-info " target="__blank" href="">Edit</a>
+                            <a class="btn btn-info " target="" href="{% url 'editar_perfil' user.pk %}">Editar</a>
                         </div>
                     </div>
                 </div>
