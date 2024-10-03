@@ -1,0 +1,29 @@
+{% extends "ticket/base.html" %}
+{% block content %}
+<body>
+    <button type="button" class="btn btn-primary"><a href="{% url 'criar_app' %}">Registar Nova Aplicação</a></button>
+    <hr>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID#</th>
+                <th>Nome</th>
+                <th>Ativo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aplicacao in aplicacoes %}
+            <tr>
+                <td>{{ aplicacao.id }}</td>
+                <td>{{ aplicacao.nome }}</td>
+                <td>{{ aplicacao.ativo }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">Nenhuma aplicação registrada</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% endblock content %}

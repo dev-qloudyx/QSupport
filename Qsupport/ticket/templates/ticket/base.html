@@ -39,41 +39,7 @@
                     {% else %}
                         <a href="{% url 'login' %}">Login</a>
                     {% endif %}
-                        {% if user.is_authenticated %}
-                    <hr>
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Area do Cliente</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li>
-                            <a class= "nav-item nav-link"href="{% url 'profile' %}">Perfil</a>                        </li>
-                        
-                        <li>
-                        {% if user.is_admin or user.role == "Interno"%}
-                        <li>
-                            <a href="{% url 'register' %}">Registar outro Utilizador</a>
-                            <a href="{% url 'criar_entidades' %}">Registar Entidade</a>
-                            <a href="{% url 'criar_app' %}">Registar Apps</a>
-                            <a href="{% url 'criar_appuser' %}">Associar Utilizador a Aplicação</a>
-                        </li>
-                        {% endif %}
-                            
-                            <form method="post" action="{% url 'logout' %}">
-                                {% csrf_token %}
-                                <a><button class="astext" type="submit">Logout</button></a>
-                            </form>
-                        
-                        </li>
-
-
-                        
-                    </ul>
-                        {% endif %}
-                        
-                </li>
-                        
-                
-                <li>
                     {% if user.is_authenticated %}
-                    <hr>
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Gestão de Tickets</a>
                     
                     <ul class="collapse list-unstyled" id="pageSubmenu">
@@ -91,6 +57,39 @@
                         
                     </ul>
                     
+                    {% endif %}
+                        
+                </li>
+                        
+                
+                <li>
+                    {% if user.is_authenticated %}
+                    <hr>
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Configurações</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li>
+                            <a class= "nav-item nav-link"href="{% url 'profile' %}">Perfil</a>                        </li>
+                        
+                        <li>
+                        {% if user.is_admin or user.role == "Interno"%}
+                        <li>
+                            <a href="{% url 'listausuarios' %}">Utilizadores</a>
+                            <a href="{% url 'listaentidades' %}">Entidades</a>
+                            <a href="{% url 'listaaplicacoes' %}">Apps</a>
+                            <a href="{% url 'criar_appuser' %}">Associar Utilizador a Aplicação</a>
+                        </li>
+                        {% endif %}
+                            
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <a><button class="astext" type="submit">Logout</button></a>
+                            </form>
+                        
+                        </li>
+
+
+                        
+                    </ul>
                     {% endif %}
                     <a href="#">Contactos</a>
                     <hr>

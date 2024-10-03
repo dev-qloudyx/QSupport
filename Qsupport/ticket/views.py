@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
-from .models import Usuarios, Ticket,Estado, Usuarios_Apps
+from .models import Usuarios, Ticket,Estado, Usuarios_Apps,Entidades, Apps
 from users.forms import TicketForm,TicketFormAdmin, AppsForm, EntidadeForm, AppUserForm
 from django.shortcuts import get_object_or_404
-from django.views.generic import UpdateView, DetailView, DeleteView
+from django.views.generic import UpdateView, DetailView, DeleteView, ListView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -31,6 +31,24 @@ def ticket_list(request):
     tickuser = request.user
     tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
     return render(request, 'ticket/listaticket.html', {'tickets': tickets,'ticketall': ticketall})
+
+#ver lista de entidades
+def lista_entidades(request):
+    entidades = Entidades.objects.all()
+    entidade = Entidades.objects.all()
+    return render (request,'ticket/listaentidades.html', {'entidade': entidade, 'entidades': entidades})
+
+#ver lista de apps
+def lista_apps(request):
+    aplicacoes = Apps.objects.all()
+    aplicacao = Apps.objects.all()
+    return render (request,'ticket/listaaplicacoes.html', {'aplicacao': aplicacao, 'aplicacoes': aplicacoes})
+
+#ver lista de apps
+def lista_user(request):
+    usuarios = Usuarios.objects.all()
+    usuario =  Usuarios.objects.all()
+    return render (request,'ticket/listausuarios.html', {'usuario': usuario, 'usuarios': usuarios})
 
 #Registar um ticket
 def create_ticket(request):
@@ -118,6 +136,7 @@ def create_entidade(request):
     else:
         form = EntidadeForm()
     return render(request, 'ticket/criar_entidades.html', {'form': form})
+
 
 #Registar nova app
 def create_apps(request):

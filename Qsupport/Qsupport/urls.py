@@ -31,6 +31,9 @@ urlpatterns = [
     path('criar_entidades/', ticket_views.create_entidade, name ='criar_entidades'), #URL para criar novos entidades
     path('criar_app/', ticket_views.create_apps, name ='criar_app'), #URL para criar novos apps
     path('listaticket/', ticket_views.ticket_list, name ='listaticket'), #URL para a gestão de tickets
+    path('listaentidades/', ticket_views.lista_entidades, name ='listaentidades'),#lista de entididades
+    path('listaaplicacoes/', ticket_views.lista_apps, name ='listaaplicacoes'),#lista de aplicações
+    path('listausuarios/', ticket_views.lista_user, name ='listausuarios'),#lista de usuarios
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'), #URL para o logout
     path('profile/', users_views.profile, name='profile'), #URL para os perfís
     
