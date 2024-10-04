@@ -14,13 +14,16 @@ def index(request):
     total = Ticket.objects.count()
     filtro = Ticket.objects.filter(estado="1")
     filtroex = Ticket.objects.exclude(estado="1")
+    designados = Ticket.objects.exclude(usuarios__isnull=True)
     aberto = filtro.count()
     por_abrir = filtroex.count()
+    designado = designados.count()
     return render(request, 'ticket/home.html', context=
         {
             "total":total,
             "aberto":aberto,
             "por_abrir":por_abrir,
+            "designado": designado,
         })
 
 #Ver lista de tickets
