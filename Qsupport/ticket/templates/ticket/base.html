@@ -66,19 +66,19 @@
                         <a href="{% url 'login' %}">Login</a>
                     {% endif %}
                     {% if user.is_authenticated %}
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Gestão de Tickets</a>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Tickets</a>
                     
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         
                         
                             
                         <li>
-                            <a class= "nav-item nav-link"href="{% url 'novoticket' %}">Novo Ticket</a>
+                            <a class= "nav-item nav-link"href="{% url 'novoticket' %}">Novo</a>
                             
                         </li>
 
                         <li>
-                            <a class= "nav-item nav-link"href="{% url 'listaticket' %}"> Gestão de Tickets</a>
+                            <a class= "nav-item nav-link"href="{% url 'listaticket' %}">Gestão</a>
                         </li>
                         
                     </ul>
@@ -93,24 +93,14 @@
                     <hr>
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Configurações</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li>
-                            <a class= "nav-item nav-link"href="{% url 'profile' %}">Perfil</a>                        </li>
-                        
-                        <li>
                         {% if user.is_admin or user.role == "Interno"%}
                         <li>
                             <a href="{% url 'listausuarios' %}">Utilizadores</a>
                             <a href="{% url 'listaentidades' %}">Entidades</a>
-                            <a href="{% url 'listaaplicacoes' %}">Apps</a>
+                            <a href="{% url 'listaaplicacoes' %}">Apps & Serviços</a>
                         </li>
                         {% endif %}
-                            
-                            <form method="post" action="{% url 'logout' %}">
-                                {% csrf_token %}
-                                <a><button class="astext" type="submit">Logout</button></a>
-                            </form>
                         
-                        </li>
 
 
                         
