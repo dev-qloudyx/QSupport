@@ -1,13 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponse
 from .models import Usuarios, Ticket,Estado, Usuarios_Apps,Entidades, Apps
 from users.forms import TicketForm,TicketFormAdmin, AppsForm, EntidadeForm, AppUserForm
 from django.shortcuts import get_object_or_404
-from django.views.generic import UpdateView, DetailView, DeleteView, ListView
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse, reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 from django.db.models import Q
 
 def index(request):
@@ -44,7 +41,7 @@ def lista_apps(request):
     aplicacao = Apps.objects.all()
     return render (request,'ticket/listaaplicacoes.html', {'aplicacao': aplicacao, 'aplicacoes': aplicacoes})
 
-#ver lista de apps
+#ver lista de usuários
 def lista_user(request):
     usuarios = Usuarios.objects.all()
     usuario =  Usuarios.objects.all()

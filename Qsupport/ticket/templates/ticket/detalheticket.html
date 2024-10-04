@@ -4,6 +4,7 @@
         <h2 class="mt-2">Detalhes do Ticket: {{ ticket.titulo }}</h2>
     
         <p><strong>Status:</strong> <button style="background-color:{{ticket.estado.estado.font_color}}; border-color:{{ticket.estado.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado.estado }}</button>
+        <p><strong>Status desc:</strong> {{ ticket.estado.estado.descricao }}</p>
         <p><strong>Data de Criação:</strong> {{ ticket.dataCriacao|date:"d/m/Y H:i" }}</p>
         <p><strong>Descrição:</strong> {{ ticket.descricao }}</p>
         <p><strong>Criado por:</strong> {{ ticket.id_Proprietario.nome }}</p>
