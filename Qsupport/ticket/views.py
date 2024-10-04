@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.db.models import Q
+from django.core.mail import send_mail
 
 def index(request):
     corEstado = Estado.objects.filter(cor='Vermelha')
@@ -158,3 +159,18 @@ def create_appuser(request):
     else:
         form = AppUserForm()
     return render(request, 'ticket/criar_appuser.html', {'form': form})
+
+
+def email(request):
+    
+    send_mail(
+    "Teste E-mail Qloudyx",
+    "Teste Mensagem Qloudyx Mais mensagem.",
+    "from@example.com",
+    ["to@example.com"],
+    fail_silently=False,
+    )
+
+    return redirect('ticket-home')
+    return render(request,'ticket/email.html')
+

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterFormAdmin,UserRegisterForm, TicketForm
+from .forms import UserRegisterFormAdmin,UserRegisterForm, TicketForm, PasswordForm
 from ticket.models import Usuarios, Ticket
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -94,3 +94,28 @@ def editar_user(request, pk):
         else:
             form = UserRegisterForm(instance=utilizador)
         return render(request, 'users/profileedit.html', {'form': form, 'utilizador': utilizador})
+    
+@login_required
+def editar_pass(request, pk):
+    if request.user.nome == "Admin" or request.user.role == "Interno":
+        utilizador = get_object_or_404(Usuarios,pk=pk)
+        if request.method == 'POST':
+            form = PasswordForm(request.POST, instance=utilizador)
+            if form.is_valid():
+                form.save()
+                messages.success(request, f'Password editada com sucesso, por favor volte a entrar com a sua conta')
+                return redirect('login')
+        else:
+            form = PasswordForm(instance=utilizador)
+        return render(request, 'users/passwordedit.html', {'form': form, 'utilizador': utilizador})
+    else:
+        utilizador = get_object_or_404(Usuarios,pk=pk)
+        if request.method == 'POST':
+            form = PasswordForm(request.POST, instance=utilizador)
+            if form.is_valid():
+                form.save()
+                messages.success(request, f'Password editada com sucesso, por favor volte a entrar com a sua conta')
+                return redirect('login')
+        else:
+            form = PasswordForm(instance=utilizador)
+        return render(request, 'users/passwordedit.html', {'form': form, 'utilizador': utilizador})

@@ -5,6 +5,7 @@ from django.forms import ModelForm
 from ticket.models import Usuarios,Entidades,Ticket,Apps,Usuarios_Apps
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db.models import Q
+from django.core.exceptions import ValidationError
 
 
 
@@ -45,6 +46,35 @@ class UserRegisterForm(forms.ModelForm):
         "foto":"Foto",
         "telefone":"Telefone",
     }
+        
+class PasswordForm(forms.ModelForm):
+
+    #A form for creating new users. Includes all the required
+    #fields, plus a repeated password.
+
+        password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+        password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+
+        class Meta:
+            model = Usuarios
+            fields = ('password1','password2')
+            
+        def clean_password2(self):
+            #Verifica se as 2 passwords coincidem
+            password1 = self.cleaned_data.get("password1")
+            password2 = self.cleaned_data.get("password2")
+            if password1 and password2 and password1 != password2:
+                raise ValidationError("Passwords não coincidem")
+            return password2
+        
+        def save(self, commit=True):
+            # Codifica a password
+            user = super().save(commit=False)
+            user.set_password(self.cleaned_data["password1"])
+            if commit:
+                user.save()
+            return user  
+
         
 
 #Formulário para os tickets

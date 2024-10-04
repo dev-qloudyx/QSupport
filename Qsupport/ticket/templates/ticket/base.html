@@ -144,19 +144,27 @@
                             <li class="nav-item active">
                                 <!-- Menu dropdown com foto de perfil  -->
                                 <div class="dropdown">
+                                    {% if user.is_authenticated %}
                                     <img src= "{{ user.foto.url }} " alt="Menu" class="rounded-circle" width="150" />
-                                    <div class="dropdown-content">
-                                    <img src= "{{ user.foto.url }} " alt="Menu" class="rounded-circle" width="150" />
-                                    <h2>{{user.nome}}</h2>
+                                    <center>
+                                    <div style="right: -15%" class="dropdown-content">
+                                    <p><hr>
+                                    <h3>{{user.nome}}</h3>
                                     <hr>
                                     <a href="{% url 'profile' %}">Perfil</a>
+                                    <p><p>
                                     <form method="post" action="{% url 'logout' %}">
                                         {% csrf_token %}
-                                        <a><button class="astext" type="submit">Logout</button></a>
+                                        <a><button style="color:black; text-align:center" class="astext" type="submit">Logout</button></a>
                                     </form>
+                                    <p><p>
+                                    <hr>
                                     </div>
+                                    
+                                </center>
                                 </div>
                                 <a class="nav-link" href="#">Bem-Vindo {{user.nome}}</a>
+                                {% endif %}
                             </li>
                         </ul>
                     </div>
