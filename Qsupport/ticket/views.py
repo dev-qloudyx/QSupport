@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Usuarios, Ticket,Estado, Usuarios_Apps,Entidades, Apps
-from users.forms import TicketForm,TicketFormAdmin, AppsForm, EntidadeForm, AppUserForm
+from users.forms import TicketForm,TicketFormAdmin, AppsForm, EntidadeForm, AppUserForm, EntidadeAppForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -151,7 +151,7 @@ def create_apps(request):
         form = AppsForm()
     return render(request, 'ticket/criar_app.html', {'form': form})
 
-#Registar nova app
+#Associar users as apps
 def create_appuser(request):
     if request.method == 'POST':
         form = AppUserForm(request.POST)
@@ -177,3 +177,15 @@ def email(request):
     return redirect('ticket-home')
     return render(request,'ticket/email.html')
 
+
+#Associar entidades as apps
+def create_entidadeApp(request):
+    if request.method == 'POST':
+        form = EntidadeAppForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Entidade e app associadas com sucesso.')
+            return redirect('ticket-home')
+    else:
+        form = AppUserForm()
+    return render(request, 'ticket/associar_entid_app.html', {'form': form})

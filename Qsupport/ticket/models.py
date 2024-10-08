@@ -161,3 +161,11 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class Entidades_Apps(models.Model):
+    entidade = models.ForeignKey(Entidades, on_delete=models.CASCADE,verbose_name='Utilizador')
+    app = models.ForeignKey(Apps, on_delete=models.CASCADE,verbose_name='Aplicação')
+
+    def __str__(self):
+        return f"{self.app}"

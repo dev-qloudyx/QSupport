@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from ticket.models import Usuarios,Entidades,Ticket,Apps,Usuarios_Apps
+from ticket.models import Usuarios,Entidades,Ticket,Apps,Usuarios_Apps, Entidades_Apps
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db.models import Q
 from django.core.exceptions import ValidationError
@@ -107,7 +107,7 @@ class TicketFormAdmin(forms.ModelForm):
         "usuario_app" : "Aplicação",
     }
         
-#Formulário para registar apps para entidades
+#Formulário para associar apps aos users
 class AppUserForm(forms.ModelForm):
     class Meta:
         model = Usuarios_Apps
@@ -137,4 +137,12 @@ class EntidadeForm(forms.ModelForm):
         "externo": "A entidade é externa:"
     } 
 
-
+#Form para associar as entidades as apps
+class EntidadeAppForm(forms.ModelForm):
+    class Meta:
+        model = Entidades_Apps
+        fields = ['entidade','app']
+        labels = {
+        "entidade": "Entidade",
+        "app":"Aplicação",
+    }
