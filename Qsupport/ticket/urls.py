@@ -12,5 +12,5 @@ urlpatterns = [
     path('<int:pk>/editar/', views.editar_ticket, name='editar_ticket'),  # Editar ticket
     path('<int:pk>/apagar/', views.apagar_ticket, name='apagar_ticket'),  # Apagar ticket
     path('<int:pk>/detalhe', views.ticket_detalhe, name='detalheticket'),  # Ver detalhes do ticket
-    #path('email/', views.email, name='email'), #URL para enviar mail
+    path('email/', views.email, name='email'), #URL para enviar mail
 ]

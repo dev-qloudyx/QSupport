@@ -135,4 +135,11 @@ LOGIN_URL = 'ticket'
 LOGOUT_REDIRECT_URL = 'login'
 LOGOUT_URL = 'users'
 
+EMAIL_HOST='mail.qloudyx.pt'
+EMAIL_HOST_USER='atlas@qloudyx.pt'
+EMAIL_HOST_PASSWORD='AtlaS123*'
+DEFAULT_FROM_EMAIL='atlas@qloudyx.pt'
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+
 

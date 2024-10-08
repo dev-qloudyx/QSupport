@@ -6,7 +6,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.db.models import Q
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
+from django.conf import settings
 
 def index(request):
     corEstado = Estado.objects.filter(cor='Vermelha')
@@ -166,16 +167,11 @@ def create_appuser(request):
 
 def email(request):
     
-    send_mail(
-    "Teste E-mail Qloudyx",
-    "Teste Mensagem Qloudyx Mais mensagem.",
-    "from@example.com",
-    ["to@example.com"],
-    fail_silently=False,
-    )
-
+    email = EmailMessage('Subject', 'Body',settings.EMAIL_HOST_USER,['bruno-jose-ferreira@hotmail.com'])
+    email.send()
+    messages.success(request, f'E-mail a requisitar a palavra-passe enviado.')
     return redirect('ticket-home')
-    return render(request,'ticket/email.html')
+
 
 
 #Associar entidades as apps
