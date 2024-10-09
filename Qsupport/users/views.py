@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login
 
 
 #registar novos usuários
@@ -95,27 +96,47 @@ def editar_user(request, pk):
             form = UserRegisterForm(instance=utilizador)
         return render(request, 'users/profileedit.html', {'form': form, 'utilizador': utilizador})
     
-@login_required
+#@login_required
 def editar_pass(request, pk):
-    if request.user.nome == "Admin" or request.user.role == "Interno":
-        utilizador = get_object_or_404(Usuarios,pk=pk)
-        if request.method == 'POST':
-            form = PasswordForm(request.POST, instance=utilizador)
-            if form.is_valid():
-                form.save()
-                messages.success(request, f'Password editada com sucesso, por favor volte a entrar com a sua conta')
-                return redirect('login')
+    if request.user.is_authenticated:
+        if request.user.nome == "Admin" or request.user.role == "Interno":
+            utilizador = get_object_or_404(Usuarios,pk=pk)
+            if request.method == 'POST':
+                form = PasswordForm(request.POST, instance=utilizador)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, f'Password editada com sucesso, por favor volte a entrar com a sua conta')
+                    return redirect('login')
+            else:
+                form = PasswordForm(instance=utilizador)
+            return render(request, 'users/passwordedit.html', {'form': form, 'utilizador': utilizador})
         else:
-            form = PasswordForm(instance=utilizador)
-        return render(request, 'users/passwordedit.html', {'form': form, 'utilizador': utilizador})
+            utilizador = get_object_or_404(Usuarios,pk=pk)
+            if request.method == 'POST':
+                form = PasswordForm(request.POST, instance=utilizador)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, f'Password editada com sucesso, por favor volte a entrar com a sua conta')
+                    return redirect('login')
+            else:
+                form = PasswordForm(instance=utilizador)
+            return render(request, 'users/passwordedit.html', {'form': form, 'utilizador': utilizador})
     else:
         utilizador = get_object_or_404(Usuarios,pk=pk)
+        user = "Registo"
+        password = "AdminAdmin"
+        new_user = authenticate(username=user,
+                                password=password,
+                                )
+        login(request, new_user) 
         if request.method == 'POST':
-            form = PasswordForm(request.POST, instance=utilizador)
-            if form.is_valid():
-                form.save()
-                messages.success(request, f'Password editada com sucesso, por favor volte a entrar com a sua conta')
-                return redirect('login')
+                form = PasswordForm(request.POST, instance=utilizador)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, f'Password editada com sucesso, por favor volte a entrar com a sua conta')
+                    return redirect('logout')
         else:
-            form = PasswordForm(instance=utilizador)
+                form = PasswordForm(instance=utilizador)
         return render(request, 'users/passwordedit.html', {'form': form, 'utilizador': utilizador})
+    
+        

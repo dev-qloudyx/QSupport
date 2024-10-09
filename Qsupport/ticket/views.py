@@ -6,8 +6,10 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.db.models import Q
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
 from django.conf import settings
+from django.template.loader import render_to_string
+
 
 def index(request):
     corEstado = Estado.objects.filter(cor='Vermelha')
@@ -167,7 +169,15 @@ def create_appuser(request):
 
 def email(request):
     
-    email = EmailMessage('Subject', 'Body',settings.EMAIL_HOST_USER,['bruno-jose-ferreira@hotmail.com'])
+    login = Usuarios.objects.last()
+
+    html_content = render_to_string(
+    "users/requisitarpass.html",
+    context={"id": login},
+    )
+
+    email = EmailMultiAlternatives('Definição de palavra-passe',"teste",settings.EMAIL_HOST_USER,['bruno-jose-ferreira@hotmail.com'])
+    email.attach_alternative(html_content, "text/html")
     email.send()
     messages.success(request, f'E-mail a requisitar a palavra-passe enviado.')
     return redirect('ticket-home')

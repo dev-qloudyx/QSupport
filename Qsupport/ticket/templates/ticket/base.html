@@ -46,6 +46,67 @@
 
 </head>
 <body>
+    {% if user.nome == "Registo" %}
+
+    <div class="wrapper">
+
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <a href = "{% url 'ticket-home' %}"> <img src="{% static 'ticket/Qloudyx.png' %}" style="width:200px;height:100%;"></a>
+                <a class="close" onclick="CloseMenu()">&nbsp×&nbsp</a>
+                <hr>
+                
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <a><button style="color:white; text-align:center" class="astext" type="submit">Logout</button></a>
+                </form>
+                <hr>
+
+            </div>
+
+                   
+            </ul>
+        </nav>
+
+        
+
+            <main role="main" class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} ">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            </main>
+        
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <!-- Menu dropdown com foto de perfil  -->
+                        <div class="dropdown">
+                            {% if user.is_authenticated %}
+                            <img src= "{{ user.foto.url }} " alt="Menu" class="rounded-circle" width="150" />
+                            <center>
+                            </center>
+                        </div>
+                        {% endif %}
+                    </li>
+                </ul>
+                </div>
+
+
+        </div>
+
+        {% block restricted %}{% endblock %}
+
+    {% else %}  
 
     <div class="wrapper">
 
@@ -179,7 +240,7 @@
 
             {% block content %}{% endblock %}
 
-            
+            {% endif %} 
 
     <script src= {% static 'ticket/main.js' %} ></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
