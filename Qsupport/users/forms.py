@@ -15,6 +15,11 @@ class InputData(forms.DateInput):
 #Formulário para novos users
 class UserRegisterFormAdmin(forms.ModelForm):
     foto = forms.ImageField()
+    entidade = forms.ModelMultipleChoiceField(
+        queryset=Entidades.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
     date_of_birth = forms.DateField(widget=InputData,label="Data de Nascimento")
     class Meta:
         model = Usuarios

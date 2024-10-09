@@ -66,7 +66,7 @@ class Usuarios(AbstractBaseUser):
     }
 
     role = models.CharField(max_length=50,choices= EscolhasRole ,verbose_name='Cargo')
-    entidade = models.ForeignKey(Entidades, on_delete=models.CASCADE, verbose_name='Entidade')
+    entidade = models.ManyToManyField(Entidades, verbose_name='Entidades')
     telefone = PhoneNumberField(null=True, blank=False, unique=True, verbose_name='Telefone')
     date_of_birth = models.DateField(verbose_name='Data de Nascimento')
 
