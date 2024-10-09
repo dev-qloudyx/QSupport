@@ -23,11 +23,7 @@
             <tr>
                 <td>{{ usuario.id }}</td>
                 <td>{{ usuario.nome }}</td>
-                <td>
-                    {% for entidade in usuario.entidade.all %}
-                        {{ usuario.entidade }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </td>
+                <td>{{ usuario.nomes_entidade }}</td>
                 <td>{{ usuario.email }}</td>
                 <td>{{ usuario.telefone }}</td>
                 <td>{{ usuario.role }}</td>

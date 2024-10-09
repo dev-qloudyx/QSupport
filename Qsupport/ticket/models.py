@@ -93,6 +93,10 @@ class Usuarios(AbstractBaseUser):
         "Membro da empresa?"
         return self.is_admin
 
+    def nomes_entidade(self):
+            return ', '.join([a.nome for a in self.entidade.all()])
+    nomes_entidade.short_description = "Entidades"
+
 class Resolucao(models.Model):
     nome = models.CharField(max_length=150)
 
