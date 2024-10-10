@@ -13,7 +13,7 @@ class UserFilter(django_filters.FilterSet):
 #Filtro para a lista de Ticket
 class TicketFilter(django_filters.FilterSet):
     id = django_filters.NumberFilter()
-    estado = django_filters.ChoiceFilter(choices=[('Aberto', 'Aberto'), ('Fechado', 'Fechado')])
+    estado = django_filters.ChoiceFilter(choices=[('2', 'Aberto'), ('6', 'Fechado')])
 
     class Meta:
         model = Ticket
