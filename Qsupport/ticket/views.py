@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
+from .filtros import UserFilter, TicketFilter, EntidadesFilter, AppsFilter
 
 
 def index(request):
@@ -34,25 +35,26 @@ def ticket_list(request):
     ticketall = Ticket.objects.all()
     tickuser = request.user
     tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
-    return render(request, 'ticket/listaticket.html', {'tickets': tickets,'ticketall': ticketall})
+    ticketfilter = TicketFilter(request.GET, ticketall)
+    return render(request, 'ticket/listaticket.html', {'tickets': tickets,'ticketall': ticketfilter.qs, 'filter':ticketfilter})
 
 #ver lista de entidades
 def lista_entidades(request):
-    entidades = Entidades.objects.all()
     entidade = Entidades.objects.all()
-    return render (request,'ticket/listaentidades.html', {'entidade': entidade, 'entidades': entidades})
+    entfiltro = EntidadesFilter(request.GET, entidade)
+    return render (request,'ticket/listaentidades.html', {'entidade': entfiltro.qs, 'filter':entfiltro})
 
 #ver lista de apps
 def lista_apps(request):
-    aplicacoes = Apps.objects.all()
     aplicacao = Apps.objects.all()
-    return render (request,'ticket/listaaplicacoes.html', {'aplicacao': aplicacao, 'aplicacoes': aplicacoes})
+    appfiltro = AppsFilter(request.GET, aplicacao)
+    return render (request,'ticket/listaaplicacoes.html', {'aplicacao': appfiltro.qs, 'filter':appfiltro})
 
 #ver lista de usuários
 def lista_user(request):
-    usuarios = Usuarios.objects.all()
     usuario =  Usuarios.objects.all()
-    return render (request,'ticket/listausuarios.html', {'usuario': usuario, 'usuarios': usuarios})
+    userfiltro = UserFilter(request.GET, usuario)
+    return render (request,'ticket/listausuarios.html', {'usuario': userfiltro.qs, 'filter':userfiltro})
 
 #Registar um ticket
 def create_ticket(request):

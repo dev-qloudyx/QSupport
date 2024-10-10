@@ -1,6 +1,13 @@
 {% extends "ticket/base.html" %}
 {% block content %}
 <body>
+    <div class="card-header">
+        <form method="get">
+            {{ filter.form.as_p }}
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </form>
+    </div>
+    <hr>
     <button type="button" class="btn btn-primary"><a href="{% url 'register' %}">Registar Novo utilizador</a></button>
     <button type="button" class="btn btn-primary"><a href="{% url 'criar_appuser' %}">Associar App a utilizador</a></button>
     <hr>
@@ -19,7 +26,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for usuario in usuarios %}
+            {% for usuario in usuario %}
             <tr>
                 <td>{{ usuario.id }}</td>
                 <td>{{ usuario.nome }}</td>

@@ -1,6 +1,13 @@
 {% extends "ticket/base.html" %}
 {% block content %}
 <body>
+    <div class="card-header">
+        <form method="get">
+            {{ filter.form.as_p }}
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </form>
+    </div>
+    <hr>
     <button type="button" class="btn btn-primary"><a href="{% url 'criar_entidades' %}">Registar Nova entidade</a></button>
     <button type="button" class="btn btn-primary"><a href="{% url 'associar_entid_app' %}">Associar Entidade a uma App</a></button>
     <hr>
@@ -13,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for entidade in entidades %}
+            {% for entidade in entidade %}
             <tr>
                 <td>{{ entidade.id }}</td>
                 <td>{{ entidade.nome }}</td>
