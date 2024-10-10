@@ -9,7 +9,7 @@
                         <div class="mt-3">
                         <h4 class="account-Heading">{{ user.nome }}</h4>
                         <p style="text-align: center" class="text-secondary mb-1">{{user.role}}</p>
-                        <p style="text-align: center" class="text-muted font-size-sm">{{user.entidade}}</p>
+                        <p style="text-align: center" class="text-muted font-size-sm">{{user.nomes_entidade}}</p>
                     </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                             <h6 class="mb-0">Entidade</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            {{ user.entidade }}
+                            {{ user.nomes_entidade }}
                         </div>
                     </div>
                     <hr>
@@ -73,8 +73,8 @@
                     <hr>
                     <div class="row">
                         <div class="col-sm-12">
-                            <a class="btn btn-info " target="" href="{% url 'editar_perfil' user.pk %}">Editar</a>
-                            <a class="btn btn-info " target="" href="{% url 'editar_pass' user.pk %}">Redefinir Palavra-passe</a>
+                            <a class="btn btn-info " target="" href="{% url 'editar_perfil' user.uuid %}">Editar</a>
+                            <a class="btn btn-info " target="" href="{% url 'email' %}">Redefinir Palavra-passe</a>
                         </div>
                     </div>
                 </div>

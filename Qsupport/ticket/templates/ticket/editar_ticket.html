@@ -1,7 +1,7 @@
 {% extends "ticket/base.html" %}
 {% block content %}
     <body>
-        <h2 class="mt-2">Editar Ticket: {{ object.pk }} {{ object.titulo }}</h2>
+        <h2 class="mt-2">Editar Ticket: {{ object.uuid }} {{ object.titulo }}</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}

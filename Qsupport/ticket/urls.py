@@ -9,8 +9,8 @@ urlpatterns = [
     path('criar_app/', views.create_apps, name='criar_app'), #URL para criar novos apps
     path('criar_appuser/', views.create_appuser, name='criar_appuser'), #URL para associar utilizadores as suas apps
     path('associar_entid_app/', views.create_entidadeApp, name='associar_entid_app'), #URL para associar entidades as apps
-    path('<int:pk>/editar/', views.editar_ticket, name='editar_ticket'),  # Editar ticket
-    path('<int:pk>/apagar/', views.apagar_ticket, name='apagar_ticket'),  # Apagar ticket
-    path('<int:pk>/detalhe', views.ticket_detalhe, name='detalheticket'),  # Ver detalhes do ticket
+    path('<uuid:uuid>/editar/', views.editar_ticket, name='editar_ticket'),  # Editar ticket
+    path('<uuid:uuid>/apagar/', views.apagar_ticket, name='apagar_ticket'),  # Apagar ticket
+    path('<uuid:uuid>/detalhe', views.ticket_detalhe, name='detalheticket'),  # Ver detalhes do ticket
     path('email/', views.email, name='email'), #URL para enviar mail
 ]

@@ -3,6 +3,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.utils import timezone
+import uuid 
 
 
 #Estado de cada ticket
@@ -54,6 +55,8 @@ class MyUserManager(BaseUserManager):
 
 #Os resposáveis na hora de contacto sobre as entidades    
 class Usuarios(AbstractBaseUser):
+
+    uuid = models.UUIDField(default = uuid.uuid4)
     nome = models.CharField(max_length=100, unique=True,verbose_name='Utilizador')
     email = models.EmailField(verbose_name='E-mail')
     foto = models.ImageField(null=True, blank=True, upload_to='users/uploads/fotos',verbose_name='Foto')
@@ -152,6 +155,8 @@ class StatusLog(models.Model):
         return f"{self.estado}"
 
 class Ticket(models.Model):
+    
+    uuid = models.UUIDField(default = uuid.uuid4)
     nome = models.CharField(max_length=50, verbose_name='Titulo')
     dataCriacao = models.DateTimeField(default=timezone.now(), verbose_name='Data de Criação')
     descricao = models.CharField(max_length=300, verbose_name='Descrição')

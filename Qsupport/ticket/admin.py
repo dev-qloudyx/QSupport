@@ -18,13 +18,13 @@ class UserAdmin(BaseUserAdmin):
         form = UserChangeForm
         #add_form = UserCreationForm
 
-        list_display = ('nome','id','nomes_entidade','email', 'date_of_birth', 'administrador','descricao','role','telefone','foto')
+        list_display = ('nome','uuid','id','nomes_entidade','email', 'date_of_birth', 'administrador','descricao','role','telefone','foto')
 
         list_filter = ('is_admin', 'nome')
         fieldsets = (
             (None, {'fields': ('nome','email','password')}),
             ('Informação Pessoal', {'fields': ('date_of_birth','descricao','role','entidade','telefone','foto')}),
-            ('Permissões', {'fields': ('is_admin','is_active')}),
+            ('Permissões',{'fields': ('is_admin','is_active','uuid')}),
         )
 
         def administrador(self, obj):
@@ -46,7 +46,6 @@ class EntidadeAdmin(admin.ModelAdmin):
     readonly_fields = ('id',)
 
 class PrioridadeAdmin(admin.ModelAdmin):
-
     readonly_fields = ('id',)
 
 class EstadoAdmin(admin.ModelAdmin):
@@ -72,7 +71,7 @@ class TicketAdmin(admin.ModelAdmin):
         return get_data
     
     readonly_fields = ('id',)
-    list_display = ('id','nome','usuarios','estado','dataCriacao','id_Proprietario')
+    list_display = ('id','uuid','nome','usuarios','estado','dataCriacao','id_Proprietario')
     ordering = ('id','usuarios')
     search_fields = ('id','usuarios','nome','id_Proprietario')
     list_filter = ('nome','usuarios','id_Proprietario')

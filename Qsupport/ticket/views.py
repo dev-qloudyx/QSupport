@@ -78,19 +78,19 @@ def create_ticket(request):
 
 #Ver detalhes do ticket
 @login_required
-def ticket_detalhe(request, pk):
+def ticket_detalhe(request, uuid):
     if request.user.nome == "Admin" or request.user.role == "Interno":
-        ticket = get_object_or_404(Ticket, pk=pk)
+        ticket = get_object_or_404(Ticket, uuid=uuid)
         return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
     else:
-        ticket = get_object_or_404(Ticket, pk=pk)
+        ticket = get_object_or_404(Ticket, uuid=uuid)
         return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
 
 #Editar Ticket
 @login_required
-def editar_ticket(request, pk):
+def editar_ticket(request, uuid):
     if request.user.nome == "Admin" or request.user.role == "Interno":
-        ticket = get_object_or_404(Ticket,pk=pk)
+        ticket = get_object_or_404(Ticket,uuid=uuid)
         if request.method == 'POST':
             form = TicketFormAdmin(request.POST, instance=ticket)
             if form.is_valid():
@@ -101,7 +101,7 @@ def editar_ticket(request, pk):
             form = TicketFormAdmin(instance=ticket)
         return render(request, 'ticket/editar_ticket.html', {'form': form, 'ticket': ticket})
     else:
-        ticket = get_object_or_404(Ticket,pk=pk,usuarios=request.user)
+        ticket = get_object_or_404(Ticket,uuid=uuid,usuarios=request.user)
         if request.method == 'POST':
             form = TicketForm(request.POST, instance=ticket)
             if form.is_valid():
@@ -115,16 +115,16 @@ def editar_ticket(request, pk):
 
 #Apagar Ticket
 @login_required
-def apagar_ticket(request, pk):
+def apagar_ticket(request, uuid):
     if request.user.nome == "Admin" or request.user.role == "Interno":
-        ticket = get_object_or_404(Ticket, pk=pk)
+        ticket = get_object_or_404(Ticket, uuid=uuid)
         #if request.method == 'POST':
         ticket.delete()
         messages.success(request, f'Ticket apagado com sucesso.')
         return redirect('listaticket')
         return render(request, 'ticket/apagar_ticket.html', {'ticket': ticket})
     else:
-        ticket = get_object_or_404(Ticket, pk=pk ,usuarios=request.user)
+        ticket = get_object_or_404(Ticket, uuid=uuid ,usuarios=request.user)
         #if request.method == 'POST':
         ticket.delete()
         messages.success(request, f'Ticket apagado com sucesso.')
@@ -171,7 +171,8 @@ def create_appuser(request):
 
 def email(request):
     
-    login = Usuarios.objects.last()
+    login = request.user
+    email = request.user.email
 
     html_content = render_to_string(
     "users/requisitarpass.html",

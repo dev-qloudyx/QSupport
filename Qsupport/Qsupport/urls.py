@@ -36,8 +36,8 @@ urlpatterns = [
     path('listausuarios/', ticket_views.lista_user, name ='listausuarios'),#lista de usuarios
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'), #URL para o logout
     path('profile/', users_views.profile, name='profile'), #URL para os perfís
-    path('<int:pk>/profileedit/',users_views.editar_user, name='editar_perfil'), #URL para editar os perfis
-    path('<int:pk>/passwordedit/',users_views.editar_pass, name='editar_pass'), #URL para editar a password do Utilizador
+    path('<uuid:uuid>/profileedit/',users_views.editar_user, name='editar_perfil'), #URL para editar os perfis
+    path('<uuid:uuid>/passwordedit/',users_views.editar_pass, name='editar_pass'), #URL para editar a password do Utilizador
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
