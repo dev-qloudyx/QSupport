@@ -62,7 +62,6 @@ def create_ticket(request):
     if request.method == 'POST':
         
         form = TicketForm(data=request.POST,current_user=request.user)
-
         if form.is_valid():
             
             ticket = form.save(commit=False)
@@ -172,14 +171,14 @@ def create_appuser(request):
 def email(request):
     
     login = request.user
-    email = request.user.email
+    emailto = request.user.email
 
     html_content = render_to_string(
     "users/requisitarpass.html",
     context={"id": login},
     )
 
-    email = EmailMultiAlternatives('Definição de palavra-passe',"teste",settings.EMAIL_HOST_USER,['bruno-jose-ferreira@hotmail.com'])
+    email = EmailMultiAlternatives('Definição de palavra-passe',"teste",settings.EMAIL_HOST_USER,[emailto])
     email.attach_alternative(html_content, "text/html")
     email.send()
     messages.success(request, f'E-mail a requisitar a palavra-passe enviado.')

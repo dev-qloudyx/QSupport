@@ -25,15 +25,16 @@ def register(request):
             user = user.save()
             #form.save()
                 
-            login = Usuarios.objects.last()
-            email = login.objects.email()
+            login = form.cleaned_data.get('email')
+            uuid = Usuarios.objects.latest('id')#form.cleaned_data.get('uurl')
+            print (uuid)
 
             html_content = render_to_string(
             "users/requisitarpass.html",
-            context={"id": login},
+            context={"id": uuid},
             )
 
-            email = EmailMultiAlternatives('Definição de palavra-passe',"teste",settings.EMAIL_HOST_USER,[email])
+            email = EmailMultiAlternatives('Definição de palavra-passe',"teste",settings.EMAIL_HOST_USER,[login])
             email.attach_alternative(html_content, "text/html")
             email.send()
             messages.success(request, f'Registo completo, O novo utilizador vai agora receber um e-mail para definir a sua palavra-passe.')
