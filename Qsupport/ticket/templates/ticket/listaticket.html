@@ -6,13 +6,13 @@
     </style>
 
     <h2 style="margin-bottom:25px">Lista de Tickets</h2>
-
+    <!-- Condição para apresentar a lista caso o utilizador seja um operador -->
     {% if user.is_authenticated %}
     
     {% if user.is_admin or user.role == "Interno"%}
     
     {% if ticketall %}
-
+    <!-- Formulário para pesquisa com filtro -->
     <div class="card-header">
       <form method="get">
           {{ filter.form.as_p }}
@@ -22,7 +22,10 @@
     <hr>
     <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Criar Novo Ticket</a></button>
     <hr>
-    
+    <!-- Número de itens que aparecem na tabela -->
+    <h3>Resultados: {{ total }} ticket(s) encontrado(s)</h3>
+    <hr>
+    <!-- Tabela que apresenta a lista de itens -->
     <table class="table table-striped table-dark table-sm">
         <thead>
           <tr>
@@ -80,11 +83,11 @@
           {% endfor %}
         </tbody>
     </table>
-        
+    <!-- Condição para apresentar a lista caso não haja nenhum item -->
     {% else %}
         <p>Nenhum ticket encontrado.</p>
     {% endif %}
-
+    <!-- Condição para apresentar a lista caso o utilizador seja um cliente -->
     {% else %}
 
     {% if tickets %}

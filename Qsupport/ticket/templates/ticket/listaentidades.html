@@ -1,7 +1,8 @@
 {% extends "ticket/base.html" %}
 {% block content %}
 <body>
-    <div class="card-header">
+    <!-- Formulário para pesquisa com filtro -->
+    <div class="card-header" id="formDiv">
         <form method="get">
             {{ filter.form.as_p }}
             <button type="submit" class="btn btn-primary">Filtrar</button>
@@ -11,6 +12,10 @@
     <button type="button" class="btn btn-primary"><a href="{% url 'criar_entidades' %}">Registar Nova entidade</a></button>
     <button type="button" class="btn btn-primary"><a href="{% url 'associar_entid_app' %}">Associar Entidade a uma App</a></button>
     <hr>
+    <!-- Número de itens que aparecem na tabela -->
+    <h3>Resultados: {{ total }} entidades(s) encontrada(s)</h3>
+    <hr>
+    <!-- Tabela que apresenta a lista de itens -->
     <table class="table table-bordered table-striped">
         <thead>
             <tr>

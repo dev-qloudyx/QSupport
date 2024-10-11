@@ -1,6 +1,7 @@
 {% extends "ticket/base.html" %}
 {% block content %}
 <body>
+    <!-- Formulário para pesquisa com filtro -->
     <div class="card-header">
         <form method="get">
             {{ filter.form.as_p }}
@@ -10,6 +11,9 @@
     <hr>
     <button type="button" class="btn btn-primary"><a href="{% url 'criar_app' %}">Registar Nova Aplicação</a></button>
     <button type="button" class="btn btn-primary"><a href="{% url 'associar_entid_app' %}">Associar Entidade a uma App</a></button>
+    <hr>
+    <!-- Apresentação do número de itens que a lista apresentada possui -->
+    <h3>Resultados: {{ total }} aplicação(ões) encontrada(s)</h3>
     <hr>
     <table class="table table-bordered table-striped">
         <thead>

@@ -36,25 +36,29 @@ def ticket_list(request):
     tickuser = request.user
     tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
     ticketfilter = TicketFilter(request.GET, ticketall)
-    return render(request, 'ticket/listaticket.html', {'tickets': tickets,'ticketall': ticketfilter.qs, 'filter':ticketfilter})
+    total_resultados = ticketfilter.qs.count()
+    return render(request, 'ticket/listaticket.html', {'tickets': tickets,'ticketall': ticketfilter.qs, 'filter':ticketfilter, 'total':total_resultados})
 
 #ver lista de entidades
 def lista_entidades(request):
     entidade = Entidades.objects.all()
     entfiltro = EntidadesFilter(request.GET, entidade)
-    return render (request,'ticket/listaentidades.html', {'entidade': entfiltro.qs, 'filter':entfiltro})
+    total_resultados = entfiltro.qs.count()
+    return render (request,'ticket/listaentidades.html', {'entidade': entfiltro.qs, 'total':total_resultados, 'filter':entfiltro})
 
 #ver lista de apps
 def lista_apps(request):
     aplicacao = Apps.objects.all()
     appfiltro = AppsFilter(request.GET, aplicacao)
-    return render (request,'ticket/listaaplicacoes.html', {'aplicacao': appfiltro.qs, 'filter':appfiltro})
+    total_resultados = appfiltro.qs.count()
+    return render (request,'ticket/listaaplicacoes.html', {'total':total_resultados, 'aplicacao': appfiltro.qs, 'filter':appfiltro})
 
 #ver lista de usuários
 def lista_user(request):
     usuario =  Usuarios.objects.all()
     userfiltro = UserFilter(request.GET, usuario)
-    return render (request,'ticket/listausuarios.html', {'usuario': userfiltro.qs, 'filter':userfiltro})
+    total_resultados = userfiltro.qs.count()
+    return render (request,'ticket/listausuarios.html', {'total':total_resultados,'usuario': userfiltro.qs, 'filter':userfiltro})
 
 #Registar um ticket
 def create_ticket(request):
