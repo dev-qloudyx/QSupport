@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from ticket.models import Usuarios,Entidades,Ticket,Apps,Usuarios_Apps, Entidades_Apps
 from phonenumber_field.modelfields import PhoneNumberField
-from django.db.models import Q
+from django.db.models import Q,F
 from django.core.exceptions import ValidationError
 
 
@@ -114,6 +114,17 @@ class TicketFormAdmin(forms.ModelForm):
         
 #Formulário para associar apps aos users
 class AppUserForm(forms.ModelForm):
+    
+#Criação do filtro de Utilizadores baseados nas Entidades e suas aplicações
+   # def __init__(self,current_user,*args, **kwargs):
+        #super(AppUserForm, self).__init__(*args, **kwargs)
+
+        #entidades = Entidades_Apps.objects.filter(entidade__nome__in=[current_user.entidade.first()])
+        #utilizador = Usuarios.objects.filter(nome = F('nome'))
+        #entidades = Entidades_Apps.objects.filter(entidade__nome= utilizador.entidade)
+
+        #self.fields['app'].queryset = entidades
+
     class Meta:
         model = Usuarios_Apps
         fields = ['usuario','app']
@@ -144,6 +155,9 @@ class EntidadeForm(forms.ModelForm):
 
 #Form para associar as entidades as apps
 class EntidadeAppForm(forms.ModelForm):
+
+    def __init__(self,current_user,*args, **kwargs):
+        super(Entidades_Apps, self).__init__(*args, **kwargs)
     class Meta:
         model = Entidades_Apps
         fields = ['entidade','app']

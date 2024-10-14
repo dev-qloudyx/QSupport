@@ -199,5 +199,5 @@ def create_entidadeApp(request):
             messages.success(request, f'Entidade e app associadas com sucesso.')
             return redirect('ticket-home')
     else:
-        form = AppUserForm()
+        form = EntidadeAppForm(current_user=request.user)
     return render(request, 'ticket/associar_entid_app.html', {'form': form})
