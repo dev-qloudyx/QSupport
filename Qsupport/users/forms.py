@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from ticket.models import Usuarios,Entidades,Ticket,Apps,Usuarios_Apps, Entidades_Apps
+from ticket.models import Usuarios,Entidades,Ticket,Apps,Usuarios_Apps, Entidades_Apps, Comentario
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db.models import Q,F
 from django.core.exceptions import ValidationError
@@ -165,3 +165,12 @@ class EntidadeAppForm(forms.ModelForm):
         "entidade": "Entidade",
         "app":"Aplicação",
     }
+        
+#Formulário para os comentários feitos pelos operadores
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['conteudo']
+        widgets = {
+            'conteudo': forms.Textarea(attrs={'rows': 4}),
+        }

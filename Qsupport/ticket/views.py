@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Usuarios, Ticket,Estado, Usuarios_Apps,Entidades, Apps
-from users.forms import TicketForm,TicketFormAdmin, AppsForm, EntidadeForm, AppUserForm, EntidadeAppForm
+from .models import Usuarios, Ticket,Estado, Usuarios_Apps,Entidades, Apps, Comentario
+from users.forms import TicketForm,TicketFormAdmin, AppsForm, EntidadeForm, AppUserForm, EntidadeAppForm, ComentarioForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -84,7 +84,25 @@ def create_ticket(request):
 def ticket_detalhe(request, uuid):
     if request.user.nome == "Admin" or request.user.role == "Interno":
         ticket = get_object_or_404(Ticket, uuid=uuid)
-        return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
+        comentarios = ticket.comentarios.all()
+        #view para adicionar novo comentário
+        if request.method == 'POST':
+            form = ComentarioForm(request.POST)
+            
+            if form.is_valid():
+                comentario = form.save(commit=False)
+                comentario.ticket = ticket
+                comentario.operador = request.user
+                comentario.save()
+                return redirect('detalheticket', uuid=ticket.uuid)
+        else:
+            form = ComentarioForm()
+        
+        return render(request, 'ticket/detalheticket.html', {
+            'ticket': ticket,
+            'comentarios': comentarios,
+            'form': form,
+        })
     else:
         ticket = get_object_or_404(Ticket, uuid=uuid)
         return render(request, 'ticket/detalheticket.html', {'ticket': ticket})

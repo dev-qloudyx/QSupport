@@ -53,7 +53,7 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-#Os resposáveis na hora de contacto sobre as entidades    
+#Os resposáveis na hora de contacto sobre as entidades ou podem ser operadores dependendo do "role"    
 class Usuarios(AbstractBaseUser):
 
     uuid = models.UUIDField(default = uuid.uuid4)
@@ -178,3 +178,13 @@ class Entidades_Apps(models.Model):
 
     def __str__(self):
         return f"{self.app}"
+
+#Comentários para actualizar os avanços ou dificuldades de cada ticket
+class Comentario(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='comentarios')
+    operador = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True, blank=True)
+    conteudo = models.TextField()
+    data_criacao = models.DateTimeField(default=timezone.now())
+
+    def __str__(self):
+        return f'Comentário de {self.operador.nome} em {self.data_criacao}'
