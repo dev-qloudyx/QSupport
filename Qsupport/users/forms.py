@@ -124,14 +124,31 @@ class TicketFormAdmin(forms.ModelForm):
 class AppUserForm(forms.ModelForm):
     
 #Criação do filtro de Utilizadores baseados nas Entidades e suas aplicações
-   # def __init__(self,current_user,*args, **kwargs):
-        #super(AppUserForm, self).__init__(*args, **kwargs)
+    def __init__(self,current_user,nome,*args, **kwargs):
+        super(AppUserForm, self).__init__(*args, **kwargs)
 
-        #entidades = Entidades_Apps.objects.filter(entidade__nome__in=[current_user.entidade.first()])
-        #utilizador = Usuarios.objects.filter(nome = F('nome'))
+        #entidades = Entidades.objects.filter(~Q(nome__in = teste))
+        #utilizador = Usuarios_Apps.objects.filter(~Q(app__entidade__in = teste))
         #entidades = Entidades_Apps.objects.filter(entidade__nome= utilizador.entidade)
 
-        #self.fields['app'].queryset = entidades
+        #self.fields['app'].queryset = self.fields['app'].queryset.filter(~Q(entidade__nome__in = teste))
+        #print(teste)
+        #print(entidades)
+        #print(utilizador)
+
+        user_atual = current_user.entidade.all().values("nome")
+
+        filter_query = Q()
+        # Vai buscar a lista de entidades do utilizador atual
+        filter_list = user_atual # ex:['Qloudyx','Atlas']
+        # E adiciona isso a query
+        filter_query.add(Q(entidade__nome__in=filter_list), Q.AND)
+        print (filter_query)
+        print (user_atual)
+        print (nome)
+        self.fields['app'].queryset = self.fields['app'].queryset.filter(filter_query)
+        
+
 
     class Meta:
         model = Usuarios_Apps
@@ -145,7 +162,7 @@ class AppUserForm(forms.ModelForm):
 class AppsForm(forms.ModelForm):
     class Meta:
         model = Apps
-        fields = ['nome']
+        fields = ['nome','entidade']
         labels = {
         "nome": "Nome da App"
     }
@@ -164,8 +181,8 @@ class EntidadeForm(forms.ModelForm):
 #Form para associar as entidades as apps
 class EntidadeAppForm(forms.ModelForm):
 
-    def __init__(self,current_user,*args, **kwargs):
-        super(Entidades_Apps, self).__init__(*args, **kwargs)
+    #def __init__(self,current_user,*args, **kwargs):
+    #    super(Entidades_Apps,self).__init__(*args, **kwargs)
     class Meta:
         model = Entidades_Apps
         fields = ['entidade','app']

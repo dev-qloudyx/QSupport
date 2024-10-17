@@ -193,13 +193,17 @@ def create_apps(request):
 #Associar users as apps
 def create_appuser(request):
     if request.method == 'POST':
-        form = AppUserForm(request.POST)
+        
+        form = AppUserForm(request.POST,current_user=request.user, nome ="Admin")
         if form.is_valid():
             form.save()
             messages.success(request, f'Nova aplicação criada.')
             return redirect('ticket-home')
     else:
-        form = AppUserForm()
+        form = AppUserForm(current_user=request.user,nome = "Admin")
+        ponto = "Admin"
+        print (ponto)
+        form.fields['usuario'].initial = "Admin"
     return render(request, 'ticket/criar_appuser.html', {'form': form})
 
 
@@ -230,5 +234,5 @@ def create_entidadeApp(request):
             messages.success(request, f'Entidade e app associadas com sucesso.')
             return redirect('ticket-home')
     else:
-        form = EntidadeAppForm(current_user=request.user)
+        form = EntidadeAppForm()#current_user=request.user)
     return render(request, 'ticket/associar_entid_app.html', {'form': form})
