@@ -84,18 +84,26 @@ class PasswordForm(forms.ModelForm):
 
 #Formulário para os tickets
 class TicketForm(forms.ModelForm):
+    app = forms.ChoiceField(choices=[])
     
     def __init__(self,current_user,*args, **kwargs):
         super(TicketForm, self).__init__(*args, **kwargs)
         self.fields['usuario_app'].queryset = self.fields['usuario_app'].queryset.exclude(~Q(usuario=current_user))
+
+        entidades_do_usuario = current_user.entidade.all()
+        apps = Apps.objects.filter(entidade__in=entidades_do_usuario)
+
+        self.fields['app'].choices = [(app.id, app.nome) for app in apps]
+    
     class Meta:
         model = Ticket
-        fields = ['nome', 'descricao','app_tpPedidos', 'usuario_app']
+        fields = ['nome', 'descricao','app_tpPedidos', 'usuario_app', 'app']
         labels = {
         "nome": "Titulo",
         "descricao":"Descrição",
         "app_tpPedidos": "Tipo de problema",
-        "usuario_app" : "Aplicação"
+        "usuario_app" : "Aplicação",
+        "app": "Apps"
     }
 
 #Formulário para os tickets registados internamente

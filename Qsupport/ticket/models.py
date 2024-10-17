@@ -124,6 +124,7 @@ class TiposPedidos(models.Model):
 
 class Apps(models.Model):
     nome = models.CharField(max_length=150, verbose_name='Aplicação')
+    entidade = models.ForeignKey(Entidades, on_delete=models.CASCADE)
     ativo = models.BooleanField(default=True, verbose_name='Ativo?')
 
     def __str__(self):
@@ -167,6 +168,7 @@ class Ticket(models.Model):
     id_Proprietario = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="criador", verbose_name='Criador do Ticket')
     estado = models.ForeignKey(StatusLog,null = True,default = 1, on_delete=models.CASCADE, verbose_name='Estado Atual')
     usuario_app = models.ForeignKey(Usuarios_Apps,null = True, on_delete=models.CASCADE)
+    app = models.ForeignKey(Apps, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome

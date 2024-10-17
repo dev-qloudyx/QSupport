@@ -1,7 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Usuarios, Ticket,Estado, Usuarios_Apps,Entidades, Apps, Comentario
-from users.forms import TicketForm,TicketFormAdmin, AppsForm, EntidadeForm, AppUserForm, EntidadeAppForm, ComentarioForm
+from .models import (Usuarios,
+    Ticket,
+    Estado,
+    Usuarios_Apps,
+    Entidades,
+    Apps,
+    Comentario)
+from users.forms import (TicketForm,
+    TicketFormAdmin,
+    AppsForm,
+    EntidadeForm,
+    AppUserForm,
+    EntidadeAppForm,
+    ComentarioForm)
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -70,6 +82,7 @@ def create_ticket(request):
             
             ticket = form.save(commit=False)
             ticket.id_Proprietario = request.user
+            ticket.app = Apps.objects.get(id=form.cleaned_data['app'])
             ticket = ticket.save()
             #form.save()
             form.instance.usuarios = request.user
