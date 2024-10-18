@@ -82,7 +82,7 @@ def create_ticket(request):
             
             ticket = form.save(commit=False)
             ticket.id_Proprietario = request.user
-            ticket.app = Apps.objects.get(id=form.cleaned_data['app'])
+            ticket.app = Apps.objects.get(nome=form.cleaned_data['app'])
             ticket = ticket.save()
             #form.save()
             form.instance.usuarios = request.user
@@ -194,16 +194,15 @@ def create_apps(request):
 def create_appuser(request):
     if request.method == 'POST':
         
-        form = AppUserForm(request.POST,current_user=request.user, nome ="Admin")
+        form = AppUserForm(request.POST,current_user=request.user)
         if form.is_valid():
-            form.save()
+            link = form.save(commit=False)
+            link.usuario = request.user
+            link = link.save()
             messages.success(request, f'Nova aplicação criada.')
             return redirect('ticket-home')
     else:
-        form = AppUserForm(current_user=request.user,nome = "Admin")
-        ponto = "Admin"
-        print (ponto)
-        form.fields['usuario'].initial = "Admin"
+        form = AppUserForm(current_user=request.user)
     return render(request, 'ticket/criar_appuser.html', {'form': form})
 
 

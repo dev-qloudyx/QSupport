@@ -84,8 +84,7 @@ class PasswordForm(forms.ModelForm):
 
 #Formulário para os tickets
 class TicketForm(forms.ModelForm):
-    app = forms.ChoiceField(choices=[])
-    
+   
     def __init__(self,current_user,*args, **kwargs):
         super(TicketForm, self).__init__(*args, **kwargs)
         self.fields['usuario_app'].queryset = self.fields['usuario_app'].queryset.exclude(~Q(usuario=current_user))
@@ -124,7 +123,7 @@ class TicketFormAdmin(forms.ModelForm):
 class AppUserForm(forms.ModelForm):
     
 #Criação do filtro de Utilizadores baseados nas Entidades e suas aplicações
-    def __init__(self,current_user,nome,*args, **kwargs):
+    def __init__(self,*args,current_user,**kwargs):
         super(AppUserForm, self).__init__(*args, **kwargs)
 
         #entidades = Entidades.objects.filter(~Q(nome__in = teste))
@@ -145,16 +144,14 @@ class AppUserForm(forms.ModelForm):
         filter_query.add(Q(entidade__nome__in=filter_list), Q.AND)
         print (filter_query)
         print (user_atual)
-        print (nome)
         self.fields['app'].queryset = self.fields['app'].queryset.filter(filter_query)
         
 
 
     class Meta:
         model = Usuarios_Apps
-        fields = ['usuario','app']
+        fields = ['app']
         labels = {
-        "usuario": "Utilizador",
         "app":"Aplicação",
     }
         
