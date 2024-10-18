@@ -13,4 +13,6 @@ urlpatterns = [
     path('<uuid:uuid>/apagar/', views.apagar_ticket, name='apagar_ticket'),  # Apagar ticket
     path('<uuid:uuid>/detalhe', views.ticket_detalhe, name='detalheticket'),  # Ver detalhes do ticket
     path('email/', views.email, name='email'), #URL para enviar mail
+    path('tickets/nao_atribuidos/', views.listar_tickets_nao_atribuidos, name='ticketsnaoatribuidos'),
+    path('tickets/assumir/<int:ticket_id>/', views.assumir_ticket, name='assumir_ticket'),
 ]

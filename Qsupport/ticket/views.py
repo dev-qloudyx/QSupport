@@ -236,3 +236,20 @@ def create_entidadeApp(request):
     else:
         form = EntidadeAppForm()#current_user=request.user)
     return render(request, 'ticket/associar_entid_app.html', {'form': form})
+
+#Lista de tickets não atribuídos
+@login_required
+def listar_tickets_nao_atribuidos(request):
+    tickets_nao_atribuidos = Ticket.objects.filter(usuarios__isnull=True, estado=1)
+    return render(request, 'ticket/ticketsnaoatribuidos.html', {'tickets': tickets_nao_atribuidos})
+
+#View para atribuir um operador ao ticket
+@login_required
+def assumir_ticket(request, uuid):
+    ticket = Ticket.objects.get(uuid=uuid)
+    
+    if ticket.usuarios is None:
+        ticket.usuarios = request.user
+        ticket.save()
+
+    return redirect('ticketsnaoatribuidos')

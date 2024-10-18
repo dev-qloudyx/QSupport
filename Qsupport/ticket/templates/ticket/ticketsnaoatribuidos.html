@@ -1,0 +1,31 @@
+{% extends "ticket/base.html" %}
+{% block content %}
+    <h2>Tickets Não Atribuídos</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Descrição</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.id }}</td>
+                <td>{{ ticket.titulo }}</td>
+                <td>{{ ticket.descricao }}</td>
+                <td>
+                    <a href="{% url 'assumir_ticket' ticket.uuid %}" class="btn btn-primary">Assumir Ticket</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Nenhum ticket disponível para ser assumido.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
