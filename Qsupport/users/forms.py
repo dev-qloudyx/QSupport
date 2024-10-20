@@ -87,7 +87,7 @@ class TicketForm(forms.ModelForm):
    
     def __init__(self,current_user,*args, **kwargs):
         super(TicketForm, self).__init__(*args, **kwargs)
-        self.fields['usuario_app'].queryset = self.fields['usuario_app'].queryset.exclude(~Q(usuario=current_user))
+        #self.fields['usuario_app'].queryset = self.fields['usuario_app'].queryset.exclude(~Q(usuario=current_user))
 
         entidades_do_usuario = current_user.entidade.all()
         apps = Apps.objects.filter(entidade__in=entidades_do_usuario)
@@ -96,12 +96,11 @@ class TicketForm(forms.ModelForm):
     
     class Meta:
         model = Ticket
-        fields = ['nome', 'descricao','app_tpPedidos', 'usuario_app', 'app']
+        fields = ['nome','descricao','app_tpPedidos', 'app']
         labels = {
         "nome": "Titulo",
         "descricao":"Descrição",
         "app_tpPedidos": "Tipo de problema",
-        "usuario_app" : "Aplicação",
         "app": "Apps"
     }
 

@@ -23,11 +23,10 @@ def register(request):
             user = form.save(commit=False)
             user.password = makepass
             user = user.save()
-            #form.save()
+            form.save_m2m()
                 
             login = form.cleaned_data.get('email')
-            uuid = Usuarios.objects.latest('id')#form.cleaned_data.get('uurl')
-            print (uuid)
+            uuid = Usuarios.objects.latest('id')
 
             html_content = render_to_string(
             "users/requisitarpass.html",

@@ -9,8 +9,11 @@
         <p><strong>Descrição:</strong> {{ ticket.descricao }}</p>
         <p><strong>Criado por:</strong> {{ ticket.id_Proprietario.nome }}</p>
         
+        {% if user.is_admin or user.role == "Interno"%}
         <a href="{% url 'editar_ticket' ticket.uuid %}" class="btn btn-primary">Editar</a>
         <a href="{% url 'apagar_ticket' ticket.uuid %}" class="btn btn-danger">Apagar</a>
+        {% endif %}
+        
         <a href="{% url 'listaticket' %}" class="btn btn-secondary">Voltar</a>
 
         <hr>
