@@ -108,14 +108,14 @@ class TicketForm(forms.ModelForm):
 class TicketFormAdmin(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ['nome','usuarios','descricao','app_tpPedidos','estado','prioridade', 'usuario_app']
+        fields = ['nome','usuarios','descricao','app_tpPedidos','estado','prioridade', 'app']
         labels = {
         "nome": "Titulo",
         "descricao":"Descrição",
         "app_tpPedidos": "Tipo de problema",
         "estado": "Estado",
         "prioridade":"Prioridade",
-        "usuario_app" : "Aplicação",
+        "app" : "Aplicação",
     }
         
 #Formulário para associar apps aos users
