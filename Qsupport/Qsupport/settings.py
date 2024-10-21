@@ -130,7 +130,7 @@ AUTH_USER_MODEL = 'ticket.Usuarios'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = 'ticket-home'
 LOGIN_URL = 'ticket'
 
 LOGOUT_REDIRECT_URL = 'login'

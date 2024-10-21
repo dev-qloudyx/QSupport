@@ -94,7 +94,7 @@ def editar_user(request, uuid):
             if form.is_valid():
                 form.save()
                 messages.success(request, f'Utilizador editado com sucesso.')
-                return redirect('profile')
+                return redirect('ticket-home')
         else:
             form = UserRegisterFormAdmin(instance=utilizador)
         return render(request, 'users/profileedit.html', {'form': form, 'utilizador': utilizador})
@@ -105,7 +105,7 @@ def editar_user(request, uuid):
             if form.is_valid():
                 form.save()
                 messages.success(request, f'Utilizador editado com sucesso.')
-                return redirect('profile')
+                return redirect('ticket-home')
         else:
             form = UserRegisterForm(instance=utilizador)
         return render(request, 'users/profileedit.html', {'form': form, 'utilizador': utilizador})

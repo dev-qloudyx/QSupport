@@ -149,35 +149,35 @@
                 </li>
                         
                 
+                {% if user.is_admin or user.role == "Interno"%}
                 <li>
-                    {% if user.is_authenticated %}
+                    
                     <hr>
+                    
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Configurações</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
-                        {% if user.is_admin or user.role == "Interno"%}
+                        
                         <li>
                             <a href="{% url 'listausuarios' %}">Utilizadores</a>
                             <a href="{% url 'listaentidades' %}">Entidades</a>
                             <a href="{% url 'listaaplicacoes' %}">Apps & Serviços</a>
                         </li>
-
-                        {% endif %}
-                        
-                        {% if user.role == "Cliente" %}
-                        <li>
-                            <a href="{% url 'criar_appuser' %}">Associar aplicações a sua conta</a>
-                        </li>
-                        {% endif %}
-                        
-                        
-
-
                         
                     </ul>
-                    {% endif %}
-                    <a href="#">Contactos</a>
+                </li>
+                {% endif %}
+                
+                <li>
+                <a href="#">Contactos</a>
+                </li>
+                
+                    
+                   
+            
                     <hr>
             </ul>
+
+            
         </nav>
     
         </div>
