@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterFormAdmin,UserRegisterForm, TicketForm, PasswordForm
-from ticket.models import Usuarios, Ticket
+from ticket.models import Usuarios, Ticket, Entidades
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -22,8 +22,11 @@ def register(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.password = makepass
-            user = user.save()
+            user.save()
             form.save_m2m()
+            cargo = form.cleaned_data.get('role')
+            if cargo == "Interno" or cargo == "Operador":
+                user.entidade.add(Entidades.objects.get(id=3))
                 
             login = form.cleaned_data.get('email')
             uuid = Usuarios.objects.latest('id')

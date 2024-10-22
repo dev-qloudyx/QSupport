@@ -16,7 +16,7 @@ class InputData(forms.DateInput):
 class UserRegisterFormAdmin(forms.ModelForm):
     foto = forms.ImageField()
     entidade = forms.ModelMultipleChoiceField(
-        queryset=Entidades.objects.all(),
+        queryset=Entidades.objects.exclude(id=3),
         widget=forms.CheckboxSelectMultiple,
         required=True
     )
@@ -96,11 +96,11 @@ class TicketForm(forms.ModelForm):
     
     class Meta:
         model = Ticket
-        fields = ['nome','descricao','app_tpPedidos', 'app']
+        fields = ['app_tpPedidos','nome','descricao','app']
         labels = {
+        "app_tpPedidos": "Tipo de problema",
         "nome": "Titulo",
         "descricao":"Descrição",
-        "app_tpPedidos": "Tipo de problema",
         "app": "Apps"
     }
 
