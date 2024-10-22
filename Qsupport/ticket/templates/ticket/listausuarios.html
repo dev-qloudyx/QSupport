@@ -57,6 +57,16 @@
                       
                     -->
                 </td>
+                <!-- Botões para activar e desativar users -->
+                <td>
+                    <a href="{% url 'alterar_estado_usuario' usuario.uuid %}" class="btn btn-secondary">
+                        {% if usuario.is_active %}
+                            Desativar
+                        {% else %}
+                            Ativar
+                        {% endif %}
+                    </a>
+                </td>
             </tr>
             {% empty %}
             <tr>

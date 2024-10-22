@@ -15,7 +15,7 @@ from users.forms import (TicketForm,
     EntidadeAppForm,
     ComentarioForm)
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
 from django.db.models import Q
 from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
@@ -41,6 +41,10 @@ def index(request):
             "por_abrir":por_abrir,
             "designado": designado,
         })
+
+#Função para apanhar o admin
+def is_admin(user):
+    return user.is_admin
 
 #Ver lista de tickets
 def ticket_list(request):
@@ -146,7 +150,6 @@ def editar_ticket(request, uuid):
             form = TicketForm(instance=ticket)
         return render(request, 'ticket/editar_ticket.html', {'form': form, 'ticket': ticket})
     
-
 #Apagar Ticket
 @login_required
 def apagar_ticket(request, uuid):
@@ -222,8 +225,6 @@ def email(request):
     messages.success(request, f'E-mail a requisitar a palavra-passe enviado.')
     return redirect('ticket-home')
 
-
-
 #Associar entidades as apps
 def create_entidadeApp(request):
     if request.method == 'POST':
@@ -252,3 +253,17 @@ def assumir_ticket(request, uuid):
         ticket.save()
 
     return redirect('ticketsnaoatribuidos')
+
+#Activar e desativar users
+@user_passes_test(is_admin)
+def alterar_estado_usuario(request, uuid):
+    usuario = get_object_or_404(Usuarios, uuid=uuid)
+    
+    if usuario.is_active:
+        usuario.is_active = False
+    else:
+        usuario.is_active = True
+
+    usuario.save()
+
+    return redirect('listausuarios')
