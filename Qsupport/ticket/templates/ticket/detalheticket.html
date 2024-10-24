@@ -24,7 +24,7 @@
                 {% if ticket.estado.estado.tem_estado_anterior %}
                     <form method="post" action="{% url 'recuar_estado_ticket' ticket.uuid %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-warning">Recuar Estado</button>
+                        <button type="submit" class="btn btn-warning">Recuar Estado - {{ anterior.estado }}</button>
                     </form>
                 {% endif %}
 
@@ -32,7 +32,7 @@
                 {% if ticket.estado.estado.tem_proximo_estado %}
                     <form method="post" action="{% url 'avancar_estado_ticket' ticket.uuid %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-primary">Avançar Estado</button>
+                        <button type="submit" class="btn btn-primary">Avançar Estado - {{ seguinte.estado }}</button>
                     </form>
                 {% endif %}
             </div>

@@ -101,6 +101,15 @@ def create_ticket(request):
 def ticket_detalhe(request, uuid):
     if request.user.nome == "Admin" or request.user.role == "Interno":
         ticket = get_object_or_404(Ticket, uuid=uuid)
+        seguinte = Estado.objects.get(id = ticket.estado.id + 1) # Estado Seguinte
+        #if ticket.estado.id > 1:
+            #ticket3 = Estado.objects.get(pk = ticket.estado.id - 1) # Estado Anterior
+           
+        #else:
+           #ticket3 = Estado.objects.get(pk = ticket.estado.id) # Estado Anterior
+           #anterior = ticket3.estado
+        print(seguinte)
+        
         comentarios = ticket.comentarios.all()
         #view para adicionar novo comentário
         if request.method == 'POST':
@@ -117,6 +126,8 @@ def ticket_detalhe(request, uuid):
         
         return render(request, 'ticket/detalheticket.html', {
             'ticket': ticket,
+            'seguinte': seguinte,
+            #'anterior': anterior,
             'comentarios': comentarios,
             'form': form,
         })

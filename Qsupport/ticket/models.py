@@ -19,6 +19,9 @@ class Estado(models.Model):
         indice_atual = ordem.index(self.estado)
         if indice_atual < len(ordem) - 1:
             self.estado = ordem[indice_atual + 1]
+            CorCor = Estado.objects.get(id = indice_atual + 2)
+            self.font_color = CorCor.font_color
+            print(CorCor.font_color)
             self.save()
 
     #Função para recuar para o estado anterior seguindo o workflow
@@ -27,6 +30,12 @@ class Estado(models.Model):
         indice_atual = ordem.index(self.estado)
         if indice_atual > 0:
             self.estado = ordem[indice_atual - 1]
+            CorCor = Estado.objects.get(id = indice_atual)
+            if CorCor.id == 1:
+                self.font_color = "#808080"
+            else:
+                self.font_color = CorCor.font_color
+            print(CorCor.id)
             self.save()
 
     #Função para determinar se há um estado seguinte
