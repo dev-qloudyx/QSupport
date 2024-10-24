@@ -123,6 +123,38 @@ def ticket_detalhe(request, uuid):
     else:
         ticket = get_object_or_404(Ticket, uuid=uuid)
         return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
+    
+#Avançar os estados via botão
+@login_required
+def avancar_estado_ticket(request, uuid):
+    ticket = get_object_or_404(Ticket, uuid=uuid)
+
+    if request.user.nome == "Admin" or request.user.role == "Interno":
+        if ticket.estado.estado.tem_proximo_estado():
+            ticket.estado.estado.proximo_estado()
+            messages.success(request, 'O estado do ticket foi atualizado para o próximo estado.')
+        else:
+            messages.warning(request, 'O ticket já está no último estado.')
+    else:
+        messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')
+    
+    return redirect('detalheticket', uuid=ticket.uuid)
+
+#Recuar estado via boatão
+@login_required
+def recuar_estado_ticket(request, uuid):
+    ticket = get_object_or_404(Ticket, uuid=uuid)
+
+    if request.user.nome == "Admin" or request.user.role == "Interno":
+        if ticket.estado.estado.tem_estado_anterior():
+            ticket.estado.estado.estado_anterior()
+            messages.success(request, 'O estado do ticket foi alterado para o estado anterior.')
+        else:
+            messages.warning(request, 'O ticket já está no estado inicial.')
+    else:
+        messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')
+    
+    return redirect('detalheticket', uuid=ticket.uuid)
 
 #Editar Ticket
 @login_required

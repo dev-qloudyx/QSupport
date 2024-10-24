@@ -13,6 +13,30 @@ class Estado(models.Model):
     font_color = models.CharField(max_length=30)
     descricao = models.CharField(max_length=300)
 
+    def proximo_estado(self):
+        ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado']
+        indice_atual = ordem.index(self.estado)
+        if indice_atual < len(ordem) - 1:
+            self.estado = ordem[indice_atual + 1]
+            self.save()
+
+    def estado_anterior(self):
+        ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado']
+        indice_atual = ordem.index(self.estado)
+        if indice_atual > 0:
+            self.estado = ordem[indice_atual - 1]
+            self.save()
+
+    def tem_proximo_estado(self):
+        ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado']
+        indice_atual = ordem.index(self.estado)
+        return indice_atual < len(ordem) - 1
+
+    def tem_estado_anterior(self):
+        ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado', '']
+        indice_atual = ordem.index(self.estado)
+        return indice_atual > 0
+
     def __str__(self):
         return self.estado
 
