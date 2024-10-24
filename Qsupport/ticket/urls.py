@@ -10,12 +10,12 @@ urlpatterns = [
     path('criar_appuser/', views.create_appuser, name='criar_appuser'), #URL para associar utilizadores as suas apps
     path('associar_entid_app/', views.create_entidadeApp, name='associar_entid_app'), #URL para associar entidades as apps
     path('<uuid:uuid>/editar/', views.editar_ticket, name='editar_ticket'),  # Editar ticket
-    path('usuarios/alterar_estado/<uuid:uuid>/', views.alterar_estado_usuario, name='alterar_estado_usuario'),
-    path('tickets/<uuid:uuid>/avancar_estado/', views.avancar_estado_ticket, name='avancar_estado_ticket'),
-    path('tickets/<uuid:uuid>/recuar_estado/', views.recuar_estado_ticket, name='recuar_estado_ticket'),
+    path('usuarios/alterar_estado/<uuid:uuid>/', views.alterar_estado_usuario, name='alterar_estado_usuario'), #Definir se user está activo ou inativo
+    path('tickets/<uuid:uuid>/avancar_estado/', views.avancar_estado_ticket, name='avancar_estado_ticket'), #Avançar o estado de um ticket
+    path('tickets/<uuid:uuid>/recuar_estado/', views.recuar_estado_ticket, name='recuar_estado_ticket'), #Recuar o estado de um ticket
     path('<uuid:uuid>/apagar/', views.apagar_ticket, name='apagar_ticket'),  # Apagar ticket
     path('<uuid:uuid>/detalhe', views.ticket_detalhe, name='detalheticket'),  # Ver detalhes do ticket
     path('email/', views.email, name='email'), #URL para enviar mail
-    path('tickets/nao_atribuidos/', views.listar_tickets_nao_atribuidos, name='ticketsnaoatribuidos'),
-    path('tickets/assumir/<uuid:uuid>/', views.assumir_ticket, name='assumir_ticket'),
+    path('tickets/nao_atribuidos/', views.listar_tickets_nao_atribuidos, name='ticketsnaoatribuidos'), #Lista para os operadores escolherem os tickets
+    path('tickets/assumir/<uuid:uuid>/', views.assumir_ticket, name='assumir_ticket'), #View para renderizar a função de aceitação do ticket
 ]

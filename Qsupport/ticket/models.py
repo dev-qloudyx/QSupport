@@ -13,6 +13,7 @@ class Estado(models.Model):
     font_color = models.CharField(max_length=30)
     descricao = models.CharField(max_length=300)
 
+    #Função para avançar para o estado seguinte seguindo o workflow
     def proximo_estado(self):
         ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado']
         indice_atual = ordem.index(self.estado)
@@ -20,6 +21,7 @@ class Estado(models.Model):
             self.estado = ordem[indice_atual + 1]
             self.save()
 
+    #Função para recuar para o estado anterior seguindo o workflow
     def estado_anterior(self):
         ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado']
         indice_atual = ordem.index(self.estado)
@@ -27,11 +29,13 @@ class Estado(models.Model):
             self.estado = ordem[indice_atual - 1]
             self.save()
 
+    #Função para determinar se há um estado seguinte
     def tem_proximo_estado(self):
         ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado']
         indice_atual = ordem.index(self.estado)
         return indice_atual < len(ordem) - 1
 
+    #Função para determinar se há um estado anterior
     def tem_estado_anterior(self):
         ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado', '']
         indice_atual = ordem.index(self.estado)

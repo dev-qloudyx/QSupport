@@ -10,10 +10,11 @@
         <p><strong>Criado por:</strong> {{ ticket.id_Proprietario.nome }}</p>
         
         {% if user.is_admin or user.role == "Interno"%}
+        <!-- Botões para editar ou apagar os tickets -->
         <a href="{% url 'editar_ticket' ticket.uuid %}" class="btn btn-primary">Editar</a>
         <a href="{% url 'apagar_ticket' ticket.uuid %}" class="btn btn-danger">Apagar</a>
         {% endif %}
-        
+        <!-- Botão para voltar a lista de tickets -->
         <a href="{% url 'listaticket' %}" class="btn btn-secondary">Voltar</a>
 
         <hr>
@@ -37,10 +38,10 @@
             </div>
         {% endif %}
         <hr>
-
+        <!-- Comentários dos operadores, internos e admin -->
         {% if user.is_admin or user.role == "Interno"%}
         <h3>Comentários</h3>
-
+        <!-- Lista dos comentários já feito num tickest -->
         <ul>
             {% for comentario in comentarios %}
             <li>
@@ -53,7 +54,7 @@
         </ul>
 
         <hr>
-
+        <!-- Formulário para introduzir novo comentário -->
         <h3>Adicionar um Comentário</h3>
         <form method="POST">
             {% csrf_token %}
