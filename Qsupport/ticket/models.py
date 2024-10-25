@@ -13,45 +13,9 @@ class Estado(models.Model):
     font_color = models.CharField(max_length=30)
     descricao = models.CharField(max_length=300)
 
-    #Função para avançar para o estado seguinte seguindo o workflow
-    def proximo_estado(self):
-        ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado']
-        indice_atual = ordem.index(self.estado)
-        if indice_atual < len(ordem) - 1:
-            self.estado = ordem[indice_atual + 1]
-            CorCor = Estado.objects.get(id = indice_atual + 2)
-            self.font_color = CorCor.font_color
-            print(CorCor.font_color)
-            self.save()
-
-    #Função para recuar para o estado anterior seguindo o workflow
-    def estado_anterior(self):
-        ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado']
-        indice_atual = ordem.index(self.estado)
-        if indice_atual > 0:
-            self.estado = ordem[indice_atual - 1]
-            CorCor = Estado.objects.get(id = indice_atual)
-            if CorCor.id == 1:
-                self.font_color = "#808080"
-            else:
-                self.font_color = CorCor.font_color
-            print(CorCor.id)
-            self.save()
-
-    #Função para determinar se há um estado seguinte
-    def tem_proximo_estado(self):
-        ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado']
-        indice_atual = ordem.index(self.estado)
-        return indice_atual < len(ordem) - 1
-
-    #Função para determinar se há um estado anterior
-    def tem_estado_anterior(self):
-        ordem = ['Aberto', 'Assignado', 'Resolvendo', 'Em Espera', 'Resolvido', 'Fechado', '']
-        indice_atual = ordem.index(self.estado)
-        return indice_atual > 0
-
     def __str__(self):
         return self.estado
+
 
 #Empresas cadastradas
 class Entidades(models.Model):
@@ -188,6 +152,9 @@ class StatusLog(models.Model):
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE, verbose_name='Estado')
     usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, verbose_name='Utilizador')
     dataHora = models.DateTimeField(default=timezone.now(), verbose_name='Data de Criação')
+
+    def __str__(self):
+        return self.estado
 
     def __str__(self):
         return f"{self.estado}"

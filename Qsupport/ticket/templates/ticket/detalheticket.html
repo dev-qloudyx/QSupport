@@ -21,20 +21,33 @@
         {% if user.is_admin or user.role == "Interno" %}
             <div>
                 <!-- Botão para recuar estado -->
-                {% if ticket.estado.estado.tem_estado_anterior %}
+                {% if ticket.estado.estado.id > 1 %}
                     <form method="post" action="{% url 'recuar_estado_ticket' ticket.uuid %}" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-warning">Recuar Estado - {{ anterior.estado }}</button>
                     </form>
                 {% endif %}
+                
 
                 <!-- Botão para avançar estado -->
-                {% if ticket.estado.estado.tem_proximo_estado %}
+                {% if ticket.estado.estado.id < 6 %}
                     <form method="post" action="{% url 'avancar_estado_ticket' ticket.uuid %}" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Avançar Estado - {{ seguinte.estado }}</button>
                     </form>
                 {% endif %}
+
+                <!-- Botão para fechar ticket -->
+                {% if ticket.estado.estado.id < 6 %}
+                    <form method="post" action="{% url 'fechado_estado_ticket' ticket.uuid %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-info">Fechar Ticket</button>
+                    </form>
+                {% endif %}
+
+
+                
+               
             </div>
         {% endif %}
         <hr>

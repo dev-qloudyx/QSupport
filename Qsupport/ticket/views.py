@@ -6,7 +6,8 @@ from .models import (Usuarios,
     Usuarios_Apps,
     Entidades,
     Apps,
-    Comentario)
+    Comentario,
+    StatusLog)
 from users.forms import (TicketForm,
     TicketFormAdmin,
     AppsForm,
@@ -100,15 +101,16 @@ def create_ticket(request):
 @login_required
 def ticket_detalhe(request, uuid):
     if request.user.nome == "Admin" or request.user.role == "Interno":
+        seguinte = None
+        anterior = None
         ticket = get_object_or_404(Ticket, uuid=uuid)
-        seguinte = Estado.objects.get(id = ticket.estado.id + 1) # Estado Seguinte
-        #if ticket.estado.id > 1:
-            #ticket3 = Estado.objects.get(pk = ticket.estado.id - 1) # Estado Anterior
+        #num = Estado.objects.get(id = ticket.estado.estado.id) # Estado Seguinte
+        #if ticket.estado.estado.id != 6:
            
-        #else:
-           #ticket3 = Estado.objects.get(pk = ticket.estado.id) # Estado Anterior
-           #anterior = ticket3.estado
-        print(seguinte)
+        if ticket.estado.estado.id > 1:
+            anterior = Estado.objects.get(id = ticket.estado.estado.id - 1) # Estado Anterior
+        if ticket.estado.estado.id < 6:
+            seguinte = Estado.objects.get(id = ticket.estado.estado.id + 1) # Estado Seguinte
         
         comentarios = ticket.comentarios.all()
         #view para adicionar novo comentário
@@ -127,7 +129,8 @@ def ticket_detalhe(request, uuid):
         return render(request, 'ticket/detalheticket.html', {
             'ticket': ticket,
             'seguinte': seguinte,
-            #'anterior': anterior,
+            'anterior': anterior,
+            #'num': num,
             'comentarios': comentarios,
             'form': form,
         })
@@ -141,11 +144,11 @@ def avancar_estado_ticket(request, uuid):
     ticket = get_object_or_404(Ticket, uuid=uuid)
 
     if request.user.nome == "Admin" or request.user.role == "Interno":
-        if ticket.estado.estado.tem_proximo_estado():
-            ticket.estado.estado.proximo_estado()
+      
+            #ticket.estado.proximo_estado()
+            novo = Estado.objects.filter(id = ticket.estado.estado.id + 1).values("id")
+            StatusLog.objects.filter(id = ticket.estado.id).update(estado = novo)
             messages.success(request, 'O estado do ticket foi atualizado para o próximo estado.')
-        else:
-            messages.warning(request, 'O ticket já está no último estado.')
     else:
         messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')
     
@@ -157,15 +160,27 @@ def recuar_estado_ticket(request, uuid):
     ticket = get_object_or_404(Ticket, uuid=uuid)
 
     if request.user.nome == "Admin" or request.user.role == "Interno":
-        if ticket.estado.estado.tem_estado_anterior():
-            ticket.estado.estado.estado_anterior()
+            antes = Estado.objects.filter(id = ticket.estado.estado.id - 1).values("id")
+            StatusLog.objects.filter(id = ticket.estado.id).update(estado = antes)
             messages.success(request, 'O estado do ticket foi alterado para o estado anterior.')
-        else:
-            messages.warning(request, 'O ticket já está no estado inicial.')
     else:
         messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')
     
     return redirect('detalheticket', uuid=ticket.uuid)
+
+#Recuar estado via boatão
+@login_required
+def fechado_estado_ticket(request, uuid):
+    ticket = get_object_or_404(Ticket, uuid=uuid)
+
+    if request.user.nome == "Admin" or request.user.role == "Interno":
+            StatusLog.objects.filter(id = ticket.estado.id).update(estado = 6)
+            messages.success(request, 'O ticket foi encerrado.')
+    else:
+        messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')
+    
+    return redirect('detalheticket', uuid=ticket.uuid)
+
 
 #Editar Ticket
 @login_required

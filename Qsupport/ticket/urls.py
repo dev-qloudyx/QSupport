@@ -13,6 +13,7 @@ urlpatterns = [
     path('usuarios/alterar_estado/<uuid:uuid>/', views.alterar_estado_usuario, name='alterar_estado_usuario'), #Definir se user está activo ou inativo
     path('tickets/<uuid:uuid>/avancar_estado/', views.avancar_estado_ticket, name='avancar_estado_ticket'), #Avançar o estado de um ticket
     path('tickets/<uuid:uuid>/recuar_estado/', views.recuar_estado_ticket, name='recuar_estado_ticket'), #Recuar o estado de um ticket
+    path('tickets/<uuid:uuid>/fechar_estado/', views.fechado_estado_ticket, name='fechado_estado_ticket'), #Recuar o estado de um ticket
     path('<uuid:uuid>/apagar/', views.apagar_ticket, name='apagar_ticket'),  # Apagar ticket
     path('<uuid:uuid>/detalhe', views.ticket_detalhe, name='detalheticket'),  # Ver detalhes do ticket
     path('email/', views.email, name='email'), #URL para enviar mail
