@@ -104,13 +104,11 @@ def ticket_detalhe(request, uuid):
         seguinte = None
         anterior = None
         ticket = get_object_or_404(Ticket, uuid=uuid)
-        #num = Estado.objects.get(id = ticket.estado.estado.id) # Estado Seguinte
-        #if ticket.estado.estado.id != 6:
-           
-        if ticket.estado.estado.id > 1:
-            anterior = Estado.objects.get(id = ticket.estado.estado.id - 1) # Estado Anterior
-        if ticket.estado.estado.id < 6:
-            seguinte = Estado.objects.get(id = ticket.estado.estado.id + 1) # Estado Seguinte
+        
+        if ticket.estado.id > 1:
+            anterior = Estado.objects.get(id = ticket.estado.id - 1) # Estado Anterior
+        if ticket.estado.id < 6:
+            seguinte = Estado.objects.get(id = ticket.estado.id + 1) # Estado Seguinte
         
         comentarios = ticket.comentarios.all()
         #view para adicionar novo comentário
@@ -146,8 +144,8 @@ def avancar_estado_ticket(request, uuid):
     if request.user.nome == "Admin" or request.user.role == "Interno":
       
             #ticket.estado.proximo_estado()
-            novo = Estado.objects.filter(id = ticket.estado.estado.id + 1).values("id")
-            StatusLog.objects.filter(id = ticket.estado.id).update(estado = novo)
+            novo = Estado.objects.filter(id = ticket.estado.id + 1).values("id")
+            Ticket.objects.filter(id = ticket.id).update(estado = novo)
             messages.success(request, 'O estado do ticket foi atualizado para o próximo estado.')
     else:
         messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')
@@ -160,8 +158,8 @@ def recuar_estado_ticket(request, uuid):
     ticket = get_object_or_404(Ticket, uuid=uuid)
 
     if request.user.nome == "Admin" or request.user.role == "Interno":
-            antes = Estado.objects.filter(id = ticket.estado.estado.id - 1).values("id")
-            StatusLog.objects.filter(id = ticket.estado.id).update(estado = antes)
+            antes = Estado.objects.filter(id = ticket.estado.id - 1).values("id")
+            Ticket.objects.filter(id = ticket.id).update(estado = antes)
             messages.success(request, 'O estado do ticket foi alterado para o estado anterior.')
     else:
         messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')
@@ -174,7 +172,7 @@ def fechado_estado_ticket(request, uuid):
     ticket = get_object_or_404(Ticket, uuid=uuid)
 
     if request.user.nome == "Admin" or request.user.role == "Interno":
-            StatusLog.objects.filter(id = ticket.estado.id).update(estado = 6)
+            StatusLog.objects.filter(id = ticket.id).update(estado = 6)
             messages.success(request, 'O ticket foi encerrado.')
     else:
         messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')

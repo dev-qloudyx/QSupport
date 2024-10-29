@@ -3,8 +3,8 @@
     <body>
         <h2 class="mt-2">Detalhes do Ticket: {{ ticket.titulo }}</h2>
     
-        <p><strong>Status:</strong> <button style="background-color:{{ticket.estado.estado.font_color}}; border-color:{{ticket.estado.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado.estado }}</button>
-        <p><strong>Status desc:</strong> {{ ticket.estado.estado.descricao }}</p>
+        <p><strong>Status:</strong> <button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button>
+        <p><strong>Status desc:</strong> {{ ticket.estado.descricao }}</p>
         <p><strong>Data de Criação:</strong> {{ ticket.dataCriacao|date:"d/m/Y H:i" }}</p>
         <p><strong>Descrição:</strong> {{ ticket.descricao }}</p>
         <p><strong>Criado por:</strong> {{ ticket.id_Proprietario.nome }}</p>
@@ -21,7 +21,7 @@
         {% if user.is_admin or user.role == "Interno" %}
             <div>
                 <!-- Botão para recuar estado -->
-                {% if ticket.estado.estado.id > 1 %}
+                {% if ticket.estado.id > 1 %}
                     <form method="post" action="{% url 'recuar_estado_ticket' ticket.uuid %}" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-warning">Recuar Estado - {{ anterior.estado }}</button>
@@ -30,7 +30,7 @@
                 
 
                 <!-- Botão para avançar estado -->
-                {% if ticket.estado.estado.id < 6 %}
+                {% if ticket.estado.id < 6 %}
                     <form method="post" action="{% url 'avancar_estado_ticket' ticket.uuid %}" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Avançar Estado - {{ seguinte.estado }}</button>

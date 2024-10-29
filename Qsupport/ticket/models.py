@@ -148,16 +148,7 @@ class Apps_tpPedidos(models.Model):
         return f"{self.tipoPedidos}"
     
 
-class StatusLog(models.Model):
-    estado = models.ForeignKey(Estado, on_delete=models.CASCADE, verbose_name='Estado')
-    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, verbose_name='Utilizador')
-    dataHora = models.DateTimeField(default=timezone.now(), verbose_name='Data de Criação')
 
-    def __str__(self):
-        return self.estado
-
-    def __str__(self):
-        return f"{self.estado}"
 
 class Ticket(models.Model):
     
@@ -170,13 +161,29 @@ class Ticket(models.Model):
     prioridade = models.ForeignKey(Prioridade, null = True , on_delete=models.CASCADE, verbose_name='Prioridade')
     resolucao = models.ForeignKey(Resolucao, null = True, on_delete=models.CASCADE, verbose_name='Resolução')
     id_Proprietario = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="criador", verbose_name='Criador do Ticket')
-    estado = models.ForeignKey(StatusLog,null = True,default = 1, on_delete=models.CASCADE, verbose_name='Estado Atual')
+    estado = models.ForeignKey(Estado,null = True,default = 1, on_delete=models.CASCADE, verbose_name='Estado Atual')
     usuario_app = models.ForeignKey(Usuarios_Apps,null = True, on_delete=models.CASCADE)
     app = models.ForeignKey(Apps, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
+class StatusLog(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, verbose_name='Ticket')
+    estado = models.ForeignKey(Estado, on_delete=models.CASCADE, verbose_name='Estado')
+    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, verbose_name='Utilizador')
+    dataHora = models.DateTimeField(default=timezone.now(), verbose_name='Data de Criação')
 
+    def __str__(self):
+        return self.estado
+
+    def __str__(self):
+        return f"{self.estado}"
+
+class AcaoEstado(models.Model):
+    inicio = models.ForeignKey(Estado, on_delete=models.CASCADE, verbose_name='Inicio', related_name='inicio')
+    fim = models.ForeignKey(Estado, on_delete=models.CASCADE, verbose_name='Fim', related_name='fim')
+    texto = models.CharField(max_length=100, verbose_name="Texto")
+    cor = models.CharField(max_length=30, verbose_name="Cor")
 
 class Entidades_Apps(models.Model):
     entidade = models.ForeignKey(Entidades, on_delete=models.CASCADE,verbose_name='Entidade')
