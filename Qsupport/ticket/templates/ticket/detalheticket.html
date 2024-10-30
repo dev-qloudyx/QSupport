@@ -1,55 +1,141 @@
 {% extends "ticket/base.html" %}
 {% block content %}
+   
     <body>
-        <h2 class="mt-2">Detalhes do Ticket: {{ ticket.titulo }}</h2>
-    
-        <p><strong>Status:</strong> <button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button>
-        <p><strong>Status desc:</strong> {{ ticket.estado.descricao }}</p>
-        <p><strong>Data de Criação:</strong> {{ ticket.dataCriacao|date:"d/m/Y H:i" }}</p>
-        <p><strong>Descrição:</strong> {{ ticket.descricao }}</p>
-        <p><strong>Criado por:</strong> {{ ticket.id_Proprietario.nome }}</p>
-        
-        {% if user.is_admin or user.role == "Interno"%}
-        <!-- Botões para editar ou apagar os tickets -->
-        <a href="{% url 'editar_ticket' ticket.uuid %}" class="btn btn-primary">Editar</a>
-        <a href="{% url 'apagar_ticket' ticket.uuid %}" class="btn btn-danger">Apagar</a>
-        {% endif %}
-        <!-- Botão para voltar a lista de tickets -->
-        <a href="{% url 'listaticket' %}" class="btn btn-secondary">Voltar</a>
 
+        <style>
+            .row p
+            {
+                text-align: center;
+            }   
+            
+        </style>
+
+        <h2 class="mt-2">Detalhes do Ticket: {{ ticket.titulo }}</h2>
         <hr>
+
         {% if user.is_admin or user.role == "Interno" %}
             <div>
                 <!-- Botão para recuar estado -->
                 {% if ticket.estado.id > 1 %}
-                    <form method="post" action="{% url 'recuar_estado_ticket' ticket.uuid %}" style="display:inline;">
+                        <form method="post" action="{% url 'recuar_estado_ticket' ticket.uuid %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-warning">Recuar Estado - {{ anterior.estado }}</button>
+                        <button type="submit" class="btn btn-dark">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                            </svg>
+                        {{ anterior.estado }}</button>
                     </form>
                 {% endif %}
                 
+                ||
 
                 <!-- Botão para avançar estado -->
                 {% if ticket.estado.id < 6 %}
-                    <form method="post" action="{% url 'avancar_estado_ticket' ticket.uuid %}" style="display:inline;">
+                    {% for num in seguinte %}
+                        {% if num.id == 5 %}
+                            <form method="post" action="{% url 'avancar_estado_ticket' ticket.uuid %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" name ="valor" value="{{ num.fim.id }}" class="btn btn-primary" style="background-color:{{num.cor}}; border-color:{{num.cor}};">
+                                {{ num.texto }}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16">
+                                    <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"/>
+                                </svg>
+                                </button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{% url 'avancar_estado_ticket' ticket.uuid %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" name ="valor" value="{{ num.fim.id }}" class="btn btn-primary" style="background-color:{{num.cor}}; border-color:{{num.cor}};">
+                                {{ num.texto }}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                </svg>  
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                ||
+
+                <!-- Botão para fechar ticket -->
+                {% if ticket.estado.id < 6 and ticket.estado.id > 1 %}
+                    <form method="post" action="{% url 'fechado_estado_ticket' ticket.uuid %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-primary">Avançar Estado - {{ seguinte.estado }}</button>
+                        <button type="submit" class="btn btn-info" style="background-color:#343a40; border-color:#343a40;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                            </svg>    
+                        Fechar Ticket</button>
                     </form>
                 {% endif %}
 
-                <!-- Botão para fechar ticket -->
-                {% if ticket.estado.estado.id < 6 %}
-                    <form method="post" action="{% url 'fechado_estado_ticket' ticket.uuid %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-info">Fechar Ticket</button>
-                    </form>
-                {% endif %}
+                <div style="float:right">
+                    {% if user.is_admin or user.role == "Interno"%}
+                    <!-- Botões para editar ou apagar os tickets -->
+                    <a href="{% url 'editar_ticket' ticket.uuid %}" class="btn btn-primary">Editar</a>
+                    <a href="{% url 'apagar_ticket' ticket.uuid %}" class="btn btn-danger">Apagar</a>
+                    {% endif %}
+                    <!-- Botão para voltar a lista de tickets -->
+                    <a href="{% url 'listaticket' %}" class="btn btn-secondary">Voltar</a>
+                </div>
 
 
                 
                
             </div>
         {% endif %}
+
+        <hr>
+
+        <div>
+            <div class="row">
+              <div class="col-2">
+                <p><strong>Estado:</strong> <button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
+              </div>
+              <div class="col-4">
+                <p><p><strong></strong> {{ ticket.estado.descricao }}</p></p>
+              </div>
+              <div class="col">
+                <p><strong>Criado por:</strong><p>{{ ticket.id_Proprietario.nome }}</p></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2">
+                <p><strong>Data de Criação:</strong><p> {{ ticket.dataCriacao|date:"d/m/Y H:i" }}</p></p>
+              </div>
+              <div class="col-4">
+                <p><strong>Descrição:</strong><p>{{ ticket.descricao }}</p></p>
+              </div>
+              <div class="col">
+                <p><strong>URL Externo:</strong><p><a href="http://{{ ticket.url }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
+                        <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
+                    </svg>    
+                Link</a></p></p>
+              </div>
+            </div>
+        </div>
+        
+        <!-- Formatação antiga
+        <p><strong>Estado:</strong> <button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
+        <p><strong></strong> {{ ticket.estado.descricao }}</p>
+        <p><strong>Data de Criação:</strong><p> {{ ticket.dataCriacao|date:"d/m/Y H:i" }}</p></p>
+        <p><strong>Descrição:</strong> {{ ticket.descricao }}</p>
+        <p><strong>Criado por:</strong> {{ ticket.id_Proprietario.nome }}</p>
+        -->
+        
+        <!--
+        {% if user.is_admin or user.role == "Interno"%}
+        # Botões para editar ou apagar os tickets
+        <a href="{% url 'editar_ticket' ticket.uuid %}" class="btn btn-primary">Editar</a>
+        <a href="{% url 'apagar_ticket' ticket.uuid %}" class="btn btn-danger">Apagar</a>
+        {% endif %}
+        # Botão para voltar a lista de tickets
+        <a href="{% url 'listaticket' %}" class="btn btn-secondary">Voltar</a>
+        -->
+
         <hr>
         <!-- Comentários dos operadores, internos e admin -->
         {% if user.is_admin or user.role == "Interno"%}

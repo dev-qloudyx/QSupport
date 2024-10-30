@@ -1,5 +1,15 @@
 {% extends "ticket/base.html" %}
 {% block content %}
+    <style>
+        input 
+        {
+            
+        }
+        #id_nome, #id_email, #id_date_of_birth, #id_telefone 
+        {
+            width: 350px;
+        }
+    </style>
     <div class="content-section">
         <form method="post" action="{% url 'register' %}" enctype="multipart/form-data" >
             {% csrf_token %}

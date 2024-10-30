@@ -21,6 +21,7 @@ class UserRegisterFormAdmin(forms.ModelForm):
         required=True
     )
     date_of_birth = forms.DateField(widget=InputData,label="Data de Nascimento")
+    descricao = forms.CharField(widget=forms.Textarea())
     class Meta:
         model = Usuarios
         fields = ['nome','email','date_of_birth','descricao','role','entidade','foto','telefone']

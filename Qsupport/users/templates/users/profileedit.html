@@ -1,9 +1,22 @@
 {% extends "ticket/base.html" %}
 {% block content %}
+    <style>
+        input {
+            
+        }
+        #id_nome, #id_email, #id_date_of_birth, #id_telefone {
+            width: 350px;
+        }
+    </style>
+
     <body>
         <h2 class="mt-2">Editar Utilizador: {{ utilizador.nome }}</h2>
         <form method="post">
             {% csrf_token %}
+            <!-- Ver amanhã para editar manualmente o formulário
+            {{ form.nome.label }}
+            {{ form.nome }}
+            -->
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Salvar</button>
             <a href="{% url 'profile' %}" class="btn btn-secondary">Cancelar</a>

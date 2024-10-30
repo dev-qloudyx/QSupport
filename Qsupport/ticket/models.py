@@ -164,6 +164,7 @@ class Ticket(models.Model):
     estado = models.ForeignKey(Estado,null = True,default = 1, on_delete=models.CASCADE, verbose_name='Estado Atual')
     usuario_app = models.ForeignKey(Usuarios_Apps,null = True, on_delete=models.CASCADE)
     app = models.ForeignKey(Apps, on_delete=models.CASCADE)
+    url = models.CharField(max_length=200, verbose_name="URL", null= True)
 
     def __str__(self):
         return self.nome
@@ -185,6 +186,8 @@ class AcaoEstado(models.Model):
     texto = models.CharField(max_length=100, verbose_name="Texto")
     cor = models.CharField(max_length=30, verbose_name="Cor")
 
+    def __str__(self):
+        return self.inicio.estado + "__" + self.fim.estado
 class Entidades_Apps(models.Model):
     entidade = models.ForeignKey(Entidades, on_delete=models.CASCADE,verbose_name='Entidade')
     app = models.ForeignKey(Apps, on_delete=models.CASCADE,verbose_name='Aplicação')

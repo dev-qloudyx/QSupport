@@ -7,7 +7,8 @@ from .models import (Usuarios,
     Entidades,
     Apps,
     Comentario,
-    StatusLog)
+    StatusLog,
+    AcaoEstado)
 from users.forms import (TicketForm,
     TicketFormAdmin,
     AppsForm,
@@ -106,9 +107,14 @@ def ticket_detalhe(request, uuid):
         ticket = get_object_or_404(Ticket, uuid=uuid)
         
         if ticket.estado.id > 1:
-            anterior = Estado.objects.get(id = ticket.estado.id - 1) # Estado Anterior
+            anterior = StatusLog.objects.filter(ticket = ticket.id).last() # Estado Anterior
+            anterior = get_object_or_404(Estado, estado = anterior) # Vai buscar os dados do Estado do StatusLogs
+            anterior = StatusLog.objects.filter(ticket = ticket.id).exclude(estado = anterior.id).last() # Estado antes do ultimo
+            anterior = get_object_or_404(Estado, estado = anterior) # Vai buscar os dados do Estado do StatusLogs Excluindo o ultimo anterior
         if ticket.estado.id < 6:
-            seguinte = Estado.objects.get(id = ticket.estado.id + 1) # Estado Seguinte
+            seguinte = AcaoEstado.objects.filter(inicio = ticket.estado) # Estado Seguinte
+            
+            
         
         comentarios = ticket.comentarios.all()
         #view para adicionar novo comentário
@@ -128,7 +134,6 @@ def ticket_detalhe(request, uuid):
             'ticket': ticket,
             'seguinte': seguinte,
             'anterior': anterior,
-            #'num': num,
             'comentarios': comentarios,
             'form': form,
         })
@@ -139,26 +144,30 @@ def ticket_detalhe(request, uuid):
 #Avançar os estados via botão
 @login_required
 def avancar_estado_ticket(request, uuid):
-    ticket = get_object_or_404(Ticket, uuid=uuid)
-
+    
+    tickets = get_object_or_404(Ticket, uuid=uuid)
     if request.user.nome == "Admin" or request.user.role == "Interno":
-      
-            #ticket.estado.proximo_estado()
-            novo = Estado.objects.filter(id = ticket.estado.id + 1).values("id")
-            Ticket.objects.filter(id = ticket.id).update(estado = novo)
+            num = request.POST.get('valor')
+            Ticket.objects.filter(id = tickets.id).update(estado = num)
+            tickets = get_object_or_404(Ticket, uuid=uuid) #Vai buscar os novos dados para guardar no StatusLogs
+            historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user) #Prepara os dados para guardar
+            historico.save()
             messages.success(request, 'O estado do ticket foi atualizado para o próximo estado.')
     else:
         messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')
     
-    return redirect('detalheticket', uuid=ticket.uuid)
+    return redirect('detalheticket', uuid=tickets.uuid)
 
-#Recuar estado via boatão
+#Recuar estado via botão
 @login_required
 def recuar_estado_ticket(request, uuid):
     ticket = get_object_or_404(Ticket, uuid=uuid)
 
     if request.user.nome == "Admin" or request.user.role == "Interno":
-            antes = Estado.objects.filter(id = ticket.estado.id - 1).values("id")
+            apagar = StatusLog.objects.filter(ticket = ticket.id).last()
+            apagar.delete()
+            antes = StatusLog.objects.filter(ticket = ticket.id).last()
+            antes = get_object_or_404(Estado, estado = antes)
             Ticket.objects.filter(id = ticket.id).update(estado = antes)
             messages.success(request, 'O estado do ticket foi alterado para o estado anterior.')
     else:
@@ -166,13 +175,16 @@ def recuar_estado_ticket(request, uuid):
     
     return redirect('detalheticket', uuid=ticket.uuid)
 
-#Recuar estado via boatão
+#Fechar o ticket
 @login_required
 def fechado_estado_ticket(request, uuid):
     ticket = get_object_or_404(Ticket, uuid=uuid)
 
     if request.user.nome == "Admin" or request.user.role == "Interno":
-            StatusLog.objects.filter(id = ticket.id).update(estado = 6)
+            Ticket.objects.filter(id = ticket.id).update(estado = 6)
+            tickets = get_object_or_404(Ticket, uuid=uuid)
+            historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user)
+            historico.save()
             messages.success(request, 'O ticket foi encerrado.')
     else:
         messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')
@@ -184,16 +196,18 @@ def fechado_estado_ticket(request, uuid):
 @login_required
 def editar_ticket(request, uuid):
     if request.user.nome == "Admin" or request.user.role == "Interno":
-        ticket = get_object_or_404(Ticket,uuid=uuid)
+        tickets = get_object_or_404(Ticket,uuid=uuid)
         if request.method == 'POST':
-            form = TicketFormAdmin(request.POST, instance=ticket)
+            form = TicketFormAdmin(request.POST, instance=tickets)
             if form.is_valid():
                 form.save()
+                historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user)
+                historico.save()
                 messages.success(request, f'Ticket editado com sucesso.')
                 return redirect(reverse('listaticket'))
         else:
-            form = TicketFormAdmin(instance=ticket)
-        return render(request, 'ticket/editar_ticket.html', {'form': form, 'ticket': ticket})
+            form = TicketFormAdmin(instance=tickets)
+        return render(request, 'ticket/editar_ticket.html', {'form': form, 'ticket': tickets})
     else:
         ticket = get_object_or_404(Ticket,uuid=uuid,usuarios=request.user)
         if request.method == 'POST':
