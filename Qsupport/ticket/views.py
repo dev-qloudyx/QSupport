@@ -24,6 +24,7 @@ from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
 from .filtros import UserFilter, TicketFilter, EntidadesFilter, AppsFilter
+from django.utils import timezone
 
 
 def index(request):
@@ -179,6 +180,7 @@ def avancar_estado_ticket(request, uuid):
     if request.user.nome == "Admin" or request.user.role == "Interno":
             num = request.POST.get('valor')
             Ticket.objects.filter(id = tickets.id).update(estado = num)
+            Ticket.objects.filter(id = tickets.id).update(dataAtualizacao = timezone.now())
             tickets = get_object_or_404(Ticket, uuid=uuid) #Vai buscar os novos dados para guardar no StatusLogs
             historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user) #Prepara os dados para guardar
             historico.save()
@@ -199,6 +201,7 @@ def recuar_estado_ticket(request, uuid):
             antes = StatusLog.objects.filter(ticket = ticket.id).last()
             antes = get_object_or_404(Estado, estado = antes)
             Ticket.objects.filter(id = ticket.id).update(estado = antes)
+            Ticket.objects.filter(id = ticket.id).update(dataAtualizacao = timezone.now())
             messages.success(request, 'O estado do ticket foi alterado para o estado anterior.')
     else:
         messages.error(request, 'Você não tem permissão para alterar o estado deste ticket.')
@@ -212,6 +215,7 @@ def fechado_estado_ticket(request, uuid):
 
     if request.user.nome == "Admin" or request.user.role == "Interno":
             Ticket.objects.filter(id = ticket.id).update(estado = 6)
+            Ticket.objects.filter(id = tickets.id).update(dataAtualizacao = timezone.now())
             tickets = get_object_or_404(Ticket, uuid=uuid)
             historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user)
             historico.save()
@@ -230,7 +234,10 @@ def editar_ticket(request, uuid):
         if request.method == 'POST':
             form = TicketFormAdmin(request.POST, instance=tickets)
             if form.is_valid():
-                form.save()
+                gravar = form.save(commit=False)
+                gravar.dataAtualizacao = timezone.now()
+                gravar = gravar.save()
+                #form.save()
                 historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user)
                 historico.save()
                 messages.success(request, f'Ticket editado com sucesso.')

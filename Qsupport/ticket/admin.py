@@ -71,7 +71,7 @@ class TicketAdmin(admin.ModelAdmin):
         return get_data
     
     readonly_fields = ('id',)
-    list_display = ('id','uuid','nome','usuarios','estado','dataCriacao','id_Proprietario','url')
+    list_display = ('id','uuid','nome','usuarios','estado','dataCriacao','dataAtualizacao','id_Proprietario','url',)
     ordering = ('id','usuarios')
     search_fields = ('id','usuarios','nome','id_Proprietario')
     list_filter = ('nome','usuarios','id_Proprietario')

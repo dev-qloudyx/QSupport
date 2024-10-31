@@ -155,6 +155,7 @@ class Ticket(models.Model):
     uuid = models.UUIDField(default = uuid.uuid4)
     nome = models.CharField(max_length=50, verbose_name='Titulo')
     dataCriacao = models.DateTimeField(default=timezone.now(), verbose_name='Data de Criação')
+    dataAtualizacao = models.DateTimeField(null=True ,default=timezone.now(), verbose_name='Atualizado a')
     descricao = models.CharField(max_length=300, verbose_name='Descrição')
     usuarios = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="responsavel", verbose_name='Responsável')
     app_tpPedidos = models.ForeignKey(Apps_tpPedidos, on_delete=models.CASCADE, verbose_name='Tipo de Problema')
