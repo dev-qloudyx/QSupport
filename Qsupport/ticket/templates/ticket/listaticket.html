@@ -3,6 +3,16 @@
 <body>
     
     <style>
+      label{
+        width: 150px;
+        display: inline-block;
+      }
+      select{
+        width: 188px;
+      }
+      #id_estado{
+        margin-left: 160px;
+      }
     </style>
 
     <h2 style="margin-bottom:25px">Lista de Tickets</h2>
@@ -15,14 +25,14 @@
 
     <!-- Botões de Filtros Rápidos -->
     <div class="filtros-rapidos" style="margin: auto; width: 20%;">
-      <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
-      <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
+      <a href="{% url 'listaticket' %}?aberto=1" class="btn btn-primary">Abertos</a>
+      <a href="{% url 'listaticket' %}?estado=6&estado=7" class="btn btn-secondary">Fechados</a>
       <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
     </div>
     <!-- Formulário para pesquisa com filtro -->
     <div class="card-header">
       <form method="get">
-          {{ filter.form.as_p }}
+          {{ filter.form.as_div}}
           <button type="submit" class="btn btn-primary">Filtrar</button>
       </form>
     </div>
@@ -94,7 +104,7 @@
     <!-- Condição para apresentar a lista caso não haja nenhum item -->
     {% else %}
         <!-- Botões de Filtros Rápidos -->
-        <div class="filtros-rapidos">
+        <div class="filtros-rapidos" style="margin: auto; width: 20%;">
           <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
           <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
           <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
@@ -106,6 +116,12 @@
     {% else %}
 
     {% if tickets %}
+
+    <div class="filtros-rapidos" style="margin: auto; width: 20%;">
+      <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
+      <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
+      <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
+    </div>
 
     <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Criar Novo Ticket</a></button>
     <hr>
@@ -136,7 +152,7 @@
             <th scope="row">{{ ticket.nome }}</th>
             <td>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</td>
             <td>{{ ticket.usuarios.nome }}</td>
-            <td><button style="background-color:{{ticket.estado.estado.font_color}}; border-color:{{ticket.estado.estado.font_color}}"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></td>
+            <td style="text-align:center"><button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></td>
             <!--Detalhes-->
             <td><button type="button" class="btn btn-primary"><a href="{% url 'detalheticket' ticket.uuid %}">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ticket-detailed-fill" viewBox="0 0 16 16">
@@ -150,7 +166,7 @@
         
     {% else %}
         <!-- Botões de Filtros Rápidos -->
-        <div class="filtros-rapidos">
+        <div class="filtros-rapidos" style="margin: auto; width: 20%;">
           <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
           <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
           <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
