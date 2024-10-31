@@ -53,10 +53,15 @@ def ticket_list(request):
     ticketall = Ticket.objects.all()
     tickuser = request.user
     tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
+    aberto = request.GET.get('aberto')
+    if (aberto == "1"):
+        ticketall = Ticket.objects.all().exclude(Q(estado=6) | Q(estado=7))
     ticketfilter = TicketFilter(request.GET, ticketall)
     ticketfilteruser = TicketFilter(request.GET, tickets)
     total_resultados = ticketfilter.qs.count()
     estado_filtro = request.GET.get('estado')
+   
+    
     #filtros rápidos
     if estado_filtro == 'abertos':
         tickets = Ticket.objects.filter(estado__estado=1 | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
