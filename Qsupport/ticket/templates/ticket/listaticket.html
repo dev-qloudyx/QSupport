@@ -19,7 +19,7 @@
     <!-- Condição para apresentar a lista caso o utilizador seja um operador -->
 {% if user.is_authenticated %}
     
-  {% if user.is_admin or user.role == "Interno"%}
+  {% if user.is_admin or user.role == "Operador"%}
     
     {% if ticketall %}
 
@@ -115,7 +115,7 @@
 
     {% endif %}
     
-    {% if user.role == "Operador" %}
+    {% if user.role == "Interno" %}
 
       {% if tickets %}
 
@@ -171,10 +171,11 @@
           <p>Nenhum ticket encontrado.</p>
     {% endif %}
     
+    {% endif %}
   
 
   <!-- Condição para apresentar a lista caso o utilizador seja um Cliente -->
-  {% else %}
+  {% if user.role == "Cliente" %}
 
     {% if cliente %}
 
