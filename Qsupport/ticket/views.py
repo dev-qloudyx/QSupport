@@ -59,9 +59,9 @@ def ticket_list(request):
     estado_filtro = request.GET.get('estado')
     #filtros rápidos
     if estado_filtro == 'abertos':
-        tickets = Ticket.objects.filter(estado__estado=1 | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
+        tickets = Ticket.objects.exclude(Q(estado__estado=6) | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
     elif estado_filtro == 'fechados':
-        tickets = Ticket.objects.filter(estado__estado=6 | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
+        tickets = Ticket.objects.filter(Q(estado__estado=6) | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
     else:
         tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
 

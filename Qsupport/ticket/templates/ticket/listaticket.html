@@ -109,7 +109,13 @@
 
     <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Criar Novo Ticket</a></button>
     <hr>
-    
+    <!-- Botões de Filtros Rápidos -->
+    <div class="filtros-rapidos">
+      <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
+      <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
+      <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
+    </div>
+    <hr>
     <table class="table table-striped table-dark table-sm">
         <thead>
           <tr>
