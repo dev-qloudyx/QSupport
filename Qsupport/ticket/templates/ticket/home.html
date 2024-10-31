@@ -184,4 +184,10 @@
 
 {% endif %}
 
+{% if user.role == "Cliente" %}
+        <script>
+        window.location.href = "http://127.0.0.1:8000/listaticket/";
+        </script>
+{% endif  %}
+
 {% endblock content %}

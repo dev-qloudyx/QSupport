@@ -121,7 +121,10 @@
             <ul class="list-unstyled components" >
                     
                 <li>
-                    <a href="{% url 'ticket-home' %}">Home</a>
+                    {% if user.role == "Qloudyx" or user.role == "Operador" or user.is_admin %}
+                        <a href="{% url 'ticket-home' %}">Home</a>
+                    {% endif %}
+                    
                     {% if user.is_authenticated %}
                     {% else %}
                         <a href="{% url 'login' %}">Login</a>

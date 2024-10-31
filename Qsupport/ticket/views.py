@@ -102,6 +102,14 @@ def create_ticket(request):
             ticket = ticket.save()
             #form.save()
             form.instance.usuarios = request.user
+            seguinte = Ticket.objects.filter().last()
+            seguinte = get_object_or_404(Ticket, nome=seguinte)
+            defeito = Estado.objects.filter(estado="Aberto").last()
+            defeito = get_object_or_404(Estado, estado=defeito)
+            print(defeito)
+            historico = StatusLog(ticket = seguinte , estado = defeito , usuario = request.user)
+            historico.save()
+            
             messages.success(request, f'Ticket enviado com sucesso, espere por feedback do nosso operador em serviço.')
             return redirect('listaticket')
     else:
@@ -326,12 +334,15 @@ def listar_tickets_nao_atribuidos(request):
 #View para atribuir um operador ao ticket
 @login_required
 def assumir_ticket(request, uuid):
-    ticket = Ticket.objects.get(uuid=uuid)
+    tickets = Ticket.objects.get(uuid=uuid)
     
-    if ticket.usuarios is None:
-        ticket.usuarios = request.user
-        ticket.save()
+    if tickets.usuarios is None:
+        tickets.usuarios = request.user
+        tickets.save()
 
+    tickets = Ticket.objects.get(uuid=uuid)
+    #historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user)
+    #historico.save()
     return redirect('ticketsnaoatribuidos')
 
 #Activar e desativar users
