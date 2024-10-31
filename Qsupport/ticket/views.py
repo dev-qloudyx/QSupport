@@ -54,18 +54,18 @@ def ticket_list(request):
     tickuser = request.user
     tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
     ticketfilter = TicketFilter(request.GET, ticketall)
+    ticketfilteruser = TicketFilter(request.GET, tickets)
     total_resultados = ticketfilter.qs.count()
-
     estado_filtro = request.GET.get('estado')
     #filtros rápidos
     if estado_filtro == 'abertos':
-        tickets = Ticket.objects.filter(estado__estado=1)
+        tickets = Ticket.objects.filter(estado__estado=1 | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
     elif estado_filtro == 'fechados':
-        tickets = Ticket.objects.filter(estado__estado=6)
+        tickets = Ticket.objects.filter(estado__estado=6 | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
     else:
-        tickets = Ticket.objects.all()
+        tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
 
-    return render(request, 'ticket/listaticket.html', {'tickets': tickets,'ticketall': ticketfilter.qs, 'filter':ticketfilter, 'total':total_resultados})
+    return render(request, 'ticket/listaticket.html', {'tickets': ticketfilteruser.qs,'ticketall': ticketfilter.qs, 'filter':ticketfilter, 'total':total_resultados})
 
 #ver lista de entidades
 def lista_entidades(request):
