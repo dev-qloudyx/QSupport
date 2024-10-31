@@ -168,6 +168,7 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.nome
+
 class StatusLog(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, verbose_name='Ticket')
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE, verbose_name='Estado')

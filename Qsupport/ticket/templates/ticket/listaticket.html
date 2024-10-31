@@ -12,6 +12,13 @@
     {% if user.is_admin or user.role == "Interno"%}
     
     {% if ticketall %}
+
+    <!-- Botões de Filtros Rápidos -->
+    <div class="filtros-rapidos">
+      <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
+      <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
+      <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
+    </div>
     <!-- Formulário para pesquisa com filtro -->
     <div class="card-header">
       <form method="get">
@@ -86,6 +93,13 @@
     </table>
     <!-- Condição para apresentar a lista caso não haja nenhum item -->
     {% else %}
+        <!-- Botões de Filtros Rápidos -->
+        <div class="filtros-rapidos">
+          <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
+          <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
+          <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
+        </div>
+        <hr>
         <p>Nenhum ticket encontrado.</p>
     {% endif %}
     <!-- Condição para apresentar a lista caso o utilizador seja um cliente -->
