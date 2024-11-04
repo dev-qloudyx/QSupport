@@ -24,18 +24,40 @@
     {% if ticketall %}
 
     <!-- Botões de Filtros Rápidos -->
-    <div class="filtros-rapidos" style="margin: auto; width: 20%;">
+    <div class="filtros-rapidos" style="margin: auto; width: 16%;">
       <a href="{% url 'listaticket' %}?aberto=1" class="btn btn-primary">Abertos</a>
       <a href="{% url 'listaticket' %}?estado=6&estado=7" class="btn btn-secondary">Fechados</a>
       <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
     </div>
+    <br>
     <!-- Formulário para pesquisa com filtro -->
-    <div class="card-header">
-      <form method="get">
+    <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:block; margin: auto; width: 18%;">Pesquisar</button>
+    <button class="btn btn-primary" id="esconde" onclick="EscondeF()" style="display:none; margin: auto; width: 18%;">Esconder Filtro</button>
+    <div class="card-header" id="filtro" style="display:none">
+      <form method="get" id="automatico" onchange="botao_usar()" oninput="setTimeout(botao_usar, 2500)">
           {{ filter.form.as_div}}
-          <button type="submit" class="btn btn-primary">Filtrar</button>
+          <button type="submit" id="auto" class="btn btn-primary">Filtrar</button>
       </form>
     </div>
+    <script>
+      function botao_usar()
+            {
+              $('#auto').trigger('click');
+            }
+      function EscondeF() 
+            {
+                document.getElementById("filtro").style.display = "none";
+                document.getElementById("esconde").style.display = "none";
+                document.getElementById("aparece").style.display = "block";
+            }
+    
+      function ApareceF() 
+            {
+                document.getElementById("filtro").style.display = "block";
+                document.getElementById("esconde").style.display = "block";
+                document.getElementById("aparece").style.display = "none";
+            }
+    </script>
     <hr>
     <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Criar Novo Ticket</a></button>
     <button type="button" class="btn btn-primary"><a href="{% url 'ticketsnaoatribuidos' %}">Aceitar Ticket</a></button>
