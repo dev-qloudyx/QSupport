@@ -215,7 +215,6 @@ def fechado_estado_ticket(request, uuid):
 
     if request.user.nome == "Admin" or request.user.role == "Interno":
             Ticket.objects.filter(id = ticket.id).update(estado = 6)
-            Ticket.objects.filter(id = tickets.id).update(dataAtualizacao = timezone.now())
             tickets = get_object_or_404(Ticket, uuid=uuid)
             historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user)
             historico.save()
