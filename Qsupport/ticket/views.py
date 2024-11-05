@@ -82,6 +82,16 @@ def ticket_list(request):
                    'filter':ticketfilter, 
                    'total':total_resultados})
 
+#Lista em modelo Kanban
+def lista_kanban(request):
+    estados = Estado.objects.order_by("id")
+    tickets_por_estado = {estado.estado: Ticket.objects.filter(estado=estado) for estado in estados}
+
+    return render(request, 'ticket/listakanban.html', {
+        'tickets_por_estado': tickets_por_estado,
+        'estados': estados,
+    })
+
 #ver lista de entidades
 def lista_entidades(request):
     entidade = Entidades.objects.all()

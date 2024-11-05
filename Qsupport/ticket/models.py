@@ -193,6 +193,7 @@ class AcaoEstado(models.Model):
 
     def __str__(self):
         return self.inicio.estado + "__" + self.fim.estado
+
 class Entidades_Apps(models.Model):
     entidade = models.ForeignKey(Entidades, on_delete=models.CASCADE,verbose_name='Entidade')
     app = models.ForeignKey(Apps, on_delete=models.CASCADE,verbose_name='Aplicação')

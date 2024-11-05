@@ -19,4 +19,5 @@ urlpatterns = [
     path('email/', views.email, name='email'), #URL para enviar mail
     path('tickets/nao_atribuidos/', views.listar_tickets_nao_atribuidos, name='ticketsnaoatribuidos'), #Lista para os operadores escolherem os tickets
     path('tickets/assumir/<uuid:uuid>/', views.assumir_ticket, name='assumir_ticket'), #View para renderizar a função de aceitação do ticket
+    path('kanban/', views.lista_kanban, name='listakanban'),
 ]

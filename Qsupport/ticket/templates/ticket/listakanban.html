@@ -1,0 +1,74 @@
+{% extends "ticket/base.html" %}
+{% block content %}
+   
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .kanban-board {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 20px 0;
+            height: 80vh;
+        }
+
+        .kanban-column {
+            min-width: 300px;
+            flex: 1;
+            max-width: 25%;
+            background: #f4f4f4;
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+
+        .kanban-column h3 {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            margin: 0;
+        }
+
+        .kanban-card {
+            background: #fff;
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid mt-4">
+    <h1 class="text-center">Quadro Kanban</h1>
+    <hr>
+    <div class="kanban-board">
+        {% for estado, tickets in tickets_por_estado.items %}
+            <div class="kanban-column" id="estado-{{ estado }}">
+                <h3>{{ estado }} {{ tickets_por_estado.font_color }}</h3>
+                <div class="kanban-tickets" data-estado="{{ estado }}">
+                    {% for ticket in tickets %}
+                        <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
+                            <strong>{{ ticket.nome }}</strong>
+                            <p>{{ ticket.descricao|truncatewords:10 }}</p>
+                            <p><button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
+                            <small>Criado por: {{ ticket.id_Proprietario.nome }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
+</body>
+{% endblock content %}
