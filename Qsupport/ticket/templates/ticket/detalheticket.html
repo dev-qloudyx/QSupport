@@ -154,7 +154,7 @@
         <ul>
             {% for comentario in comentarios %}
             <li>
-                <p><strong>{{ comentario.operador.username }}</strong> em {{ comentario.data_criacao }}</p>
+                <p><strong>{{ comentario.operador.nome }}</strong> em {{ comentario.data_criacao }}</p>
                 <p>{{ comentario.conteudo }}</p>
             </li>
             {% empty %}

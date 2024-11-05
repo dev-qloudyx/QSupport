@@ -155,7 +155,7 @@ def ticket_detalhe(request, uuid):
             if form.is_valid():
                 comentario = form.save(commit=False)
                 comentario.ticket = ticket
-                comentario.operador = request.user
+                comentario.operador.nome = request.user
                 comentario.save()
                 return redirect('detalheticket', uuid=ticket.uuid)
         else:
