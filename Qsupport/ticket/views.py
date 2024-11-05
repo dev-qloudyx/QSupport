@@ -85,7 +85,7 @@ def ticket_list(request):
 #Lista em modelo Kanban
 def lista_kanban(request):
     estados = Estado.objects.order_by("id")
-    tickets_por_estado = {estado.estado: Ticket.objects.filter(estado=estado) for estado in estados}
+    tickets_por_estado = {estado: Ticket.objects.filter(estado=estado) for estado in estados}
 
     return render(request, 'ticket/listakanban.html', {
         'tickets_por_estado': tickets_por_estado,
@@ -180,7 +180,7 @@ def ticket_detalhe(request, uuid):
             
             if form2.is_valid():
                 form2.save()
-                messages.sucess(request, f'Comentário de resolução adicionado.')
+                messages.success(request, f'Comentário de resolução adicionado.')
                 return redirect('detalheticket', uuid=ticket.uuid)
 
         else:

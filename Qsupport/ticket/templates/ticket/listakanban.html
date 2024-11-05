@@ -25,7 +25,6 @@
         }
 
         .kanban-column h3 {
-            background-color: #007bff;
             color: white;
             padding: 10px;
             text-align: center;
@@ -43,6 +42,15 @@
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             cursor: move;
         }
+
+        a{
+            color:white;
+            text-decoration: none;
+        }
+
+        a:hover { 
+            text-decoration: none; 
+        } 
     </style>
 </head>
 <body>
@@ -53,12 +61,15 @@
     <div class="kanban-board">
         {% for estado, tickets in tickets_por_estado.items %}
             <div class="kanban-column" id="estado-{{ estado }}">
-                <h3>{{ estado }} {{ tickets_por_estado.font_color }}</h3>
+                <h3 style="background-color:{{ estado.font_color }}">{{ estado }} {{ tickets_por_estado.font_color }}</h3>
                 <div class="kanban-tickets" data-estado="{{ estado }}">
                     {% for ticket in tickets %}
                         <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
                             <strong>{{ ticket.nome }}</strong>
                             <p>{{ ticket.descricao|truncatewords:10 }}</p>
+                            {% if ticket.resolucao %}
+                                <p> {{ticket.resolucao}} </p>
+                            {% endif %}
                             <p><button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
                             <small>Criado por: {{ ticket.id_Proprietario.nome }}</small>
                         </div>

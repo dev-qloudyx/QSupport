@@ -107,9 +107,14 @@ class TicketForm(forms.ModelForm):
 
 #Formulário para os tickets registados internamente
 class TicketFormAdmin(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(TicketFormAdmin, self).__init__(*args, **kwargs)
+        self.fields['resolucao'].required = False
+        self.fields['prioridade'].required = False
     class Meta:
         model = Ticket
-        fields = ['nome','usuarios','descricao','app_tpPedidos','estado','prioridade', 'app']
+        fields = ['nome','usuarios','descricao','app_tpPedidos','estado','prioridade', 'app','resolucao']
         labels = {
         "nome": "Titulo",
         "descricao":"Descrição",
@@ -117,6 +122,7 @@ class TicketFormAdmin(forms.ModelForm):
         "estado": "Estado",
         "prioridade":"Prioridade",
         "app" : "Aplicação",
+        "resolucao":"Resolução"
     }
         
 #Formulário para associar apps aos users
