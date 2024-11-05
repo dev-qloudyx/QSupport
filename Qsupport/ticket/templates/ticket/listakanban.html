@@ -66,11 +66,13 @@
                     {% for ticket in tickets %}
                         <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
                             <strong>{{ ticket.nome }}</strong>
-                            <p>{{ ticket.descricao|truncatewords:10 }}</p>
+                            <hr>
+                            <p>Descrição: {{ ticket.descricao|truncatewords:10 }}</p>
                             {% if ticket.resolucao %}
-                                <p> {{ticket.resolucao}} </p>
+                                <hr>
+                                <p>Resolução: {{ticket.resolucao}} </p>
+                                <hr>
                             {% endif %}
-                            <p><button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
                             <small>Criado por: {{ ticket.id_Proprietario.nome }}</small>
                         </div>
                     {% endfor %}
