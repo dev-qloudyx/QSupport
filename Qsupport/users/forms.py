@@ -196,3 +196,18 @@ class ComentarioForm(forms.ModelForm):
         widgets = {
             'conteudo': forms.Textarea(attrs={'rows': 4}),
         }
+
+#Formulário para o comentário final para a resolução
+class ComentarioResForm(forms.ModelForm):
+    
+    def __init__(self,*args,estado,**kwargs):
+        super(ComentarioResForm, self).__init__(*args, **kwargs)
+        self.fields['resolucao'].queryset = self.fields['resolucao'].queryset.filter(tipo=estado)
+        print(estado)
+    class Meta:
+        model = Ticket
+        fields = ['comresolucao','resolucao']
+        widgets = {
+            'comresolucao': forms.Textarea(attrs={'rows': 4}),
+        }
+        

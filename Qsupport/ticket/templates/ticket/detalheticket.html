@@ -149,27 +149,39 @@
         <hr>
         <!-- Comentários dos operadores, internos e admin -->
         {% if user.is_admin or user.role == "Interno"%}
-        <h3>Comentários</h3>
-        <!-- Lista dos comentários já feito num tickest -->
-        <ul>
-            {% for comentario in comentarios %}
-            <li>
-                <p><strong>{{ comentario.operador.nome }}</strong> em {{ comentario.data_criacao }}</p>
-                <p>{{ comentario.conteudo }}</p>
-            </li>
-            {% empty %}
-            <p>Não há comentários ainda.</p>
-            {% endfor %}
-        </ul>
+            <h3>Comentários</h3>
+            <!-- Lista dos comentários já feito num tickest -->
+            <ul>
+                {% for comentario in comentarios %}
+                <li>
+                    <p><strong>{{ comentario.operador.nome }}</strong> em {{ comentario.data_criacao }}</p>
+                    <p>{{ comentario.conteudo }}</p>
+                </li>
+                {% empty %}
+                <p>Não há comentários ainda.</p>
+                {% endfor %}
+            </ul>
 
-        <hr>
-        <!-- Formulário para introduzir novo comentário -->
-        <h3>Adicionar um Comentário</h3>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Adicionar Comentário</button>
-        </form>
+            <hr>
+            
+            {% if ticket.estado.estado == "Fechado" or ticket.estado.estado == "Descartado" %}
+            <h3>Comentário de Resolução</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form2.as_p }}
+                <button type="submit" class="btn btn-primary">Adicionar Comentário de Resolução</button>
+            </form>
+            {% endif %}
+            
+            {% if ticket.estado.estado != "Fechado" and ticket.estado.estado != "Descartado" %}
+            <!-- Formulário para introduzir novo comentário -->
+            <h3>Adicionar um Comentário</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Adicionar Comentário</button>
+            </form>
+            {% endif %}
         {% endif %}
     </body>
 {% endblock content %}

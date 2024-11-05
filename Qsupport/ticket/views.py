@@ -8,14 +8,16 @@ from .models import (Usuarios,
     Apps,
     Comentario,
     StatusLog,
-    AcaoEstado)
+    AcaoEstado,
+    Resolucao)
 from users.forms import (TicketForm,
     TicketFormAdmin,
     AppsForm,
     EntidadeForm,
     AppUserForm,
     EntidadeAppForm,
-    ComentarioForm)
+    ComentarioForm,
+    ComentarioResForm)
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
@@ -148,18 +150,40 @@ def ticket_detalhe(request, uuid):
             
         
         comentarios = ticket.comentarios.all()
-        #view para adicionar novo comentário
+        #view para adicionar novo comentário (form) ou comentário de resolução (form2)
+        
         if request.method == 'POST':
             form = ComentarioForm(request.POST)
+            if ticket.estado.estado == "Descartado":
+                form2 = ComentarioResForm(request.POST, estado=2, instance=ticket)
+            elif ticket.estado.estado == "Fechado":
+                form2 = ComentarioResForm(request.POST, estado=1, instance=ticket)
+            else:
+                form2 = ComentarioResForm(estado=None)
             
             if form.is_valid():
                 comentario = form.save(commit=False)
                 comentario.ticket = ticket
-                comentario.operador.nome = request.user
+                comentario.operador = request.user
                 comentario.save()
                 return redirect('detalheticket', uuid=ticket.uuid)
+            
+            if form2.is_valid():
+                form2.save()
+                messages.sucess(request, f'Comentário de resolução adicionado.')
+                return redirect('detalheticket', uuid=ticket.uuid)
+
         else:
+
             form = ComentarioForm()
+            if ticket.estado.estado == "Descartado":
+                form2 = ComentarioResForm(estado=2, instance=ticket)
+            elif ticket.estado.estado == "Fechado":
+                form2 = ComentarioResForm(estado=1, instance=ticket)
+            else:
+                form2 = ComentarioResForm(estado=None)
+            
+            
         
         return render(request, 'ticket/detalheticket.html', {
             'ticket': ticket,
@@ -167,6 +191,7 @@ def ticket_detalhe(request, uuid):
             'anterior': anterior,
             'comentarios': comentarios,
             'form': form,
+            'form2':form2,
         })
     else:
         ticket = get_object_or_404(Ticket, uuid=uuid)
@@ -215,6 +240,7 @@ def fechado_estado_ticket(request, uuid):
 
     if request.user.nome == "Admin" or request.user.role == "Interno":
             Ticket.objects.filter(id = ticket.id).update(estado = 6)
+            Ticket.objects.filter(id = ticket.id).update(dataAtualizacao = timezone.now())
             tickets = get_object_or_404(Ticket, uuid=uuid)
             historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user)
             historico.save()

@@ -13,10 +13,6 @@
         <h2 class="mt-2">Editar Utilizador: {{ utilizador.nome }}</h2>
         <form method="post">
             {% csrf_token %}
-            <!-- Ver amanhã para editar manualmente o formulário
-            {{ form.nome.label }}
-            {{ form.nome }}
-            -->
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Salvar</button>
             <a href="{% url 'profile' %}" class="btn btn-secondary">Cancelar</a>

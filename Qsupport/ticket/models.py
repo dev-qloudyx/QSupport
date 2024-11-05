@@ -103,6 +103,8 @@ class Usuarios(AbstractBaseUser):
 
 class Resolucao(models.Model):
     nome = models.CharField(max_length=150)
+    tipo = models.CharField(max_length=2)
+    
 
     def __str__(self):
         return self.nome
@@ -161,12 +163,13 @@ class Ticket(models.Model):
     app_tpPedidos = models.ForeignKey(Apps_tpPedidos, on_delete=models.CASCADE, verbose_name='Tipo de Problema')
     prioridade = models.ForeignKey(Prioridade, null = True , on_delete=models.CASCADE, verbose_name='Prioridade')
     resolucao = models.ForeignKey(Resolucao, null = True, on_delete=models.CASCADE, verbose_name='Resolução')
+    comresolucao = models.CharField(max_length=200, null=True, verbose_name='Comentário de Resolução')
     id_Proprietario = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="criador", verbose_name='Criador do Ticket')
     estado = models.ForeignKey(Estado,null = True,default = 1, on_delete=models.CASCADE, verbose_name='Estado Atual')
     usuario_app = models.ForeignKey(Usuarios_Apps,null = True, on_delete=models.CASCADE)
     app = models.ForeignKey(Apps, on_delete=models.CASCADE)
     url = models.CharField(max_length=200, verbose_name="URL", null= True)
-
+    
     def __str__(self):
         return self.nome
 
