@@ -68,6 +68,7 @@
                             <strong>{{ ticket.nome }}</strong>
                             <hr>
                             <p>Descrição: {{ ticket.descricao|truncatewords:10 }}</p>
+                            <button class="btn btn-primary"><a href="{% url 'detalheticket' ticket.uuid %}">Detalhes</a></button>
                             {% if ticket.resolucao %}
                                 <hr>
                                 <p>Resolução: {{ticket.resolucao}} </p>
