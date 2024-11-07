@@ -19,7 +19,7 @@
             min-width: 300px;
             flex: 1;
             max-width: 25%;
-            background: #f4f4f4;
+            background: white;
             border-radius: 8px;
             overflow-y: auto;
         }
@@ -51,17 +51,20 @@
         a:hover { 
             text-decoration: none; 
         } 
+        body{
+            background-color: #ecefea;
+        }
     </style>
 </head>
 <body>
 
 <div class="container-fluid mt-4">
-    <h1 class="text-center">Quadro Kanban</h1>
+    <h1 class="text-center" style="font-weight:bold; color:#117B76">Kanban</h1>
     <hr>
     <div class="kanban-board">
         {% for estado, tickets in tickets_por_estado.items %}
             <div class="kanban-column" id="estado-{{ estado }}">
-                <h3 style="background-color:{{ estado.font_color }}">{{ estado }} {{ tickets_por_estado.font_color }}</h3>
+                <h3 style="background-color:{{ estado.font_color }};">{{ estado }} {{ tickets_por_estado.font_color }}</h3>
                 <div class="kanban-tickets" data-estado="{{ estado }}">
                     {% for ticket in tickets %}
                         <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">

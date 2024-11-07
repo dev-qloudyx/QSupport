@@ -13,17 +13,24 @@
       #id_estado{
         margin-left: 160px;
       }
-      #aparece,#esconde{
-        transition: 0.5s;
+
+      #contrario:hover{
+        background-color:#117B76;
+        border-color:#117B76;
+        color:#fafafa;
+        transition: 0.5s
       }
-      #aparece:hover,#esconde:hover{
-        background-color:#fafafa;
-        color: #007bff;
-        border-color:#007bff;
+
+      #contrario
+      {
+          background-color:#fafafa;
+          border-color:#117B76;
+          color:#117B76;
+          transition: 0.5s
       }
     </style>
 
-    <h2 style="margin-bottom:25px">Lista de Tickets</h2>
+    <h2 style="font-weight:bold; margin-bottom:25px; color:#117B76">Gestão Tickets</h2>
     <!-- Condição para apresentar a lista caso o utilizador seja um operador -->
 {% if user.is_authenticated %}
     
@@ -32,20 +39,25 @@
     {% if ticketall %}
 
     <!-- Botões de Filtros Rápidos -->
-    <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:inline; float:left;">
+    <button type="button" class="btn btn-primary" style="display:inline; float:left"><a href="{% url 'novoticket' %}"></a>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+      </svg>
+    </button>
+    <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:inline; float:right;">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
         <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
       </svg>
     </button>
-    <button class="btn btn-primary" id="esconde" onclick="EscondeF()" style="display:none; float:left;">
+    <button class="btn btn-primary" id="esconde" onclick="EscondeF()" style="display:none; float:right;">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
         <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
       </svg>
     </button>
-    <div class="filtros-rapidos" style="margin: auto; width: 22%;">
-      <a href="{% url 'listaticket' %}?aberto=1" class="btn btn-primary">Abertos</a>
-      <button type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Assignar</a></button>
-      <a href="{% url 'listaticket' %}?estado=6&estado=7" class="btn btn-secondary">Fechados</a>
+    <div class="filtros-rapidos" style="margin: auto; width: 30%;">
+      <a id="contrario" style="width:120px;" href="{% url 'listaticket' %}?aberto=1" class="btn btn-primary">Abertos</a>
+      <button id="contrario" style="width:120px;" type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Assignar</a></button>
+      <a id="contrario" style="width:120px;" href="{% url 'listaticket' %}?estado=6&estado=7" class="btn btn-secondary">Fechados</a>
       <!--<a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>-->
     </div>
     <br>
@@ -71,20 +83,14 @@
                 document.getElementById("aparece").style.display = "none";
             }
     </script>
-    <hr>
-    <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Criar Novo Ticket</a></button>
     
-    <hr>
-    <!-- Número de itens que aparecem na tabela -->
-    <h3>Resultados: {{ total }} ticket(s) encontrado(s)</h3>
-    <hr>
     <!-- Tabela que apresenta a lista de itens -->
-    <table class="table table-striped table-dark table-sm">
-        <thead>
+    <table class="table table table-light table-sm">
+        <thead style="color:#117B76; background-color:#dbf5f3">
           <tr>
             <th style="text-align:center" class="col-2 col-sm-1">ID#</th>
-            <th class="col-2 col-sm-1">Criado por:</th>
-            <th class="col-2 col-sm-3">Título</th>
+            <th class="col-2 col-sm-1">Criado por</th>
+            <th class="col-2 col-sm-3" style="color:#117B76">Título</th>
             <th class="col-2 col-sm-1">Data Criação</th>
             <th class="col-2 col-sm-2">Responsável</th>
             <th style="text-align:center" class="col-2 col-sm-1">Estado</th>
@@ -94,26 +100,26 @@
         <tbody>
           {% for ticket in ticketall %}  
           <tr>
-            <th style="text-align:center">{{ ticket.id }}</th>
+            <th style="text-align:center;color:#117B76;">{{ ticket.id }}</th>
             <td>{{ ticket.id_Proprietario.nome }}</td>
             <th scope="row">{{ ticket.nome }}</th>
             <td>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</td>
             <td>{{ ticket.usuarios.nome }}</td>
-            <td style="text-align:center"><button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></td>
+            <td style="text-align:center"><button style="font-weight:bold;font-size:16px;color:gray;background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></td>
             <!--Detalhes-->
-            <td><button type="button" class="btn btn-primary"><a href="{% url 'detalheticket' ticket.uuid %}">
+            <td><button id="contrario" type="button" class="btn btn-primary"><a href="{% url 'detalheticket' ticket.uuid %}">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ticket-detailed-fill" viewBox="0 0 16 16">
                 <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zm4 1a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m0 5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5M4 8a1 1 0 0 0 1 1h6a1 1 0 1 0 0-2H5a1 1 0 0 0-1 1"/>
               </svg>
               </a></button>
             <!--Editar-->
-            <button type="button" class="btn btn-success"><a href="{% url 'editar_ticket' ticket.uuid  %}">
+            <button id="contrario" type="button" class="btn btn-success"><a href="{% url 'editar_ticket' ticket.uuid  %}">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
               <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
               </svg>
             </a></button>
             <!--Apagar-->
-            <button onclick="botao_apagar()" type="button" class="btn btn-danger">
+            <button id="contrario" onclick="botao_apagar()" type="button" class="btn btn-danger">
             <script>
             //Explorar a possibilidade de utilizar Jquery/JSDialog ou sweetalert
             function botao_apagar()
@@ -137,6 +143,7 @@
         </tbody>
     </table>
     <!-- Condição para apresentar a lista caso não haja nenhum item -->
+    <h5 style="color:#5e5f5f; float:right">Total: {{ total }}</h5>
     {% else %}
         <!-- Botões de Filtros Rápidos -->
         <div class="filtros-rapidos" style="margin: auto; width: 20%;">
@@ -145,7 +152,7 @@
           <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
           <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
         </div>
-        <hr>
+       
         <p>Nenhum ticket encontrado.</p>
     {% endif %}
 
@@ -161,7 +168,7 @@
         <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
       </div>
 
-      <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Criar Novo Ticket</a></button>
+      <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Novo</a></button>
       <hr>
       
       <table class="table table-striped table-dark table-sm">

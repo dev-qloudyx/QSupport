@@ -1,6 +1,6 @@
 
 body {
-    background: #fafafa;
+    background-color: #ecefea;
 }
 
 p {
@@ -168,4 +168,9 @@ a.article:hover {
 
 #contentLogin{
     padding-left: 10px;
+}
+
+button{
+    background-color:#117B76;
+    color:#fafafa
 }

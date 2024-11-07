@@ -42,6 +42,25 @@
           padding: 15px;
           text-align: center;
         }
+
+        .btn-primary,.btn-info,.btn-secondary,.btn-success,.btn-danger{
+            background-color:#117B76;
+            border-color:#117B76;
+            color:#fafafa;
+            transition: 0.5s
+        }
+
+        .btn-primary:hover,.btn-info:hover,.btn-secondary:hover,.btn-success:hover,.btn-danger:hover
+        {
+            background-color:#fafafa;
+            border-color:#117B76;
+            color:#117B76;
+            transition: 0.5s
+        }
+
+        body{
+            background-color: #ecefea;
+        }
         </style>
 
 </head>
@@ -130,8 +149,8 @@
                         <a href="{% url 'login' %}">Login</a>
                     {% endif %}
                     {% if user.is_authenticated %}
-                    <a class= "nav-item nav-link"href="{% url 'listaticket' %}?aberto=1">Gestão de Ticket</a>
-                    <a class= "nav-item nav-link"href="{% url 'listakanban' %}">Lista Kanban</a>
+                    <a class= "nav-item nav-link"href="{% url 'listaticket' %}?aberto=1">Tickets</a>
+                    <a class= "nav-item nav-link"href="{% url 'listakanban' %}">Kanban</a>
                     {% endif %}
                         
                 </li>

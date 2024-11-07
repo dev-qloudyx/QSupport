@@ -148,7 +148,9 @@ def ticket_detalhe(request, uuid):
         seguinte = None
         anterior = None
         ticket = get_object_or_404(Ticket, uuid=uuid)
-        
+        #seguir = AcaoEstado.objects.filter(inicio=ticket.estado).values("fim")
+        #seguir = get_object_or_404(AcaoEstado, inicio=ticket.estado)
+        #print(seguir.fim.estado)
         if ticket.estado.id > 1:
             anterior = StatusLog.objects.filter(ticket = ticket.id).last() # Estado Anterior
             anterior = get_object_or_404(Estado, estado = anterior) # Vai buscar os dados do Estado do StatusLogs
@@ -156,6 +158,8 @@ def ticket_detalhe(request, uuid):
             anterior = get_object_or_404(Estado, estado = anterior) # Vai buscar os dados do Estado do StatusLogs Excluindo o ultimo anterior
         if ticket.estado.id < 6:
             seguinte = AcaoEstado.objects.filter(inicio = ticket.estado) # Estado Seguinte
+    
+            
             
             
         
@@ -164,12 +168,13 @@ def ticket_detalhe(request, uuid):
         
         if request.method == 'POST':
             form = ComentarioForm(request.POST)
-            if ticket.estado.estado == "Descartado":
-                form2 = ComentarioResForm(request.POST, estado=2, instance=ticket)
-            elif ticket.estado.estado == "Fechado":
-                form2 = ComentarioResForm(request.POST, estado=1, instance=ticket)
-            else:
-                form2 = ComentarioResForm(estado=None)
+            #if seguir != 7:
+               # form2 = ComentarioResForm(request.POST, estado=2, instance=ticket)
+            #elif seguir == 7:
+                #form2 = ComentarioResForm(request.POST, estado=1, instance=ticket)
+            #else:
+                #form2 = ComentarioResForm(estado=None)
+            form2 = ComentarioResForm(request.POST, instance=ticket)
             
             if form.is_valid():
                 comentario = form.save(commit=False)
@@ -186,18 +191,20 @@ def ticket_detalhe(request, uuid):
         else:
 
             form = ComentarioForm()
-            if ticket.estado.estado == "Descartado":
-                form2 = ComentarioResForm(estado=2, instance=ticket)
-            elif ticket.estado.estado == "Fechado":
-                form2 = ComentarioResForm(estado=1, instance=ticket)
-            else:
-                form2 = ComentarioResForm(estado=None)
+            #if seguir.fim.estado != "Fechado":
+                #form2 = ComentarioResForm(estado=2, instance=ticket)
+            #elif seguir.fim.estado == "Fechado":
+                #form2 = ComentarioResForm(estado=1, instance=ticket)
+            #else:
+                #form2 = ComentarioResForm(estado=None)
+            form2 = ComentarioResForm(instance=ticket)
             
             
         
         return render(request, 'ticket/detalheticket.html', {
             'ticket': ticket,
             'seguinte': seguinte,
+            #'seguir': seguir,
             'anterior': anterior,
             'comentarios': comentarios,
             'form': form,

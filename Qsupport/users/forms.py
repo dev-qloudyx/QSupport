@@ -206,10 +206,10 @@ class ComentarioForm(forms.ModelForm):
 #Formulário para o comentário final para a resolução
 class ComentarioResForm(forms.ModelForm):
     
-    def __init__(self,*args,estado,**kwargs):
+    def __init__(self,*args,**kwargs):
         super(ComentarioResForm, self).__init__(*args, **kwargs)
-        self.fields['resolucao'].queryset = self.fields['resolucao'].queryset.filter(tipo=estado)
-        print(estado)
+        #self.fields['resolucao'].queryset = self.fields['resolucao'].queryset.filter(tipo=estado)
+        #print(estado)
     class Meta:
         model = Ticket
         fields = ['comresolucao','resolucao']
