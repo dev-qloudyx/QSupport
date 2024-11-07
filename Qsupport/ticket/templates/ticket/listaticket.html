@@ -13,6 +13,14 @@
       #id_estado{
         margin-left: 160px;
       }
+      #aparece,#esconde{
+        transition: 0.5s;
+      }
+      #aparece:hover,#esconde:hover{
+        background-color:#fafafa;
+        color: #007bff;
+        border-color:#007bff;
+      }
     </style>
 
     <h2 style="margin-bottom:25px">Lista de Tickets</h2>
@@ -24,43 +32,48 @@
     {% if ticketall %}
 
     <!-- Botões de Filtros Rápidos -->
-    <div class="filtros-rapidos" style="margin: auto; width: 16%;">
+    <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:inline; float:left;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+      </svg>
+    </button>
+    <button class="btn btn-primary" id="esconde" onclick="EscondeF()" style="display:none; float:left;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+      </svg>
+    </button>
+    <div class="filtros-rapidos" style="margin: auto; width: 22%;">
       <a href="{% url 'listaticket' %}?aberto=1" class="btn btn-primary">Abertos</a>
+      <button type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Assignar</a></button>
       <a href="{% url 'listaticket' %}?estado=6&estado=7" class="btn btn-secondary">Fechados</a>
-      <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
+      <!--<a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>-->
     </div>
     <br>
     <!-- Formulário para pesquisa com filtro -->
-    <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:block; margin: auto; width: 18%;">Pesquisar</button>
-    <button class="btn btn-primary" id="esconde" onclick="EscondeF()" style="display:none; margin: auto; width: 18%;">Esconder Filtro</button>
     <div class="card-header" id="filtro" style="display:none">
-      <form method="get" id="automatico" onchange="botao_usar()" oninput="setTimeout(botao_usar, 2500)">
+      <form method="get" id="automatico" onchange="" oninput="">
           {{ filter.form.as_div}}
           <button type="submit" id="auto" class="btn btn-primary">Filtrar</button>
       </form>
     </div>
     <script>
-      function botao_usar()
-            {
-              $('#auto').trigger('click');
-            }
       function EscondeF() 
             {
                 document.getElementById("filtro").style.display = "none";
                 document.getElementById("esconde").style.display = "none";
-                document.getElementById("aparece").style.display = "block";
+                document.getElementById("aparece").style.display = "inline";
             }
     
       function ApareceF() 
             {
                 document.getElementById("filtro").style.display = "block";
-                document.getElementById("esconde").style.display = "block";
+                document.getElementById("esconde").style.display = "inline";
                 document.getElementById("aparece").style.display = "none";
             }
     </script>
     <hr>
     <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Criar Novo Ticket</a></button>
-    <button type="button" class="btn btn-primary"><a href="{% url 'ticketsnaoatribuidos' %}">Aceitar Ticket</a></button>
+    
     <hr>
     <!-- Número de itens que aparecem na tabela -->
     <h3>Resultados: {{ total }} ticket(s) encontrado(s)</h3>
@@ -128,6 +141,7 @@
         <!-- Botões de Filtros Rápidos -->
         <div class="filtros-rapidos" style="margin: auto; width: 20%;">
           <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
+          <button type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Assignar</a></button>
           <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
           <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
         </div>
