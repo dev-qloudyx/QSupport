@@ -52,3 +52,11 @@ class AppsFilter(django_filters.FilterSet):
     class Meta:
         model = Apps
         fields = ['nome', 'id', 'ativo']
+
+#Filtro para a lista de Apps
+class KanbanFilter(django_filters.FilterSet):
+    id_Proprietario = django_filters.CharFilter(field_name="id_Proprietario__nome",lookup_expr='icontains',label="Criado por")
+    
+    class Meta:
+        model = Ticket
+        fields = ['id_Proprietario']

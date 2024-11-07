@@ -25,8 +25,10 @@ from django.db.models import Q
 from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
-from .filtros import UserFilter, TicketFilter, EntidadesFilter, AppsFilter
+from .filtros import UserFilter, TicketFilter, EntidadesFilter, AppsFilter, KanbanFilter
 from django.utils import timezone
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 
 def index(request):
@@ -87,10 +89,31 @@ def lista_kanban(request):
     estados = Estado.objects.order_by("id")
     tickets_por_estado = {estado: Ticket.objects.filter(estado=estado) for estado in estados}
 
+    #filtros para o kanban
+    ticket = Ticket.objects.all()
+    ticketfilter= KanbanFilter(request.GET, ticket)
+    
     return render(request, 'ticket/listakanban.html', {
         'tickets_por_estado': tickets_por_estado,
         'estados': estados,
+        'filter':ticketfilter,
     })
+
+#Mudar estado no Kanban
+@require_POST
+def mudar_estado_ticket(request, ticket_id):
+    
+    try:
+        ticket = Ticket.objects.get(id=ticket_id)
+        novo_estado_nome = request.POST.get("estado")
+        novo_estado = Estado.objects.get(estado=novo_estado_nome)
+        ticket.estado = novo_estado
+        ticket.save()
+        return JsonResponse({'success': True})
+    except Ticket.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Ticket não encontrado'})
+    except Estado.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Estado não encontrado'})
 
 #ver lista de entidades
 def lista_entidades(request):
@@ -419,3 +442,4 @@ def alterar_estado_usuario(request, uuid):
     usuario.save()
 
     return redirect('listausuarios')
+
