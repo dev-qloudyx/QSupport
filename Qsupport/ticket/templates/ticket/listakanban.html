@@ -61,24 +61,31 @@
 <div class="container-fluid mt-4">
     <h1 class="text-center" style="font-weight:bold; color:#117B76">Kanban</h1>
     <hr>
+    <!-- Formulário para pesquisa com filtro -->
+    <form method="get" class="mb-4">
+        {{ filter.form.as_p }}
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <a href="{% url 'listakanban' %}" class="btn btn-secondary">Limpar Filtros</a>
+    </form>
+
+    <hr>
     <div class="kanban-board">
         {% for estado, tickets in tickets_por_estado.items %}
             <div class="kanban-column" id="estado-{{ estado }}">
                 <h3 style="background-color:{{ estado.font_color }};">{{ estado }} {{ tickets_por_estado.font_color }}</h3>
                 <div class="kanban-tickets" data-estado="{{ estado }}">
                     {% for ticket in tickets %}
-                        <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
-                            <strong>{{ ticket.nome }}</strong>
-                            <hr>
-                            <p>Descrição: {{ ticket.descricao|truncatewords:10 }}</p>
-                            <button class="btn btn-primary"><a href="{% url 'detalheticket' ticket.uuid %}">Detalhes</a></button>
-                            {% if ticket.resolucao %}
+                        <a href="{% url 'detalheticket' ticket.uuid %}">
+                            <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
+                                <p><strong>{{ ticket.nome }} <small>(pd:{{ ticket.prioridade }})</small></strong></p>
                                 <hr>
-                                <p>Resolução: {{ticket.resolucao}} </p>
-                                <hr>
-                            {% endif %}
-                            <small>Criado por: {{ ticket.id_Proprietario.nome }}</small>
-                        </div>
+                                <p>Descrição: {{ ticket.descricao|truncatewords:10 }}</p>
+                                {% if ticket.resolucao %}
+                                    <p>Resolução: {{ticket.resolucao}} </p>
+                                {% endif %}
+                                <p><small>Criado por: {{ ticket.id_Proprietario.nome }}</small></p>
+                            </div>
+                        </a>
                     {% endfor %}
                 </div>
             </div>
