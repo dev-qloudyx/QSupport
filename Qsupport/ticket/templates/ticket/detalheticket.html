@@ -271,6 +271,8 @@
             
             {% if ticket.estado.estado == "Fechado" or ticket.estado.estado == "Cancelado" %}
 
+            <button onclick="PopUp()"></button>
+
             <div class="popup">
                 <div class="popuptext" id="myPopup">
                     <h3>Comentário de Resolução</h3>
@@ -282,7 +284,7 @@
                 </div>
             </div>
 
-            <button onclick="PopUp()"> 
+            
             
 
             <script>
@@ -296,12 +298,14 @@
             
             {% if ticket.estado.estado != "Fechado" and ticket.estado.estado != "Descartado" %}
             <!-- Formulário para introduzir novo comentário -->
-            <h3>Adicionar um Comentário</h3>
-            <form method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Adicionar Comentário</button>
-            </form>
+            <div>
+                <h3>Adicionar um Comentário</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Adicionar Comentário</button>
+                </form>
+            </div>
             {% endif %}
         {% endif %}
     </body>
