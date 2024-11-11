@@ -101,10 +101,9 @@ def lista_kanban(request):
 
 #Mudar estado no Kanban
 @require_POST
-def mudar_estado_ticket(request, ticket_id):
-    
+def mudar_estado_ticket(request, uuid):
     try:
-        ticket = Ticket.objects.get(id=ticket_id)
+        ticket = Ticket.objects.get(uuid=uuid)
         novo_estado_nome = request.POST.get("estado")
         novo_estado = Estado.objects.get(estado=novo_estado_nome)
         ticket.estado = novo_estado
