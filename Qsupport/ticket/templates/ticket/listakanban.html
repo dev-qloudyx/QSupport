@@ -61,14 +61,6 @@
 <div class="container-fluid mt-4">
     <h1 class="text-center" style="font-weight:bold; color:#117B76">Kanban</h1>
     <hr>
-    <!-- Formulário para pesquisa com filtro -->
-    <form method="get" class="mb-4">
-        {{ filter.form.as_p }}
-        <button type="submit" class="btn btn-primary">Filtrar</button>
-        <a href="{% url 'listakanban' %}" class="btn btn-secondary">Limpar Filtros</a>
-    </form>
-
-    <hr>
     <div class="kanban-board">
         {% for estado, tickets in tickets_por_estado.items %}
             <div class="kanban-column" id="estado-{{ estado }}" data-estado="{{ estado }}">
@@ -77,6 +69,7 @@
                     {% for ticket in tickets %}
                         <a href="{% url 'detalheticket' ticket.uuid %}">
                             <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
+                                <p><strong>Ticket ID:</strong> {{ ticket.id }}</p>
                                 <p><strong>{{ ticket.nome }} <small>(pd:{{ ticket.prioridade }})</small></strong></p>
                                 <hr>
                                 <p>Descrição: {{ ticket.descricao|truncatewords:10 }}</p>
@@ -84,6 +77,10 @@
                                     <p>Resolução: {{ticket.resolucao}} </p>
                                 {% endif %}
                                 <p><small>Criado por: {{ ticket.id_Proprietario.nome }}</small></p>
+                                <form class="form-mudar-estado" action="{% url 'mudar_estado_ticket' ticket.id %}" method="POST" style="display: none;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="estado" value="{{ estado }}">
+                                </form>
                             </div>
                         </a>
                     {% endfor %}
@@ -96,45 +93,37 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
 <script>
     document.querySelectorAll('.kanban-tickets').forEach(function(column) {
-    new Sortable(column, {
-        group: 'kanban',
-        animation: 150,
-        onEnd: function(evt) {
-            let ticketId = evt.item.getAttribute('data-id');
-            
-            if (!ticketId) {
-                console.error("Ticket ID não encontrado!");
-                return;
-            }
+        new Sortable(column, {
+            group: 'kanban',
+            animation: 150,
+            onEnd: function(evt) {
+                let ticketId = evt.item.dataset.id;
+                let novoEstado = evt.to.dataset.estado;
 
-            // Obtém o novo estado a partir da coluna onde o item foi solto
-            let novoEstado = evt.to.getAttribute('data-estado');
-            
-            if (!novoEstado) {
-                console.error("Novo estado não encontrado!");
-                return;
-            }
+                let form = document.querySelector(`#ticket-${ticketId} .form-mudar-estado`);
+                form.querySelector('input[name="estado"]').value = novoEstado;
 
-            // Realiza o AJAX para atualizar o estado do ticket
-            fetch(`/tickets/${ticketId}/mudar_estado/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ estado: novoEstado })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    alert("Erro ao atualizar o ticket.");
-                    location.reload();
-                }
-            })
-            .catch(error => console.error("Erro:", error));
-        }
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: new FormData(form)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Estado atualizado com sucesso');
+                    } else {
+                        alert("Erro ao atualizar o ticket.");
+                    }
+                })
+                .catch(error => {
+                    console.log("Erro:", error);
+                });
+            }
+        });
     });
-});
 </script>
 </body>
 {% endblock content %}

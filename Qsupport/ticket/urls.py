@@ -20,5 +20,5 @@ urlpatterns = [
     path('tickets/nao_atribuidos/', views.listar_tickets_nao_atribuidos, name='ticketsnaoatribuidos'), #Lista para os operadores escolherem os tickets
     path('tickets/assumir/<uuid:uuid>/', views.assumir_ticket, name='assumir_ticket'), #View para renderizar a função de aceitação do ticket
     path('kanban/', views.lista_kanban, name='listakanban'),
-    path('tickets/<uuid:uuid>/mudar_estado/', views.mudar_estado_ticket, name='mudar_estado_ticket'),
+    path('tickets/<int:ticket_id>/mudar_estado/', views.mudar_estado_ticket, name='mudar_estado_ticket'),
 ]

@@ -29,6 +29,8 @@ from .filtros import UserFilter, TicketFilter, EntidadesFilter, AppsFilter, Kanb
 from django.utils import timezone
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 def index(request):
@@ -101,13 +103,14 @@ def lista_kanban(request):
 
 #Mudar estado no Kanban
 @require_POST
-def mudar_estado_ticket(request, uuid):
+def mudar_estado_ticket(request, ticket_id):
     try:
-        ticket = Ticket.objects.get(uuid=uuid)
+        ticket = Ticket.objects.get(id=ticket_id)
         novo_estado_nome = request.POST.get("estado")
         novo_estado = Estado.objects.get(estado=novo_estado_nome)
         ticket.estado = novo_estado
         ticket.save()
+
         return JsonResponse({'success': True})
     except Ticket.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Ticket não encontrado'})
