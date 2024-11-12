@@ -17,7 +17,8 @@ from users.forms import (TicketForm,
     AppUserForm,
     EntidadeAppForm,
     ComentarioForm,
-    ComentarioResForm)
+    ComentarioResForm,
+    ComentarioResForm2)
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
@@ -189,6 +190,7 @@ def ticket_detalhe(request, uuid):
         if request.method == 'POST':
             form = ComentarioForm(request.POST)
             formfechado = ComentarioResForm(request.POST, instance=ticket)
+            formcancelado = ComentarioResForm2(request.POST,instance=ticket)
            
             
             if form.is_valid():
@@ -211,11 +213,24 @@ def ticket_detalhe(request, uuid):
                 messages.success(request, f'Comentário de resolução adicionado.')
                 return redirect('detalheticket', uuid=ticket.uuid)
             
+            if formcancelado.is_valid():
+                comentario = request.POST['comresolucao']
+                resolve = request.POST['resolucao']
+                num = request.POST.get('valor')
+                Ticket.objects.filter(uuid=ticket.uuid).update(comresolucao = comentario, resolucao = resolve)
+                Ticket.objects.filter(id = tickets.id).update(estado = num)
+                Ticket.objects.filter(id = tickets.id).update(dataAtualizacao = timezone.now())
+                tickets = get_object_or_404(Ticket, uuid=uuid) #Vai buscar os novos dados para guardar no StatusLogs
+                historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user) #Prepara os dados para guardar
+                historico.save()
+                messages.success(request, f'Comentário de resolução adicionado.')
+                return redirect('detalheticket', uuid=ticket.uuid)
+            
         else:
             
             form = ComentarioForm()
             formfechado = ComentarioResForm(instance=ticket)
-            
+            formcancelado = ComentarioResForm2(instance=ticket)
             
         
         return render(request, 'ticket/detalheticket.html', {
@@ -225,6 +240,7 @@ def ticket_detalhe(request, uuid):
             'comentarios': comentarios,
             'form': form,
             'form2':formfechado,
+            'form3':formcancelado,
         })
     else:
         ticket = get_object_or_404(Ticket, uuid=uuid)

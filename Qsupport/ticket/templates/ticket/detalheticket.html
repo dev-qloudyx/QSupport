@@ -135,7 +135,7 @@
                 {% endif %}
 
                 ||
-
+                <!-- Form para Cancelar o ticket -->
                 {% if ticket.estado.id != 6 and ticket.estado.id != 7 and ticket.estado.id > 1 %}
                         
                                 <button class="btn btn-info" id="cancelar" style="background-color:#343a40; border-color:#343a40;" onclick="PopUp()"> 
@@ -150,7 +150,7 @@
                                         <h3>Comentário de Resolução</h3>
                                         <form method="POST">
                                             {% csrf_token %}
-                                            {{ form2.as_p }}
+                                            {{ form3.as_p }}
                                             <button name ="valor" value="6" style="background-color:white; color:black" class="btn btn-primary">Confirmar</button>
                                         </form>
                                     </div>

@@ -207,12 +207,28 @@ class ComentarioForm(forms.ModelForm):
             'conteudo': forms.Textarea(attrs={'rows': 4}),
         }
 
-#Formulário para o comentário final para a resolução
+#Formulário para o comentário final para a resolução se for Fechado
 class ComentarioResForm(forms.ModelForm):
     
     def __init__(self,*args,**kwargs):
         super(ComentarioResForm, self).__init__(*args, **kwargs)
-        #self.fields['resolucao'].queryset = self.fields['resolucao'].queryset.filter(tipo=estado)
+        self.fields['resolucao'].queryset = self.fields['resolucao'].queryset.filter(tipo=1)
+        #print(estado)
+    class Meta:
+        model = Ticket
+        fields = ['comresolucao','resolucao']
+        widgets = {
+            'comresolucao': forms.Textarea(attrs={'rows': 4}),
+        }
+
+
+
+#Formulário para o comentário final para a resolução se for Cancelado
+class ComentarioResForm2(forms.ModelForm):
+    
+    def __init__(self,*args,**kwargs):
+        super(ComentarioResForm2, self).__init__(*args, **kwargs)
+        self.fields['resolucao'].queryset = self.fields['resolucao'].queryset.filter(tipo=2)
         #print(estado)
     class Meta:
         model = Ticket

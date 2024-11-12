@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'phonenumber_field',
     'django_filters',
+<<<<<<< Updated upstream
+=======
+    #'jquery',
+>>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
