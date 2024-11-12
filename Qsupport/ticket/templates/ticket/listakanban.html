@@ -100,7 +100,7 @@
                 let ticketId = evt.item.dataset.id;
                 let novoEstado = evt.to.dataset.estado;
 
-                let form = document.querySelector(`#ticket-${ticketId} .form-mudar-estado`);
+                let form = evt.item.querySelector('.form-mudar-estado');
                 form.querySelector('input[name="estado"]').value = novoEstado;
 
                 fetch(form.action, {
