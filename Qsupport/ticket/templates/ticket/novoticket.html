@@ -1,14 +1,20 @@
 {% extends "ticket/base.html" %}
 {% block content %}
+<style>
+    #id_app_tpPedidos, #id_nome, #id_descricao, #id_app 
+        {
+            width: 350px;
+        }
+</style>
     <div>
-        <h2>Criar Novo Ticket</h2>
+        <h2 style="font-weight:bold; margin-bottom:25px; color:#117B76">Criar Novo Ticket</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
         <hr>
-        <button type="button" class="btn btn"><a href="{% url 'listaticket' %}">Voltar à lista de tickets</a></button>
+        <button type="button" class="btn btn"><a href="{% url 'listaticket' %}">Voltar</a></button>
         
     </div>
 {% endblock content %}

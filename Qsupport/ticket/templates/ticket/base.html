@@ -61,6 +61,11 @@
         body{
             background-color: #ecefea;
         }
+
+        #foto{
+            height: 200px;
+            width: 50%;
+        }
         </style>
 
 </head>
@@ -71,7 +76,7 @@
 
         <nav id="sidebar">
             <div class="sidebar-header">
-                <a href = "{% url 'ticket-home' %}"> <img src="{% static 'ticket/Qloudyx.png' %}" style="width:200px;height:100%;"></a>
+                <a href = "{% url 'ticket-home' %}"> <img src="{% static 'ticket/Qloudyx3.png' %}" style="width:185px;height:100%;"></a>
                 <a class="close" onclick="CloseMenu()">&nbsp×&nbsp</a>
                 <hr>
                 
@@ -111,7 +116,7 @@
                         <!-- Menu dropdown com foto de perfil  -->
                         <div class="dropdown">
                             {% if user.is_authenticated %}
-                            <img src= "{{ user.foto.url }} " alt="Menu" class="rounded-circle" width="150" />
+                            <img src= "{{ user.foto.url }} " alt="Menu" id="foto" class="rounded-circle" width="150"/>
                             <center>
                             </center>
                         </div>
@@ -131,7 +136,7 @@
 
         <nav id="sidebar">
             <div class="sidebar-header">
-                <a href = "{% url 'ticket-home' %}"> <img src="{% static 'ticket/Qloudyx.png' %}" style="width:200px;height:100%;"></a>
+                <a href = "{% url 'ticket-home' %}"> <img src="{% static 'ticket/Qloudyx3.png' %}" style="width:185px;height:100%;"></a>
                 <a class="close" onclick="CloseMenu();Aparece()">&nbsp×&nbsp</a>
                 <hr>
                 
@@ -140,7 +145,7 @@
             <ul class="list-unstyled components" >
                     
                 <li>
-                    {% if user.role == "Qloudyx" or user.role == "Operador" or user.is_admin %}
+                    {% if user.role == "Interno" or user.role == "Operador" or user.is_admin %}
                         <a href="{% url 'ticket-home' %}">Home</a>
                     {% endif %}
                     
@@ -149,8 +154,10 @@
                         <a href="{% url 'login' %}">Login</a>
                     {% endif %}
                     {% if user.is_authenticated %}
-                    <a class= "nav-item nav-link"href="{% url 'listaticket' %}?aberto=1">Tickets</a>
-                    <a class= "nav-item nav-link"href="{% url 'listakanban' %}">Kanban</a>
+                        <a class= "nav-item nav-link"href="{% url 'listaticket' %}?aberto=1">Tickets</a>
+                        {% if user.role == "Interno" or user.role == "Operador" or user.is_admin %}
+                            <a class= "nav-item nav-link"href="{% url 'listakanban' %}">Kanban</a>
+                        {% endif %}
                     {% endif %}
                         
                 </li>
@@ -210,13 +217,12 @@
                             <li class="nav-item active">
                                 <!-- Menu dropdown com foto de perfil  -->
                                 <div class="dropdown">
+                                    <a class="nav-link" style="display:inline;" href="#">Bem-Vindo {{user.nome}}</a>
                                     {% if user.is_authenticated %}
-                                    <img src= "{{ user.foto.url }} " alt="Menu" class="rounded-circle" width="150" />
+                                    <img src= "{{ user.foto.url }} " alt="Menu" class="rounded-circle" width="120" />
                                     <center>
-                                    <div style="right: -15%" class="dropdown-content">
+                                    <div style="right: -9%; top: 100%" class="dropdown-content">
                                     <p><hr>
-                                    <h3>{{user.nome}}</h3>
-                                    <hr>
                                     <a href="{% url 'profile' %}">Perfil</a>
                                     <p><p>
                                     <form method="post" action="{% url 'logout' %}">
@@ -229,7 +235,7 @@
                                     
                                 </center>
                                 </div>
-                                <a class="nav-link" href="#">Bem-Vindo {{user.nome}}</a>
+                                
                                 {% endif %}
                             </li>
                         </ul>

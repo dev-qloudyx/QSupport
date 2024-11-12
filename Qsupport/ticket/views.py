@@ -170,9 +170,8 @@ def ticket_detalhe(request, uuid):
         seguinte = None
         anterior = None
         ticket = get_object_or_404(Ticket, uuid=uuid)
-        #seguir = AcaoEstado.objects.filter(inicio=ticket.estado).values("fim")
-        #seguir = get_object_or_404(AcaoEstado, inicio=ticket.estado)
-        #print(seguir.fim.estado)
+        tickets = get_object_or_404(Ticket, uuid=uuid)
+
         if ticket.estado.id > 1:
             anterior = StatusLog.objects.filter(ticket = ticket.id).last() # Estado Anterior
             anterior = get_object_or_404(Estado, estado = anterior) # Vai buscar os dados do Estado do StatusLogs
@@ -180,23 +179,14 @@ def ticket_detalhe(request, uuid):
             anterior = get_object_or_404(Estado, estado = anterior) # Vai buscar os dados do Estado do StatusLogs Excluindo o ultimo anterior
         if ticket.estado.id < 6:
             seguinte = AcaoEstado.objects.filter(inicio = ticket.estado) # Estado Seguinte
-    
-            
-            
-            
-        
+            print(seguinte)
         comentarios = ticket.comentarios.all()
-        #view para adicionar novo comentário (form) ou comentário de resolução (form2)
+        #view para adicionar novo comentário (form) ou comentário de resolução (formfechado ou formcancelado)
         
         if request.method == 'POST':
             form = ComentarioForm(request.POST)
-            #if seguir != 7:
-               # form2 = ComentarioResForm(request.POST, estado=2, instance=ticket)
-            #elif seguir == 7:
-                #form2 = ComentarioResForm(request.POST, estado=1, instance=ticket)
-            #else:
-                #form2 = ComentarioResForm(estado=None)
-            form2 = ComentarioResForm(request.POST, instance=ticket)
+            formfechado = ComentarioResForm(request.POST, instance=ticket)
+           
             
             if form.is_valid():
                 comentario = form.save(commit=False)
@@ -205,37 +195,39 @@ def ticket_detalhe(request, uuid):
                 comentario.save()
                 return redirect('detalheticket', uuid=ticket.uuid)
             
-            if form2.is_valid():
-                form2.save()
+            if formfechado.is_valid():
+                comentario = request.POST['comresolucao']
+                resolve = request.POST['resolucao']
+                num = request.POST.get('valor')
+                Ticket.objects.filter(uuid=ticket.uuid).update(comresolucao = comentario, resolucao = resolve)
+                Ticket.objects.filter(id = tickets.id).update(estado = num)
+                Ticket.objects.filter(id = tickets.id).update(dataAtualizacao = timezone.now())
+                tickets = get_object_or_404(Ticket, uuid=uuid) #Vai buscar os novos dados para guardar no StatusLogs
+                historico = StatusLog(ticket = tickets , estado = tickets.estado , usuario = request.user) #Prepara os dados para guardar
+                historico.save()
                 messages.success(request, f'Comentário de resolução adicionado.')
                 return redirect('detalheticket', uuid=ticket.uuid)
-
+            
         else:
-
+            
             form = ComentarioForm()
-            #if seguir.fim.estado != "Fechado":
-                #form2 = ComentarioResForm(estado=2, instance=ticket)
-            #elif seguir.fim.estado == "Fechado":
-                #form2 = ComentarioResForm(estado=1, instance=ticket)
-            #else:
-                #form2 = ComentarioResForm(estado=None)
-            form2 = ComentarioResForm(instance=ticket)
+            formfechado = ComentarioResForm(instance=ticket)
             
             
         
         return render(request, 'ticket/detalheticket.html', {
             'ticket': ticket,
             'seguinte': seguinte,
-            #'seguir': seguir,
             'anterior': anterior,
             'comentarios': comentarios,
             'form': form,
-            'form2':form2,
+            'form2':formfechado,
         })
     else:
         ticket = get_object_or_404(Ticket, uuid=uuid)
         return render(request, 'ticket/detalheticket.html', {'ticket': ticket})
     
+        
 #Avançar os estados via botão
 @login_required
 def avancar_estado_ticket(request, uuid):

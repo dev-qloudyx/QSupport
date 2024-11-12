@@ -90,23 +90,28 @@
         <thead style="color:#117B76; background-color:#dbf5f3">
           <tr>
             <th style="text-align:center" class="col-2 col-sm-1">ID#</th>
+            <th class="col-2 col-sm-1">Aplicação</th>
             <th class="col-2 col-sm-1">Criado por</th>
-            <th class="col-2 col-sm-3" style="color:#117B76">Título</th>
+            <th class="col-2 col-sm-2" style="color:#117B76">Título</th>
             <th class="col-2 col-sm-1">Data Criação</th>
-            <th class="col-2 col-sm-2">Responsável</th>
+            <th class="col-2 col-sm-1">Responsável</th>
             <th style="text-align:center" class="col-2 col-sm-1">Estado</th>
+            <th class="col-2 col-sm-1">Prioridade</th>
             <th class="col-3 col-sm-1"></th>
           </tr>
         </thead>
         <tbody>
           {% for ticket in ticketall %}  
           <tr>
+            
             <th style="text-align:center;color:#117B76;">{{ ticket.id }}</th>
+            <td>{{ ticket.app }}</td>
             <td>{{ ticket.id_Proprietario.nome }}</td>
             <th scope="row">{{ ticket.nome }}</th>
             <td>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</td>
             <td>{{ ticket.usuarios.nome }}</td>
             <td style="text-align:center"><button style="font-weight:bold;font-size:16px;color:gray;background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></td>
+            <td>{{ ticket.prioridade }}</td>
             <!--Detalhes-->
             <td><button id="contrario" type="button" class="btn btn-primary"><a href="{% url 'detalheticket' ticket.uuid %}">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ticket-detailed-fill" viewBox="0 0 16 16">
@@ -147,11 +152,27 @@
     <h5 style="color:#5e5f5f; float:right">Total: {{ total }}</h5>
     {% else %}
         <!-- Botões de Filtros Rápidos -->
+        <button type="button" class="btn btn-primary" style="display:inline; float:left"><a href="{% url 'novoticket' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+          </svg>
+        </a>
+        </button>
+        <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:inline; float:right;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+          </svg>
+        </button>
+        <button class="btn btn-primary" id="esconde" onclick="EscondeF()" style="display:none; float:right;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+          </svg>
+        </button>
         <div class="filtros-rapidos" style="margin: auto; width: 20%;">
           <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
           <button type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Assignar</a></button>
           <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
-          <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
+          <!--<a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>-->
         </div>
        
         <p>Nenhum ticket encontrado.</p>
@@ -163,13 +184,38 @@
 
       {% if tickets %}
 
+      <button type="button" class="btn btn-primary" style="display:inline; float:left"><a href="{% url 'novoticket' %}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+          <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+        </svg>
+      </a>
+      </button>
+      <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:inline; float:right;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+          <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+        </svg>
+      </button>
+      <button class="btn btn-primary" id="esconde" onclick="EscondeF()" style="display:none; float:right;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+          <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+        </svg>
+      </button>
       <div class="filtros-rapidos" style="margin: auto; width: 20%;">
         <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
+        <button id="contrario" style="width:120px;" type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Assignar</a></button>
         <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
-        <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
+        <!-- <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a> -->
       </div>
 
-      <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Novo</a></button>
+      <!-- Formulário para pesquisa com filtro -->
+      <div class="card-header" id="filtro" style="display:none">
+        <form method="get" id="automatico" onchange="" oninput="">
+            {{ filter.form.as_div}}
+            <button type="submit" id="auto" class="btn btn-primary">Filtrar</button>
+        </form>
+      </div>
+
+      <!--<button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Novo</a></button>-->
       <hr>
       
       <table class="table table-striped table-dark table-sm">
@@ -206,6 +252,22 @@
           
       {% else %}
           <!-- Botões de Filtros Rápidos -->
+          <button type="button" class="btn btn-primary" style="display:inline; float:left"><a href="{% url 'novoticket' %}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+              <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+            </svg>
+          </a>
+          </button>
+          <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:inline; float:right;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+              <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+            </svg>
+          </button>
+          <button class="btn btn-primary" id="esconde" onclick="EscondeF()" style="display:none; float:right;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+              <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+            </svg>
+          </button>
           <div class="filtros-rapidos" style="margin: auto; width: 20%;">
             <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
             <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
@@ -222,21 +284,38 @@
   {% if user.role == "Cliente" %}
 
     {% if cliente %}
-
+    <button type="button" class="btn btn-primary" style="display:inline; float:left"><a href="{% url 'novoticket' %}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+      </svg>
+    </a>
+    </button>
+    <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:inline; float:right;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+      </svg>
+    </button>
+    <button class="btn btn-primary" id="esconde" onclick="EscondeF()" style="display:none; float:right;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+      </svg>
+    </button>
     <div class="filtros-rapidos" style="margin: auto; width: 20%;">
       <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
       <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
-      <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
+      <!-- <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a> -->
     </div>
 
-    <button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Criar Novo Ticket</a></button>
-    <hr>
-    <!-- Botões de Filtros Rápidos -->
-    <div class="filtros-rapidos">
-      <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
-      <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
-      <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
+    <!-- Formulário para pesquisa com filtro -->
+    <div class="card-header" id="filtro" style="display:none">
+      <form method="get" id="automatico" onchange="" oninput="">
+          {{ filter.form.as_div}}
+          <button type="submit" id="auto" class="btn btn-primary">Filtrar</button>
+      </form>
     </div>
+
+    <!--<button type="button" class="btn btn-primary"><a href="{% url 'novoticket' %}">Criar Novo Ticket</a></button>-->
+
     <hr>
     <table class="table table-striped table-dark table-sm">
         <thead>
@@ -272,10 +351,26 @@
         
     {% else %}
         <!-- Botões de Filtros Rápidos -->
+        <button type="button" class="btn btn-primary" style="display:inline; float:left"><a href="{% url 'novoticket' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+          </svg>
+        </a>
+        </button>
+        <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:inline; float:right;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+          </svg>
+        </button>
+        <button class="btn btn-primary" id="esconde" onclick="EscondeF()" style="display:none; float:right;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+          </svg>
+        </button>
         <div class="filtros-rapidos" style="margin: auto; width: 20%;">
           <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
           <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
-          <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>
+         <!-- <a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a> -->
         </div>
         <hr>
         <p>Nenhum ticket encontrado.</p>
@@ -284,6 +379,22 @@
   {% endif %}
 
 {% endif %}
+
+<script>
+  function EscondeF() 
+        {
+            document.getElementById("filtro").style.display = "none";
+            document.getElementById("esconde").style.display = "none";
+            document.getElementById("aparece").style.display = "inline";
+        }
+
+  function ApareceF() 
+        {
+            document.getElementById("filtro").style.display = "block";
+            document.getElementById("esconde").style.display = "inline";
+            document.getElementById("aparece").style.display = "none";
+        }
+</script>
 
 </body>
 {% endblock content %}

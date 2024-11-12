@@ -17,7 +17,7 @@ class UserFilter(django_filters.FilterSet):
 #Filtro para a lista de Ticket
 class TicketFilter(django_filters.FilterSet):
     id = django_filters.NumberFilter(label="ID - Ticket")
-    estado = django_filters.MultipleChoiceFilter(choices=[('1', 'Aberto'),('6', 'Descartado'),('7','Fechado')],widget=(forms.CheckboxSelectMultiple()))
+    estado = django_filters.MultipleChoiceFilter(choices=[('1', 'Aberto'),('6', 'Cancelado'),('7','Fechado')],widget=(forms.CheckboxSelectMultiple()))
     prioridade = django_filters.ChoiceFilter(choices=[('1', 'Baixa'), 
         ('2', 'Media'), 
         ('3', 'Alta'), 

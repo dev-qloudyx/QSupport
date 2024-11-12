@@ -94,7 +94,9 @@ class TicketForm(forms.ModelForm):
         apps = Apps.objects.filter(entidade__in=entidades_do_usuario)
 
         self.fields['app'].choices = [(app.id, app.nome) for app in apps]
-    
+
+    descricao = forms.CharField(widget=forms.Textarea(),label="Descrição")
+        
     class Meta:
         model = Ticket
         fields = ['app_tpPedidos','nome','descricao','app']
@@ -112,6 +114,8 @@ class TicketFormAdmin(forms.ModelForm):
         super(TicketFormAdmin, self).__init__(*args, **kwargs)
         self.fields['resolucao'].required = False
         self.fields['prioridade'].required = False
+
+    descricao = forms.CharField(widget=forms.Textarea(),label="Descrição")
     class Meta:
         model = Ticket
         fields = ['nome','usuarios','descricao','app_tpPedidos','estado','prioridade', 'app','resolucao']

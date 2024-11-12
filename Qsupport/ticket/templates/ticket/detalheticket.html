@@ -87,7 +87,7 @@
                 ||
 
                 <!-- Botão para avançar estado -->
-                {% if ticket.estado.id < 7 %}
+                {% if ticket.estado.id < 8 %}
                     {% for num in seguinte %}
                         {% if num.id == 5 %}
                             <form method="post" action="{% url 'avancar_estado_ticket' ticket.uuid %}" style="display:inline;">
@@ -101,30 +101,24 @@
                             </form>
                         <!-- Caso o Estado tenha como fim "Fechado" -->
                         {% elif num.id == 6 %}
-                        <button type="submit" onclick="PopUp2()" name ="valor" value="{{ num.fim.id }}" class="btn btn-primary" style="background-color:{{num.cor}}; border-color:{{num.cor}};">
-                            {{ num.texto }}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
-                            </svg>
-                        </button>
-                        
-                        <div class="popup">
-                            <div class="popuptext" id="myPopup2">
-                                <h3>Comentário de Resolução 2</h3>
-                                <form method="POST" action="{% url 'avancar_estado_ticket' ticket.uuid %}">
-                                    {% csrf_token %}
-                                    {{ form2.as_p }}
-                                    <button type="submit" name ="valor" value="{{ num.fim.id }}" style="background-color:white; color:black" class="btn btn-primary">Adicionar Resolução</button>
-                                </form>
+                            <button type="submit" onclick="PopUp2()" name ="valor" value="{{ num.fim.id }}" class="btn btn-primary" style="background-color:{{num.cor}}; border-color:{{num.cor}};">
+                                {{ num.texto }}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                </svg>
+                            </button>
+                            
+                            <div class="popup">
+                                <div class="popuptext" id="myPopup2">
+                                    <h3>Comentário de Resolução</h3>
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        {{ form2.as_p }}
+                                        <button name ="valor" value="{{ num.fim.id }}" style="background-color:white; color:black" class="btn btn-primary">Confirmar</button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>  
-                                <!--<form method="post" action="{% url 'avancar_estado_ticket' ticket.uuid %}" style="display:inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" name ="valor" value="{{ num.fim.id }}" class="btn btn-primary" style="background-color:{{num.cor}}; border-color:{{num.cor}};">
 
-                                    </button>
-                                </form>-->
-                                
                         {% else %}
                             <form method="post" action="{% url 'avancar_estado_ticket' ticket.uuid %}" style="display:inline;">
                                 {% csrf_token %}
@@ -136,42 +130,33 @@
                                 </button>
                             </form>
                         {% endif %}
+
                     {% endfor %}
                 {% endif %}
 
                 ||
 
-                <!-- Botão para descartar ticket -->
-                {% if ticket.estado.id != 6 and ticket.estado.id != 7 and ticket.estado.id > 1 and seguir.fim.estado != "Fechado" %}
-                    
-                <button class="btn btn-info" style="background-color:#343a40; border-color:#343a40;" onclick="PopUp()"> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                    </svg>
-                    Cancelar Ticket
-                </button>
-                    <!--<form method="post" action="{% url 'fechado_estado_ticket' ticket.uuid %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-info" style="background-color:#343a40; border-color:#343a40;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                            </svg>    
-                        Descartar Ticket</button>
-                    </form>
--->
-                    
-                    <div class="popup">
-                        <div class="popuptext" id="myPopup">
-                            <h3>Comentário de Resolução</h3>
-                            <form method="POST" action="{% url 'fechado_estado_ticket' ticket.uuid %}">
-                                {% csrf_token %}
-                                {{ form2.as_p }}
-                                <button type="submit" class="btn btn-primary">Adicionar Resolução</button>
-                            </form>
-                        </div>
-                    </div>
-        
-                    
+                {% if ticket.estado.id != 6 and ticket.estado.id != 7 and ticket.estado.id > 1 %}
+                        
+                                <button class="btn btn-info" id="cancelar" style="background-color:#343a40; border-color:#343a40;" onclick="PopUp()"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                    Cancelar Ticket
+                                </button>
+                                
+                                <div class="popup">
+                                    <div class="popuptext" id="myPopup">
+                                        <h3>Comentário de Resolução</h3>
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            {{ form2.as_p }}
+                                            <button name ="valor" value="6" style="background-color:white; color:black" class="btn btn-primary">Confirmar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                {% endif %}
         
                     <script>
                         function PopUp() {
@@ -183,8 +168,23 @@
                             var popup2 = document.getElementById("myPopup2");
                             popup2.classList.toggle("show");
                           }
+                        
+                        function NoButton(){
+                            document.getElementById("cancelar").style.display = "none";
+                        }
                     </script>
-                {% endif %}
+
+                    {% for num in seguinte %}
+                        
+                        {% if num.id == 6 %}
+                            <script>
+                                NoButton()
+                            </script>
+                        {% endif %}
+
+                    {% endfor %}
+
+                    
 
                 <div style="float:right">
                     {% if user.is_admin or user.role == "Interno"%}
@@ -193,7 +193,7 @@
                     <a href="{% url 'apagar_ticket' ticket.uuid %}" class="btn btn-danger">Apagar</a>
                     {% endif %}
                     <!-- Botão para voltar a lista de tickets -->
-                    <a href="{% url 'listaticket' %}" class="btn btn-secondary">Voltar</a>
+                    <a href="{% url 'listaticket' %}?aberto=1" class="btn btn-secondary">Voltar</a>
                 </div>
 
 
@@ -223,6 +223,9 @@
               <div class="col-4">
                 <p><strong>Descrição:</strong><p>{{ ticket.descricao }}</p></p>
               </div>
+              <div class="col-4">
+                <p><strong>Aplicação:</strong><p>{{ ticket.app }}</p></p>
+              </div>
               <div class="col">
                 <p><strong>URL Externo:</strong><p><a href="http://{{ ticket.url }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
@@ -232,24 +235,6 @@
               </div>
             </div>
         </div>
-        
-        <!-- Formatação antiga
-        <p><strong>Estado:</strong> <button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
-        <p><strong></strong> {{ ticket.estado.descricao }}</p>
-        <p><strong>Data de Criação:</strong><p> {{ ticket.dataCriacao|date:"d/m/Y H:i" }}</p></p>
-        <p><strong>Descrição:</strong> {{ ticket.descricao }}</p>
-        <p><strong>Criado por:</strong> {{ ticket.id_Proprietario.nome }}</p>
-        -->
-        
-        <!--
-        {% if user.is_admin or user.role == "Interno"%}
-        # Botões para editar ou apagar os tickets
-        <a href="{% url 'editar_ticket' ticket.uuid %}" class="btn btn-primary">Editar</a>
-        <a href="{% url 'apagar_ticket' ticket.uuid %}" class="btn btn-danger">Apagar</a>
-        {% endif %}
-        # Botão para voltar a lista de tickets
-        <a href="{% url 'listaticket' %}" class="btn btn-secondary">Voltar</a>
-        -->
 
         <hr>
         <!-- Comentários dos operadores, internos e admin -->
@@ -269,34 +254,7 @@
 
             <hr>
             
-            {% if ticket.estado.estado == "Fechado" or ticket.estado.estado == "Cancelado" %}
-
-            <button onclick="PopUp()"></button>
-
-            <div class="popup">
-                <div class="popuptext" id="myPopup">
-                    <h3>Comentário de Resolução</h3>
-                    <form method="POST">
-                        {% csrf_token %}
-                        {{ form2.as_p }}
-                        <button type="submit" class="btn btn-primary">Adicionar Comentário de Resolução</button>
-                    </form>
-                </div>
-            </div>
-
-            
-            
-
-            <script>
-                // When the user clicks on <div>, open the popup
-                function PopUp() {
-                  var popup = document.getElementById("myPopup");
-                  popup.classList.toggle("show");
-                }
-            </script>
-            {% endif %}
-            
-            {% if ticket.estado.estado != "Fechado" and ticket.estado.estado != "Descartado" %}
+            {% if ticket.estado.estado != "Fechado" and ticket.estado.estado != "Cancelado" %}
             <!-- Formulário para introduzir novo comentário -->
             <div>
                 <h3>Adicionar um Comentário</h3>
