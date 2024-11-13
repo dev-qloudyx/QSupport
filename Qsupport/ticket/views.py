@@ -63,8 +63,46 @@ def ticket_list(request):
     tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
     cliente = Ticket.objects.filter(id_Proprietario=tickuser)
     aberto = request.GET.get('aberto')
+    ordem = request.GET.get('ordem')
     if (aberto == "1"):
         ticketall = Ticket.objects.all().exclude(Q(estado=6) | Q(estado=7))
+    if (ordem == "1"):
+        ticketall = ticketall.order_by("id")
+    if (ordem == "-1"):
+        ticketall = ticketall.order_by("-id")
+    if (ordem == "2"):
+        ticketall = ticketall.order_by("prioridade")
+    if (ordem == "-2"):
+        ticketall = ticketall.order_by("-prioridade")
+    if (ordem == "3"):
+        ticketall = ticketall.order_by("app")
+    if (ordem == "-3"):
+        ticketall = ticketall.order_by("-app")    
+    if (ordem == "4"):
+        ticketall = ticketall.order_by("nome")
+    if (ordem == "-4"):
+        ticketall = ticketall.order_by("-nome")
+    if (ordem == "5"):
+        ticketall = ticketall.order_by("id_Proprietario")
+    if (ordem == "-5"):
+        ticketall = ticketall.order_by("-id_Proprietario")
+    if (ordem == "6"):
+        ticketall = ticketall.order_by("dataCriacao")
+    if (ordem == "-6"):
+        ticketall = ticketall.order_by("-dataCriacao")
+    if (ordem == "7"):
+        ticketall = ticketall.order_by("usuarios")
+    if (ordem == "-7"):
+        ticketall = ticketall.order_by("-usuarios")
+    if (ordem == "8"):
+        ticketall = ticketall.order_by("dataAtualizacao")
+    if (ordem == "-8"):
+        ticketall = ticketall.order_by("-dataAtualizacao")
+    if (ordem == "9"):
+        ticketall = ticketall.order_by("estado")
+    if (ordem == "-9"):
+        ticketall = ticketall.order_by("-estado")
+    
     ticketfilter = TicketFilter(request.GET, ticketall)
     ticketfilteroperador = TicketFilter(request.GET, tickets)
     ticketfiltercliente = TicketFilter(request.GET, cliente)

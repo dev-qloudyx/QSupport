@@ -37,14 +37,17 @@
   {% if user.is_admin or user.role == "Operador"%}
     
     {% if ticketall %}
-
-    <!-- Botões de Filtros Rápidos -->
+    <!-- Novo Ticket -->
+    
     <button type="button" class="btn btn-primary" style="display:inline; float:left"><a href="{% url 'novoticket' %}">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
         <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
       </svg>
     </a>
     </button>
+
+    <!-- Botões de Filtros Rápidos -->
+    
     <button class="btn btn-primary" id="aparece" onclick="ApareceF()" style="display:inline; float:right;">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
         <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
@@ -89,14 +92,121 @@
     <table class="table table table-light table-sm">
         <thead style="color:#117B76; background-color:#dbf5f3">
           <tr>
-            <th style="text-align:center" class="col-2 col-sm-1">ID#</th>
-            <th class="col-2 col-sm-1">Aplicação</th>
-            <th class="col-2 col-sm-1">Criado por</th>
-            <th class="col-2 col-sm-2" style="color:#117B76">Título</th>
-            <th class="col-2 col-sm-1">Data Criação</th>
-            <th class="col-2 col-sm-1">Responsável</th>
-            <th style="text-align:center" class="col-2 col-sm-1">Estado</th>
-            <th class="col-2 col-sm-1">Prioridade</th>
+
+            <th style="text-align:center" class="col-2 col-sm-1">ID#
+              <a style="display:flex;padding-left:60px" href="{{ request.get_full_path }}&ordem=1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 13 9">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </a>
+              <a style="display:flex;padding-left:60px" href="{{ request.get_full_path }}&ordem=-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 13 13">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+              </a>
+            </th>
+
+            <th class="col-2 col-sm-1">Prioridade
+              
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 13 9">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </a>
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 13 13">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+              </a>
+            
+            </th>
+
+            <th class="col-2 col-sm-1">Aplicação
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 13 9">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </a>
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 13 13">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+              </a>
+            </th>
+
+            <th class="col-2 col-sm-1" style="color:#117B76">Título
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 13 9">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </a>
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 13 13">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+              </a>
+            </th>
+
+            <th class="col-2 col-sm-1">Criado por
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 13 9">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </a>
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 13 13">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+              </a>
+            </th>
+            <th class="col-2 col-sm-1">Data Criação
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 13 9">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </a>
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=-6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 13 13">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+              </a>
+            </th>
+            <th class="col-2 col-sm-1">Responsável
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=7">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 13 9">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </a>
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=-7">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 13 13">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+              </a>
+            </th>
+            <th class="col-2 col-sm-1">Ultima Atualização
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=8">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 13 9">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </a>
+              <a style="display:flex;" href="{{ request.get_full_path }}&ordem=-8">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 13 13">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+              </a>
+            </th>
+            <th style="text-align:center" class="col-2 col-sm-1">Estado
+              <a style="display:flex;padding-left:100px" href="{{ request.get_full_path }}&ordem=9">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 13 9">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </a>
+              <a style="display:flex;padding-left:100px" href="{{ request.get_full_path }}&ordem=-9">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 13 13">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+              </a>
+            </th>
             <th class="col-3 col-sm-1"></th>
           </tr>
         </thead>
@@ -105,13 +215,14 @@
           <tr>
             
             <th style="text-align:center;color:#117B76;">{{ ticket.id }}</th>
+            <td>{{ ticket.prioridade }}</td>
             <td>{{ ticket.app }}</td>
-            <td>{{ ticket.id_Proprietario.nome }}</td>
             <th scope="row">{{ ticket.nome }}</th>
+            <td>{{ ticket.id_Proprietario.nome }}</td>
             <td>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</td>
             <td>{{ ticket.usuarios.nome }}</td>
+            <td>{{ ticket.dataAtualizacao}}</td>
             <td style="text-align:center"><button style="font-weight:bold;font-size:16px;color:gray;background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></td>
-            <td>{{ ticket.prioridade }}</td>
             <!--Detalhes-->
             <td><button id="contrario" type="button" class="btn btn-primary"><a href="{% url 'detalheticket' ticket.uuid %}">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ticket-detailed-fill" viewBox="0 0 16 16">
