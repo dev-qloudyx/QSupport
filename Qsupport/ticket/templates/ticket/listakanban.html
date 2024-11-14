@@ -54,6 +54,66 @@
         body{
             background-color: #ecefea;
         }
+
+        .id-botao {
+            background-color: #117B76;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .meu-botao:hover {
+            background-color: #1abc9c;
+        }
+
+        .letra-id {
+            color: rgb(106, 255, 106);
+        }
+        
+        .ticket-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .ticket-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px;
+            margin-bottom: 0;
+        }
+
+        .ticket-prioridade {
+            font-size: 19px;
+            color: #555;
+            flex: 1;
+        }
+
+        .ticket-nome-data {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .ticket-nome {
+            font-size: 19px;
+            font-weight: bold;
+            color: #333;
+            text-align: right;
+        }
+
+        .ticket-data {
+            font-size: 13px;
+            color: #777; 
+            margin-top: 1px;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -69,14 +129,24 @@
                     {% for ticket in tickets %}
                         <a href="{% url 'detalheticket' ticket.uuid %}">
                             <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
-                                <p><strong>Ticket ID:</strong> {{ ticket.id }}</p>
-                                <p><strong>{{ ticket.nome }} <small>(pd:{{ ticket.prioridade }})</small></strong></p>
+                                 <p class="ticket-container">
+                                    <button class="id-botao"><strong class="letra-id">ID#</strong>{{ ticket.id }}</button>
+                                    <strong class="ticket-app">{{ ticket.app }}</strong>
+                                </p>
                                 <hr>
+                                <p><strong>{{ ticket.nome }}</strong></p>
                                 <p>Descrição: {{ ticket.descricao|truncatewords:10 }}</p>
                                 {% if ticket.resolucao %}
                                     <p>Resolução: {{ticket.resolucao}} </p>
                                 {% endif %}
-                                <p><small>Criado por: {{ ticket.id_Proprietario.nome }}</small></p>
+                                <div class="ticket-info">
+                                    <p class="ticket-prioridade"><small>{{ ticket.prioridade }}</small></p>
+                            
+                                    <div class="ticket-nome-data">
+                                        <p class="ticket-nome"><small>{{ ticket.id_Proprietario.nome }}</small></p>
+                                        <p class="ticket-data"><small>{{ ticket.dataAtualizacao }}</small></p>
+                                    </div>
+                                </div>
                                 <form class="form-mudar-estado" action="{% url 'mudar_estado_ticket' ticket.id %}" method="POST" style="display: none;">
                                     {% csrf_token %}
                                     <input type="hidden" name="estado" value="{{ estado }}">
