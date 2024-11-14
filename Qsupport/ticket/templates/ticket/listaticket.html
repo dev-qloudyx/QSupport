@@ -9,11 +9,9 @@
       }
       select{
         width: 188px;
+       
       }
-      #id_estado{
-        margin-left: 160px;
-      }
-
+    
       #contrario:hover{
         background-color:#117B76;
         border-color:#117B76;
@@ -28,6 +26,22 @@
           color:#117B76;
           transition: 0.5s
       }
+     
+      #automatico input,select
+      {
+        border-radius: 7px;
+        margin-right: 7px;
+        border-width:1px;
+        border-color:#117B76;        
+      }
+      #automatico #labelA
+      {
+        color:#5e5f5f;
+        width: 150px;
+        display: inline-block;
+        font-weight:bold;    
+      }
+      
     </style>
 
     <h2 style="font-weight:bold; margin-bottom:25px; color:#117B76">Gestão Tickets</h2>
@@ -61,14 +75,30 @@
     <div class="filtros-rapidos" style="margin: auto; width: 30%;">
       <a id="contrario" style="width:120px;" href="{% url 'listaticket' %}?aberto=1" class="btn btn-primary">Abertos</a>
       <button id="contrario" style="width:120px;" type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Assignar</a></button>
-      <a id="contrario" style="width:120px;" href="{% url 'listaticket' %}?estado=6&estado=7" class="btn btn-secondary">Fechados</a>
+      <a id="contrario" style="width:120px;" href="{% url 'listaticket' %}?aberto=2" class="btn btn-secondary">Fechados</a>
       <!--<a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>-->
     </div>
     <br>
     <!-- Formulário para pesquisa com filtro -->
     <div class="card-header" id="filtro" style="display:none">
       <form method="get" id="automatico" onchange="" oninput="">
-          {{ filter.form.as_div}}
+          <!--{{ filter.form.as_div}}-->
+          <label id="labelA">{{ filter.form.id.label}}</label>
+          {{ filter.form.id}} 
+          <label id="labelA">{{ filter.form.app.label}}</label>
+          {{ filter.form.app}}
+          <label id="labelA">{{ filter.form.prioridade.label}}</label>
+          {{ filter.form.prioridade}}
+          <br>
+          <label id="labelA">{{ filter.form.usuarios.label}}</label>
+          {{ filter.form.usuarios}}
+          <label id="labelA">{{ filter.form.id_Proprietario.label}}</label>
+          {{ filter.form.id_Proprietario}}
+          <label id="labelA">{{ filter.form.estado.label}}</label>
+          {{ filter.form.estado }}
+          <br>
+          <hr style="background-color:black"></hr>
+          <br>
           <button type="submit" id="auto" class="btn btn-primary">Filtrar</button>
       </form>
     </div>
@@ -211,7 +241,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for ticket in ticketall %}  
+          {% for ticket in page_obj %}  
           <tr>
             
             <th style="text-align:center;color:#117B76;">{{ ticket.id }}</th>
@@ -221,7 +251,7 @@
             <td>{{ ticket.id_Proprietario.nome }}</td>
             <td>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</td>
             <td>{{ ticket.usuarios.nome }}</td>
-            <td>{{ ticket.dataAtualizacao}}</td>
+            <td>{{ ticket.dataAtualizacao|date:"d/m/Y H:i" }}</td>
             <td style="text-align:center"><button style="font-weight:bold;font-size:16px;color:gray;background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></td>
             <!--Detalhes-->
             <td><button id="contrario" type="button" class="btn btn-primary"><a href="{% url 'detalheticket' ticket.uuid %}">
@@ -257,10 +287,50 @@
             <!--</a>--></button></td>
           </tr>
           {% endfor %}
+
+          
         </tbody>
+        
     </table>
-    <!-- Condição para apresentar a lista caso não haja nenhum item -->
+    <!-- Paginação -->
+    <div class="pagination">
+      <span class="step-links">
+          {% if page_obj.has_previous %}
+              <button class="btn btn-primary"><a href="{{ request.get_full_path }}&page=1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-backward-fill" viewBox="0 0 16 16">
+                  <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5"/>
+                </svg>
+              </a></button>
+              <button class="btn btn-primary"><a href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                  <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                </svg>
+              </a></button>
+          {% endif %}
+  
+          
+  
+          {% if page_obj.has_next %}
+            <button class="btn btn-primary"><a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+              </svg>
+            </a></button>
+            <button class="btn btn-primary"><a href="{{ request.get_full_path }}&page={{ page_obj.paginator.num_pages }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-forward-fill" viewBox="0 0 16 16">
+                <path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.753l-6.267 3.636c-.54.313-1.233-.066-1.233-.697v-2.94l-6.267 3.636C.693 12.703 0 12.324 0 11.693V4.308c0-.63.693-1.01 1.233-.696L7.5 7.248v-2.94c0-.63.693-1.01 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5"/>
+              </svg>
+            </a></button>
+          {% endif %}
+      </span>
+      
+    </div>
+    
+    <h5 style="color:#5e5f5f;float:left" class="current">
+      {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+    </h5>
     <h5 style="color:#5e5f5f; float:right">Total: {{ total }}</h5>
+    <!-- Condição para apresentar a lista caso não haja nenhum item -->
     {% else %}
         <!-- Botões de Filtros Rápidos -->
         <button type="button" class="btn btn-primary" style="display:inline; float:left"><a href="{% url 'novoticket' %}">

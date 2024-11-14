@@ -5,16 +5,46 @@
         {
             width: 350px;
         }
+    #espaco h6
+        {
+            font-weight:bold;
+            padding-left:15px;
+        }
+    #espaco select
+        {  
+            width:380px;
+        }
+    #id_nome
+        {
+            width:550px;
+        }
+    #id_descricao
+        {
+            height:210px;
+            width:550px;
+        }
 </style>
     <div>
         <h2 style="font-weight:bold; margin-bottom:25px; color:#117B76">Criar Novo Ticket</h2>
-        <form method="post">
+        <form id="espaco" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            <h6>Aplicação:</h6>
+            {{ form.app }}
+            <p></p>
+            <h6>Tipo problema:</h6>
+            {{ form.app_tpPedidos }}
+            <p></p>
+            <h6>Prioridade:</h6>
+            {{ form.prioridade }}
+            <p></p>
+            <h6>Titulo:</h6>
+            {{ form.nome }}
+            <p></p>
+            <h6>Descrição</h6>
+            {{ form.descricao }}
+            <p></p>
             <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="button" class="btn btn"><a href="{% url 'listaticket' %}">Voltar</a></button>
         </form>
-        <hr>
-        <button type="button" class="btn btn"><a href="{% url 'listaticket' %}">Voltar</a></button>
-        
     </div>
 {% endblock content %}

@@ -17,16 +17,19 @@ class UserFilter(django_filters.FilterSet):
 #Filtro para a lista de Ticket
 class TicketFilter(django_filters.FilterSet):
     id = django_filters.NumberFilter(label="ID - Ticket")
-    estado = django_filters.MultipleChoiceFilter(choices=[('1', 'Aberto'),('6', 'Cancelado'),('7','Fechado')],widget=(forms.CheckboxSelectMultiple()))
+    estado = django_filters.ChoiceFilter(choices=[(estado.id,estado.estado) for estado in Estado.objects.all()], label="Estado")
     prioridade = django_filters.ChoiceFilter(choices=[('1', 'Baixa'), 
         ('2', 'Media'), 
         ('3', 'Alta'), 
         ('4', 'Critica'), 
         ('5', 'Cancelado')])
-    id_Proprietario = django_filters.CharFilter(field_name="id_Proprietario__nome",lookup_expr='icontains',label="Criado por")
-    app = django_filters.CharFilter(field_name="app__nome",lookup_expr='icontains',label="Aplicação")
+    #id_Proprietario = django_filters.CharFilter(field_name="id_Proprietario__nome",lookup_expr='icontains',label="Criado por")
+    #app = django_filters.CharFilter(field_name="app__nome",lookup_expr='icontains',label="Aplicação")
     #usuarios = django_filters.CharFilter(field_name="usuarios__nome",lookup_expr='icontains',label="Responsável")      
     usuarios = django_filters.ChoiceFilter(choices=[(users.id,users.nome) for users in Usuarios.objects.all()],label="Responsável")
+    id_Proprietario = django_filters.ChoiceFilter(choices=[(users.id,users.nome) for users in Usuarios.objects.all()],label="Criado por")
+    app = django_filters.ChoiceFilter(choices=[(apps.id,apps.nome) for apps in Apps.objects.all()],label="Aplicação")
+    
 
     class Meta:
         model = Ticket

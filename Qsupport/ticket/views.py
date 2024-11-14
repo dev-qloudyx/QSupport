@@ -31,6 +31,7 @@ from django.utils import timezone
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 import json
 
 
@@ -66,6 +67,8 @@ def ticket_list(request):
     ordem = request.GET.get('ordem')
     if (aberto == "1"):
         ticketall = Ticket.objects.all().exclude(Q(estado=6) | Q(estado=7))
+    if (aberto == "2"):
+        ticketall = Ticket.objects.all().filter(Q(estado=6) | Q(estado=7))
     if (ordem == "1"):
         ticketall = ticketall.order_by("id")
     if (ordem == "-1"):
@@ -108,22 +111,25 @@ def ticket_list(request):
     ticketfiltercliente = TicketFilter(request.GET, cliente)
     total_resultados = ticketfilter.qs.count()
     estado_filtro = request.GET.get('estado')
-   
+    paginator = Paginator(ticketfilter.qs,2)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
     
     #filtros rápidos
-    if estado_filtro == 'abertos':
-        tickets = Ticket.objects.exclude(Q(estado__estado=6) | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
-    elif estado_filtro == 'fechados':
-        tickets = Ticket.objects.filter(Q(estado__estado=6) | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
-    else:
-        tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
+    #if estado_filtro == 'abertos':
+    #    tickets = Ticket.objects.exclude(Q(estado__estado=6) | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
+    #elif estado_filtro == 'fechados':
+    #    tickets = Ticket.objects.filter(Q(estado__estado=6) | Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
+    #else:
+    #    tickets = Ticket.objects.filter(Q(usuarios=tickuser) | Q(id_Proprietario=tickuser))
 
     return render(request, 'ticket/listaticket.html', 
                   {'tickets': ticketfilteroperador.qs,
                    'ticketall': ticketfilter.qs, 
                    'cliente':ticketfiltercliente.qs,
                    'filter':ticketfilter, 
-                   'total':total_resultados})
+                   'total':total_resultados,
+                   'page_obj':page_obj})
 
 #Lista em modelo Kanban
 def lista_kanban(request):

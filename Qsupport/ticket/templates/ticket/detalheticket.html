@@ -23,9 +23,9 @@
             .popup .popuptext {
               visibility: hidden;
               width: 500px;
-              background-color: #117B76;
-              color: #fff;
-              text-align: center;
+              background-color: #fff;
+              color: #117B76;
+              text-align: left;
               border-radius: 6px;
               padding: 16px;
               position: absolute;
@@ -33,6 +33,10 @@
               top: 80%;
               left: 50%;
               margin-left: -80px;
+            }
+
+            .popup textarea,select{
+                width:450px;
             }
             
             /* Popup arrow */
@@ -64,10 +68,28 @@
               from {opacity: 0;}
               to {opacity:1 ;}
             }
+
+            #bordap{
+
+                border-style:solid;
+                border-color:#5e5f5f;
+                border-width:1px;
+                border-radius:7px;
+                padding:20px;
+            }
+
+            strong{
+                width:200px;
+                display:inline-block;
+            }
+
+            #maiorarea textarea{
+                width:850px;
+            }
             
         </style>
 
-        <h2 class="mt-2">Detalhes do Ticket: {{ ticket.titulo }}</h2>
+        <h2 style="color:#117B76"class="mt-2"><button class="btn btn-primary" style="width:120px;height:50px;font-size:25px;font-weight:bold"><span style="color:lightgreen">ID#</span>{{ticket.id}}</button> {{ ticket.app }} - {{ ticket.nome }}</h2>
         <hr>
 
         {% if user.is_admin or user.role == "Interno" %}
@@ -110,7 +132,7 @@
                             
                             <div class="popup">
                                 <div class="popuptext" id="myPopup2">
-                                    <h3>Comentário de Resolução</h3>
+                                    <h3>Resolução</h3>
                                     <form method="POST">
                                         {% csrf_token %}
                                         {{ form2.as_p }}
@@ -147,11 +169,16 @@
                                 
                                 <div class="popup">
                                     <div class="popuptext" id="myPopup">
-                                        <h3>Comentário de Resolução</h3>
+                                        <h3>Resolução</h3>
                                         <form method="POST">
+                                            <h6 style="color:black;">Tipo:</h6>
+                                            {{ form3.resolucao }}
+                                            <hr>
                                             {% csrf_token %}
-                                            {{ form3.as_p }}
-                                            <button name ="valor" value="6" style="background-color:white; color:black" class="btn btn-primary">Confirmar</button>
+                                            <h6 style="color:black;">Notas:</h6>
+                                            {{ form3.comresolucao }}
+                                            <p><p></p></p>
+                                            <button name ="valor" value="6" style="float:right" class="btn btn-primary">Confirmar</button>
                                         </form>
                                     </div>
                                 </div>
@@ -204,39 +231,59 @@
 
         <hr>
 
-        <div>
-            <div class="row">
-              <div class="col-2">
-                <p><strong>Estado:</strong> <button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
-              </div>
-              <div class="col-4">
-                <p><p>{{ ticket.estado.descricao }}</p></p>
-              </div>
-              <div class="col">
-                <p><strong>Criado por:</strong><p>{{ ticket.id_Proprietario.nome }}</p></p>
-              </div>
+        <div id="bordap" style="float:right;background-color:#ecefea">
+            
+            <div>
+              <p style="display:inline;"><strong>Criado a:</strong>  {{ ticket.dataCriacao|date:"d/m/Y H:i" }}</p>
             </div>
-            <div class="row">
-              <div class="col-2">
-                <p><strong>Data de Criação:</strong><p> {{ ticket.dataCriacao|date:"d/m/Y H:i" }}</p></p>
-              </div>
-              <div class="col-4">
-                <p><strong>Descrição:</strong><p>{{ ticket.descricao }}</p></p>
-              </div>
-              <div class="col-4">
-                <p><strong>Aplicação:</strong><p>{{ ticket.app }}</p></p>
-              </div>
-              <div class="col">
-                <p><strong>URL Externo:</strong><p><a href="http://{{ ticket.url }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
-                        <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
-                    </svg>    
-                Link</a></p></p>
-              </div>
+            <p></p>
+            <div>
+                <p style="display:inline;" ><strong>Responsável:</strong>  {{ ticket.usuarios.nome }}</p>
             </div>
+            <p></p>
+            <div>
+                <p style="display:inline;" ><strong>Criado por:</strong>  {{ ticket.id_Proprietario.nome }}</p>
+            </div>
+            <p></p>
+            <div>
+                <p style="display:inline;"><strong>Ultima Atualização:</strong>  {{ ticket.dataAtualizacao|date:"d/m/Y H:i" }}</p>
+              </div>
+            <p></p>
+            <br>
         </div>
 
-        <hr>
+        <div>
+            <div class="row">
+
+              <div class="col-3">
+                <p><strong>Estado</strong> <button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
+              </div>
+
+              <div class="col-5" >
+                <p id="bordap">{{ ticket.estado.descricao }}</p>
+              </div>
+
+              <div class="col">
+                <p id="bordap"><strong style="color:#117B76;font-weight: bold;">Prioridade</strong><br>{{ ticket.prioridade }}</p>
+              </div>
+
+            </div>
+            <hr>
+            
+            <div class="row">
+              
+              <div class="col-10">
+                <p><strong>Detalhes:</strong></p>
+                <div class="col-10" id="bordap" style="display:inline-block">{{ ticket.descricao }}</div>
+              </div>
+
+            </div>
+
+        </div>
+        <p></p>
+        
+
+        
         <!-- Comentários dos operadores, internos e admin -->
         {% if user.is_admin or user.role == "Interno"%}
             <h3>Comentários</h3>
@@ -248,19 +295,17 @@
                     <p>{{ comentario.conteudo }}</p>
                 </li>
                 {% empty %}
-                <p>Não há comentários ainda.</p>
+                <p>Não há comentários de terceiros.</p>
                 {% endfor %}
             </ul>
 
-            <hr>
-            
             {% if ticket.estado.estado != "Fechado" and ticket.estado.estado != "Cancelado" %}
             <!-- Formulário para introduzir novo comentário -->
-            <div>
-                <h3>Adicionar um Comentário</h3>
+            <div id="maiorarea">
                 <form method="POST">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form.conteudo }}
+                    <p>
                     <button type="submit" class="btn btn-primary">Adicionar Comentário</button>
                 </form>
             </div>

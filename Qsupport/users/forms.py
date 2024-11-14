@@ -99,12 +99,13 @@ class TicketForm(forms.ModelForm):
         
     class Meta:
         model = Ticket
-        fields = ['app_tpPedidos','nome','descricao','app']
+        fields = ['app_tpPedidos','nome','descricao','app','prioridade']
         labels = {
         "app_tpPedidos": "Tipo de problema",
         "nome": "Titulo",
         "descricao":"Descrição",
-        "app": "Apps"
+        "app": "Apps",
+        "prioridade":"Prioridade",
     }
 
 #Formulário para os tickets registados internamente
