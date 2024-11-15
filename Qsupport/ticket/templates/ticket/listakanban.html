@@ -59,10 +59,14 @@
             background-color: #117B76;
             border: none;
             border-radius: 25px;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 5px 8px;
+            font-size: 15px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            width: 60px;
+            height: 40px;
+            margin-bottom: 0cm;
+            margin-top: 0cm;
         }
 
         .meu-botao:hover {
@@ -72,13 +76,21 @@
         .letra-id {
             color: rgb(106, 255, 106);
         }
+
+        .ticket-app {
+            font-weight: bold;
+            color: #117B76;
+            margin-bottom: 0cm;
+            margin-top: 0cm;
+        }
         
         .ticket-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 0cm;
+            margin-top: 0cm;
         }
 
         .ticket-info {
@@ -86,33 +98,46 @@
             justify-content: space-between;
             align-items: flex-start;
             padding: 10px;
-            margin-bottom: 0;
+            margin-bottom: 0cm;
+            margin-top: 0cm;
         }
 
         .ticket-prioridade {
             font-size: 19px;
-            color: #555;
+            color: #117B76;
             flex: 1;
+            margin-top: 0cm;
         }
+
+        .linha-baixo {
+            margin-bottom: 0cm;
+            margin-top: 0cm;
+        }
+
 
         .ticket-nome-data {
             display: flex;
             flex-direction: column;
             text-align: right;
+            margin-bottom: 0cm;
+            margin-top: 0cm;
         }
 
         .ticket-nome {
             font-size: 19px;
             font-weight: bold;
-            color: #333;
+            color: #117B76;
             text-align: right;
+            margin-bottom: 0cm;
+            margin-top: 0cm;
         }
 
         .ticket-data {
             font-size: 13px;
-            color: #777; 
-            margin-top: 1px;
+            color: #117B76; 
             text-align: right;
+            margin-bottom: 0cm;
+            margin-top: 0cm;
         }
     </style>
 </head>
@@ -129,16 +154,17 @@
                     {% for ticket in tickets %}
                         <a href="{% url 'detalheticket' ticket.uuid %}">
                             <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
-                                 <p class="ticket-container">
+                                <p class="ticket-container">
                                     <button class="id-botao"><strong class="letra-id">ID#</strong>{{ ticket.id }}</button>
                                     <strong class="ticket-app">{{ ticket.app }}</strong>
                                 </p>
-                                <hr>
+                                <hr class="linha-baixo">
                                 <p><strong>{{ ticket.nome }}</strong></p>
-                                <p>Descrição: {{ ticket.descricao|truncatewords:10 }}</p>
+                                <p><strong class="ticket-app">Descrição:</strong> {{ ticket.descricao|truncatewords:10 }}</p>
                                 {% if ticket.resolucao %}
-                                    <p>Resolução: {{ticket.resolucao}} </p>
+                                    <p><strong class="ticket-app">Resolução:</strong> {{ticket.resolucao}} </p>
                                 {% endif %}
+                                <hr class="linha-baixo">
                                 <div class="ticket-info">
                                     <p class="ticket-prioridade"><small>{{ ticket.prioridade }}</small></p>
                             
