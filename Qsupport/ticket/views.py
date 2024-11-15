@@ -129,7 +129,8 @@ def ticket_list(request):
                    'cliente':ticketfiltercliente.qs,
                    'filter':ticketfilter, 
                    'total':total_resultados,
-                   'page_obj':page_obj})
+                   'page_obj':page_obj,
+                   'paginator':paginator,})
 
 #Lista em modelo Kanban
 def lista_kanban(request):

@@ -4,14 +4,20 @@
     <body>
 
         <style>
+            p
+            {
+                font-weight: 350;
+            }
             .row p
             {
                 text-align: center;
             }  
             
             .popup {
-              position: relative;
-              display: inline-block;
+              position: fixed;
+              z-index: 1;
+              top:28%;
+              left:50%;
               cursor: pointer;
               -webkit-user-select: none;
               -moz-user-select: none;
@@ -23,6 +29,8 @@
             .popup .popuptext {
               visibility: hidden;
               width: 500px;
+              border-style: solid;
+              border-color: #117B76;
               background-color: #fff;
               color: #117B76;
               text-align: left;
@@ -30,8 +38,8 @@
               padding: 16px;
               position: absolute;
               z-index: 1;
-              top: 80%;
-              left: 50%;
+              top: 100%;
+              left: 100%;
               margin-left: -80px;
             }
 
@@ -70,21 +78,38 @@
             }
 
             #bordap{
-
+                background-color:#fafafa;
                 border-style:solid;
-                border-color:#5e5f5f;
+                border-color:#117B76;
+                border-width:1px;
+                border-radius:7px;
+                padding:20px;
+            }
+
+            #bordap-{
+                background-color:#117B76;
+                border-style:solid;
+                border-color:#117B76;
                 border-width:1px;
                 border-radius:7px;
                 padding:20px;
             }
 
             strong{
+                font-size: 1.1em;
+                font-weight:bold;
                 width:200px;
                 display:inline-block;
             }
 
             #maiorarea textarea{
-                width:850px;
+                width:820px;
+                background-color:#fafafa;
+                border-style:solid;
+                border-color:#117B76;
+                border-width:1px;
+                border-radius:7px;
+                padding:20px;
             }
             
         </style>
@@ -178,7 +203,7 @@
                                             <h6 style="color:black;">Notas:</h6>
                                             {{ form3.comresolucao }}
                                             <p><p></p></p>
-                                            <button name ="valor" value="6" style="float:right" class="btn btn-primary">Confirmar</button>
+                                            <button name ="valor" value="6" class="btn btn-primary">Confirmar</button>
                                         </form>
                                     </div>
                                 </div>
@@ -231,10 +256,10 @@
 
         <hr>
 
-        <div id="bordap" style="float:right;background-color:#ecefea">
+        <div id="bordap" style="float:right;background-color:#fafafa">
             
             <div>
-              <p style="display:inline;"><strong>Criado a:</strong>  {{ ticket.dataCriacao|date:"d/m/Y H:i" }}</p>
+              <p style="display:inline;"><strong>Criado a:</strong>  <a>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</a></p>
             </div>
             <p></p>
             <div>
@@ -256,15 +281,15 @@
             <div class="row">
 
               <div class="col-3">
-                <p><strong>Estado</strong> <button style="background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
+                <p><button style="position:absolute;left:10%;bottom:50%;background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
               </div>
 
               <div class="col-5" >
-                <p id="bordap">{{ ticket.estado.descricao }}</p>
+                <a id="bordap" style="text-align:left;position:absolute;height:88%;width:80%">{{ ticket.estado.descricao }}</a>
               </div>
 
               <div class="col">
-                <p id="bordap"><strong style="color:#117B76;font-weight: bold;">Prioridade</strong><br>{{ ticket.prioridade }}</p>
+                <p id="bordap"><strong style="color:#117B76">Prioridade</strong><br>{{ ticket.prioridade }}</p>
               </div>
 
             </div>
@@ -273,8 +298,17 @@
             <div class="row">
               
               <div class="col-10">
-                <p><strong>Detalhes:</strong></p>
-                <div class="col-10" id="bordap" style="display:inline-block">{{ ticket.descricao }}</div>
+                <p style="display:inline"><strong style="text-align:left">Detalhes:</strong> <a href="http://{{ ticket.url }}" style="float:right;font-style:normal;"> {{ ticket.url }}  
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
+                        <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                        <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+                    </svg>
+                </a> <strong style="float:right">URL:</strong>  </p>
+                <p></p>
+                <div class="col-10" id="bordap" style="display:inline-block;">
+                    {{ ticket.descricao }}
+                </div>
+
               </div>
 
             </div>
@@ -282,34 +316,55 @@
         </div>
         <p></p>
         
+        <!-- Comentários de resolução de operadores, internos e admin -->
+        {% if ticket.estado.estado == "Fechado" or ticket.estado.estado == "Cancelado" %}
+        <div class="col-10" style="width:832px;margin-bottom:50px">    
+            <strong>Tipo Resolução: </strong><a> {{ ticket.resolucao }} </a>
+            <div id="bordap">
+                {{ ticket.comresolucao }}
+            </div>
+        </div>
+        {% endif %}
 
         
-        <!-- Comentários dos operadores, internos e admin -->
+        
         {% if user.is_admin or user.role == "Interno"%}
-            <h3>Comentários</h3>
+        <!-- Comentários dos operadores, internos e admin -->
+        <div class="col-10">    
+            <strong>Comentários</strong>
             <!-- Lista dos comentários já feito num tickest -->
-            <ul>
+                <div id="bordap-" style="width:820px;margin-bottom:50px"> 
                 {% for comentario in comentarios %}
-                <li>
-                    <p><strong>{{ comentario.operador.nome }}</strong> em {{ comentario.data_criacao }}</p>
-                    <p>{{ comentario.conteudo }}</p>
-                </li>
-                {% empty %}
-                <p>Não há comentários de terceiros.</p>
-                {% endfor %}
-            </ul>
+                
+                    
+                    <div id="bordap">
+                        <strong style="display:inline;">{{ comentario.operador.nome }} - </strong>
+                        {{ comentario.data_criacao|date:"d/m/Y H:i" }}
+                        <hr style="color:black;background-color:black;">
+                        <p><p>{{ comentario.conteudo }}</p></p>
+                    </div>
 
+                    
+
+                {% empty %}
+                <div id="bordap">
+                    <p>Não há comentários de terceiros.</p>
+                </div>
+                {% endfor %}
+                </div>
+        
             {% if ticket.estado.estado != "Fechado" and ticket.estado.estado != "Cancelado" %}
             <!-- Formulário para introduzir novo comentário -->
             <div id="maiorarea">
                 <form method="POST">
                     {% csrf_token %}
                     {{ form.conteudo }}
-                    <p>
+                    <hr>
                     <button type="submit" class="btn btn-primary">Adicionar Comentário</button>
                 </form>
             </div>
             {% endif %}
         {% endif %}
+        </div>
     </body>
 {% endblock content %}

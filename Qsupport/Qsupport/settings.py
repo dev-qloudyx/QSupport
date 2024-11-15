@@ -120,7 +120,7 @@ USE_TZ = True
 # Localização de ficheiros estáticos (CSS, JavaScript, Imagens)
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = 'static/'
 
 MEDIA_ROOT = (BASE_DIR)
 MEDIA_URL = '/users/uploads/fotos/'

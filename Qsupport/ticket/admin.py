@@ -4,7 +4,7 @@ from django.contrib.auth.models import User,Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
-from .models import Usuarios,Estado,Entidades,Resolucao,Prioridade,TiposPedidos,Apps,Usuarios_Apps,Apps_tpPedidos,Ticket,StatusLog,Entidades_Apps,AcaoEstado
+from .models import Usuarios,Estado,Entidades,Resolucao,Prioridade,TiposPedidos,Apps,Usuarios_Apps,Apps_tpPedidos,Ticket,StatusLog,Entidades_Apps,AcaoEstado,Comentario
 class UserChangeForm(forms.ModelForm):
     
     password = ReadOnlyPasswordHashField()
@@ -93,3 +93,4 @@ admin.site.register(Ticket,TicketAdmin)
 admin.site.register(StatusLog,StatusLogAdmin)
 admin.site.register(Entidades_Apps)
 admin.site.register(AcaoEstado)
+admin.site.register(Comentario)
