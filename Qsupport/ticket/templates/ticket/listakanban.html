@@ -34,6 +34,8 @@
         }
 
         .kanban-card {
+            width: 300px; /* Largura fixa */
+            height: 230px; /* Altura fixa */
             background: #fff;
             padding: 10px;
             margin: 10px;
@@ -41,6 +43,7 @@
             border-radius: 4px;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             cursor: move;
+            margin-left: 0cm;
         }
 
         a{
@@ -82,6 +85,20 @@
             color: #117B76;
             margin-bottom: 0cm;
             margin-top: 0cm;
+        }
+
+        .ticket-descricao {
+            font-weight: bold;
+            color: #117B76;
+            margin-bottom: 0cm;
+            margin-top: 0cm;
+            font-size: 14px;
+        }
+
+        .ticket-texto {
+            margin-bottom: 0cm;
+            margin-top: 0cm;
+            font-size: 14px;
         }
         
         .ticket-container {
@@ -133,7 +150,7 @@
         }
 
         .ticket-data {
-            font-size: 13px;
+            font-size: 15px;
             color: #117B76; 
             text-align: right;
             margin-bottom: 0cm;
@@ -159,11 +176,8 @@
                                     <strong class="ticket-app">{{ ticket.app }}</strong>
                                 </p>
                                 <hr class="linha-baixo">
-                                <p><strong>{{ ticket.nome }}</strong></p>
-                                <p><strong class="ticket-app">Descrição:</strong> {{ ticket.descricao|truncatewords:10 }}</p>
-                                {% if ticket.resolucao %}
-                                    <p><strong class="ticket-app">Resolução:</strong> {{ticket.resolucao}} </p>
-                                {% endif %}
+                                <p><strong>{{ ticket.nome|truncatewords:3 }}</strong></p>
+                                <p class="ticket-texto"><strong class="ticket-descricao">Descrição:</strong> {{ ticket.descricao|truncatewords:4 }}</p>
                                 <hr class="linha-baixo">
                                 <div class="ticket-info">
                                     <p class="ticket-prioridade"><small>{{ ticket.prioridade }}</small></p>
