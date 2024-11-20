@@ -165,15 +165,13 @@ def mudar_estado_ticket(request, ticket_id):
 
 #Dashboard
 def tickets_charts(request):
-    data = Ticket.objects.all().order_by('dataCriacao')  # Ordene por data
+    #data = Ticket.objects.all().order_by('dataCriacao')  # Ordene por data
+    conta = [1,2,3,4,5,6,7,8,9,10,11,12]
     result = {
-        "labels": [item.dataCriacao.strftime("%Y-%m-%d") for item in data],
-        "values": [item.uuid for item in data],
+        "values": [Ticket.objects.filter(dataCriacao__month= i).count() for i in conta],
     }
-    final = JsonResponse(result)
-    html = render_to_string("ticketcharts.html",final)
-    serialized_data = json.dumps({"html":html})
-    return HttpResponse(serialized_data,content_type='application/json')
+    return render(request,"ticket/ticketcharts.html",{"final":result})
+
 #ver lista de entidades
 def lista_entidades(request):
     entidade = Entidades.objects.all()

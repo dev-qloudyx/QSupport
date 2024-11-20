@@ -1,45 +1,43 @@
 {% extends "ticket/base.html" %}
 {% block content %}
+{% load static %}
 <html>
 <head>
     <title>Gráfico de Vendas</title>
 </head>
 <body>
-    <canvas id="ticketChart" width="400" height="200"></canvas>
-    <script>
-        // Função para buscar os dados do backend
-        async function fetchTicket() {
-            const response = await fetch({"/api/ticketcharts/"});
-            const data = await response.json();
-            return data;
-        }
+    <div>
+        <canvas id="myChart"></canvas>
+      </div>
+      
+      {{ final.values }}
+      
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      
+      <script>
+        const ctx = document.getElementById('myChart');
 
-        // Inicializar o gráfico
-        fetchTicket().then(data => {
-            const ctx = document.getElementById('ticketChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line', // Ou 'bar', 'pie', etc.
-                data: {
-                    labels: data.labels, // Datas
-                    datasets: [{
-                        label: 'Vendas',
-                        data: data.values, // Valores de vendas
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            //labels: [final.labels],
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'] ,
+            datasets: [{
+              label: '# de Tickets',
+              data: {{ final.values }},
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
         });
-    </script>
+      </script>
+       
 </body>
 </html>
 {% endblock content %}
