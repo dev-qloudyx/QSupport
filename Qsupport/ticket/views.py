@@ -163,6 +163,15 @@ def mudar_estado_ticket(request, ticket_id):
     except Estado.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Estado não encontrado'})
 
+#Dashboard
+def tickets_charts(request):
+    data = Ticket.objects.all().order_by('dataCriacao')  # Ordene por data
+    result = {
+        "labels": [item.dataCriacao.strftime("%Y-%m-%d") for item in data],
+        "values": [item.uuid for item in data],
+    }
+    return JsonResponse(result)
+
 #ver lista de entidades
 def lista_entidades(request):
     entidade = Entidades.objects.all()

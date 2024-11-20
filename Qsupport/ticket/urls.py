@@ -21,4 +21,5 @@ urlpatterns = [
     path('tickets/assumir/<uuid:uuid>/', views.assumir_ticket, name='assumir_ticket'), #View para renderizar a função de aceitação do ticket
     path('kanban/', views.lista_kanban, name='listakanban'),
     path('tickets/<int:ticket_id>/mudar_estado/', views.mudar_estado_ticket, name='mudar_estado_ticket'),
+    path('api/ticketcharts/', views.tickets_charts, name='ticketcharts'),
 ]
