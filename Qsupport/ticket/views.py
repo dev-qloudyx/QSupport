@@ -28,7 +28,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from .filtros import UserFilter, TicketFilter, EntidadesFilter, AppsFilter, KanbanFilter
 from django.utils import timezone
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -170,8 +170,10 @@ def tickets_charts(request):
         "labels": [item.dataCriacao.strftime("%Y-%m-%d") for item in data],
         "values": [item.uuid for item in data],
     }
-    return JsonResponse(result)
-
+    final = JsonResponse(result)
+    html = render_to_string("ticketcharts.html",final)
+    serialized_data = json.dumps({"html":html})
+    return HttpResponse(serialized_data,content_type='application/json')
 #ver lista de entidades
 def lista_entidades(request):
     entidade = Entidades.objects.all()

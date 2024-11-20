@@ -1,5 +1,6 @@
 {% extends "ticket/base.html" %}
 {% block content %}
+<html>
 <head>
     <title>Gráfico de Vendas</title>
 </head>
@@ -8,7 +9,7 @@
     <script>
         // Função para buscar os dados do backend
         async function fetchTicket() {
-            const response = await fetch("/api/ticketcharts/");
+            const response = await fetch({"/api/ticketcharts/"});
             const data = await response.json();
             return data;
         }
@@ -40,4 +41,5 @@
         });
     </script>
 </body>
+</html>
 {% endblock content %}

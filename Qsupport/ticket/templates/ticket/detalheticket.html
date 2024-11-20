@@ -87,12 +87,12 @@
             }
 
             #bordap-{
-                background-color:#117B76;
+                background-color:#bfc7b7;
                 border-style:solid;
-                border-color:#117B76;
+                border-color:#bfc7b7;
                 border-width:1px;
                 border-radius:7px;
-                padding:20px;
+                padding:8px;
             }
 
             strong{
@@ -107,6 +107,16 @@
                 background-color:#fafafa;
                 border-style:solid;
                 border-color:#117B76;
+                border-width:1px;
+                border-radius:7px;
+                padding:20px;
+            }
+
+            #cinzento
+            {
+                background-color:#bfc7b7;
+                border-style:solid;
+                border-color:#bfc7b7;
                 border-width:1px;
                 border-radius:7px;
                 padding:20px;
@@ -256,65 +266,71 @@
 
         <hr>
 
-        <div id="bordap" style="float:right;background-color:#fafafa">
-            
-            <div>
-              <p style="display:inline;"><strong>Criado a:</strong>  <a>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</a></p>
-            </div>
-            <p></p>
-            <div>
-                <p style="display:inline;" ><strong>Responsável:</strong>  {{ ticket.usuarios.nome }}</p>
-            </div>
-            <p></p>
-            <div>
-                <p style="display:inline;" ><strong>Criado por:</strong>  {{ ticket.id_Proprietario.nome }}</p>
-            </div>
-            <p></p>
-            <div>
-                <p style="display:inline;"><strong>Ultima Atualização:</strong>  {{ ticket.dataAtualizacao|date:"d/m/Y H:i" }}</p>
-              </div>
-            <p></p>
-            <br>
-        </div>
-
         <div>
             <div class="row">
 
-              <div class="col-3">
+              <div class="col-2">
                 <p><button style="position:absolute;left:10%;bottom:50%;background-color:{{ticket.estado.font_color}}; border-color:{{ticket.estado.font_color}}; width:200px; border-radius: 10px;"type="button" class="btn btn-primary">{{ ticket.estado.estado }}</button></p>
               </div>
 
-              <div class="col-5" >
-                <a id="bordap" style="text-align:left;position:absolute;height:88%;width:80%">{{ ticket.estado.descricao }}</a>
+              <div id="cinzento" style="width:610px;margin-right:182px">
+                <a style="text-align:left;">{{ ticket.estado.descricao }}</a>
               </div>
 
-              <div class="col">
-                <p id="bordap"><strong style="color:#117B76">Prioridade</strong><br>{{ ticket.prioridade }}</p>
+              <div id="bordap" style="width:380px;">
+                <p><strong style="color:#117B76;text-align:right">Prioridade</strong><br><a style="position:absolute;left:77%">{{ ticket.prioridade }}</a></p>
               </div>
 
             </div>
+
             <hr>
             
             <div class="row">
               
-              <div class="col-10">
-                <p style="display:inline"><strong style="text-align:left">Detalhes:</strong> <a href="http://{{ ticket.url }}" style="float:right;font-style:normal;"> {{ ticket.url }}  
+              <div class="col-8">
+                <p style="display:inline"><strong style="text-align:left">Detalhes:</strong> <a href="http://{{ ticket.url }}" style="float:right;font-style:normal;"> <b>URL:</b> {{ ticket.url }}  
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
                         <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
                         <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
                     </svg>
-                </a> <strong style="float:right">URL:</strong>  </p>
+                </a></p>
                 <p></p>
-                <div class="col-10" id="bordap" style="display:inline-block;">
+                <div id="bordap" style="display:inline-block;width:865px">
                     {{ ticket.descricao }}
                 </div>
 
               </div>
 
+              <div id="bordap" style="background-color:#fafafa;display:inline;margin-top:40px">
+              
+                <div>
+                   <p style="display:inline;"><strong>Criado a:</strong>  <a>{{ ticket.dataCriacao|date:"d/m/Y H:i" }}</a></p>
+                </div>
+                <p></p>
+
+                <div>
+                    <p style="display:inline;" ><strong>Responsável:</strong>  {{ ticket.usuarios.nome }}</p>
+                </div>
+                <p></p>
+
+                <div>
+                    <p style="display:inline;" ><strong>Criado por:</strong>  {{ ticket.id_Proprietario.nome }}</p>
+                </div>
+                <p></p>
+
+                <div>
+                    <p style="display:inline;"><strong>Ultima Atualização:</strong>  {{ ticket.dataAtualizacao|date:"d/m/Y H:i" }}</p>
+                </div>
+                <p></p>
+
+                <br>
+
+                </div>
+
             </div>
 
         </div>
-        <p></p>
+
         
         <!-- Comentários de resolução de operadores, internos e admin -->
         {% if ticket.estado.estado == "Fechado" or ticket.estado.estado == "Cancelado" %}
@@ -333,11 +349,11 @@
         <div class="col-10">    
             <strong>Comentários</strong>
             <!-- Lista dos comentários já feito num tickest -->
-                <div id="bordap-" style="width:820px;margin-bottom:50px"> 
+                <div id="bordap-" style="width:815px;margin-bottom:50px;margin-top:20px"> 
                 {% for comentario in comentarios %}
                 
                     
-                    <div id="bordap">
+                    <div id="bordap" style="margin-bottom:15px;margin-top:10px">
                         <strong style="display:inline;">{{ comentario.operador.nome }} - </strong>
                         {{ comentario.data_criacao|date:"d/m/Y H:i" }}
                         <hr style="color:black;background-color:black;">

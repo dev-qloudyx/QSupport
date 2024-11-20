@@ -306,9 +306,9 @@
         
     </table>
     <!-- Paginação -->
-    <div class="pagination">
+    <div class="pagination" style="position:absolute;left:50%">
       <span class="step-links">
-        <div style="position:relative; display:inline;">
+        <div style="display:inline;">
             {% if page_obj.has_previous %}
                 <button id="contrario" class="btn btn-primary"><a href="{{ request.get_full_path }}&page=1">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-backward-fill" viewBox="0 0 16 16">
@@ -322,7 +322,7 @@
                 </a></button>
             {% endif %}
           </div>
-          <div style="position:relative; display:inline;">
+          <div style="display:inline;">
             {% for page in paginator %}
               {% if page.number == page_obj.number %}
               <button style="font-size: 16px;" class="btn btn-primary">
@@ -336,7 +336,7 @@
             {% endfor %}
           </div>
         
-          <div style="display:inline;position:relative;">
+          <div style="display:inline;">
             {% if page_obj.has_next %}
               <button id="contrario" class="btn btn-primary"><a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
@@ -356,9 +356,9 @@
     <p><p></p></p>
     <hr>
     
-    <h5 style="color:#5e5f5f;float:left" class="current">
+   <!-- <h5 style="color:#5e5f5f;float:left" class="current">
       {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
-    </h5>
+    </h5> -->
     <h5 style="color:#5e5f5f; float:right">Total: {{ total }}</h5>
     <!-- Condição para apresentar a lista caso não haja nenhum item -->
     {% else %}
