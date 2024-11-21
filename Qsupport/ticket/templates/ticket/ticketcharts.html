@@ -3,15 +3,31 @@
 {% load static %}
 <html>
 <head>
-    <title>Gráfico de Vendas</title>
+    <title>Gráfico de Fluxo de Tíckets</title>
+    <style>
+      .chart-container {
+          display: flex;
+          width: 600px; /* Largura máxima */
+          height: 2000px; /* Altura máxima */
+          display: block;
+          align-items: center;
+          justify-content: space-between;
+        }
+  </style>
 </head>
 <body>
-    <div>
+    <div class="chart-container">
+      <div>
         <canvas id="myChart"></canvas>
       </div>
-      
+      <div>
+        <!-- Segundo Gráfico -->
+        <canvas id="chart2"></canvas>
+      </div>
+    </div>  
+
       {{ final.values }}
-      
+      {{ finali.values }}
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       
       <script>
@@ -23,7 +39,7 @@
             //labels: [final.labels],
             labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'] ,
             datasets: [{
-              label: '# de Tickets',
+              label: 'Flúxo de Tickets Abertos',
               data: {{ final.values }},
               borderWidth: 1
             }]
@@ -35,6 +51,28 @@
               }
             }
           }
+        });
+
+        // Dados do segundo gráfico
+        const ctx2 = document.getElementById('chart2');
+        new Chart(ctx2, {
+            type: 'line',
+            data: {
+            //labels: [final.labels],
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'] ,
+            datasets: [{
+              label: 'Flúxo de Tickets Fechados',
+              data: {{ finali.values }},
+              borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
       </script>
        

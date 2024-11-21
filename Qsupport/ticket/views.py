@@ -170,7 +170,11 @@ def tickets_charts(request):
     result = {
         "values": [Ticket.objects.filter(dataCriacao__month= i).count() for i in conta],
     }
-    return render(request,"ticket/ticketcharts.html",{"final":result})
+
+    result2 = {
+        "values": [Ticket.objects.filter(dataAtualizacao__month= i).count() for i in conta],
+    }
+    return render(request,"ticket/ticketcharts.html",{"final":result, "finali":result2})
 
 #ver lista de entidades
 def lista_entidades(request):
