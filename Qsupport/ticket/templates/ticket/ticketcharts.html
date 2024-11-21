@@ -10,9 +10,67 @@
           height: 2000px; /* Altura máxima */
           display: block;
         }
+
+        .main{
+          display: flex;
+          justify-content: center;
+        }
+
+        .card{
+          max-width: 350px; /* Largura máxima */
+          height: 150px; /* Altura máxima */
+          background-color: #117B76;
+          border-radius: 8px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          text-align: center;
+          width: 30%;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          margin: 15px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .legenda {
+            color: rgb(106, 255, 106);
+            margin-left: 0%;
+            font: bold;
+            font-size: 20px;
+        }
+
+        .contagem {
+            color: rgb(255, 255, 255);
+            margin-left: 0%;
+            font: bold;
+            font-size: 55px;
+            justify-content: center;
+        }
   </style>
 </head>
 <body>
+    <div class="main">
+      <div class="card">
+        <h2 class="legenda">Tickets Aberto:</h2>
+        <p class="contagem">{{ tickets_abertos }}</p>
+      </div>
+      <div class="card">
+        <h2 class="legenda">Tickets Cancelados:</h2>
+        <p class="contagem">{{ tickets_cancelados }}</p>
+      </div>
+      <div class="card">
+        <h2 class="legenda">Tickets Fechados:</h2>
+        <p class="contagem">{{ tickets_fechados }}</p>
+      </div>
+      <div class="card">
+        <h2 class="legenda">Número de Usuários:</h2>
+        <p class="contagem">{{ clientes_total }}</p>
+      </div>
+    </div>
+
+
         <!-- Primeiro Gráfico -->
     <div class="chart-container">
       <div style="float:left;margin-left:25px">

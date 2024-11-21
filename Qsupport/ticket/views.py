@@ -167,6 +167,11 @@ def mudar_estado_ticket(request, ticket_id):
 def tickets_charts(request):
     #data = Ticket.objects.all().order_by('dataCriacao')  # Ordene por data
     conta = [1,2,3,4,5,6,7,8,9,10,11,12]
+    tickets_abertos = Ticket.objects.filter(estado__estado="Aberto").count()
+    tickets_fechados = Ticket.objects.filter(estado__estado="Fechado").count()
+    tickets_cancelados = Ticket.objects.filter(estado__estado="Cancelado").count()
+    clientes_total = Usuarios.objects.count()
+
     result = {
         "values": [Ticket.objects.filter(dataCriacao__month= i).count() for i in conta],
     }
@@ -174,7 +179,14 @@ def tickets_charts(request):
     result2 = {
         "values": [Ticket.objects.filter(dataAtualizacao__month= i).count() for i in conta],
     }
-    return render(request,"ticket/ticketcharts.html",{"final":result, "finali":result2})
+    return render(request,"ticket/ticketcharts.html",{
+        "final":result,
+        "finali":result2,
+        'tickets_abertos': tickets_abertos,
+        'tickets_fechados': tickets_fechados,
+        'tickets_cancelados': tickets_cancelados,
+        'clientes_total': clientes_total,
+    })
 
 #ver lista de entidades
 def lista_entidades(request):
