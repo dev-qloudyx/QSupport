@@ -46,4 +46,58 @@
             <button type="button" class="btn btn"><a href="{% url 'listaticket' %}">Voltar</a></button>
         </form>
     </div>
+
+    <hr>
+
+        <script>
+            var items = {nome:"{{apps}}",idade:"beh"};
+            console.log (items.nome);
+            var subjectObject = {
+            "Qloudyx": {
+                "QloudyxProject":"QloudyxProject",
+                "AtlasDev":"AtlasDev",
+                "QimobDev":"QimobDev", 
+            },
+            "Vanessa Tavares": {
+                "Qimob":"Qimob",
+                "Qimeb":"Qimeb",
+            },
+            }
+            window.onload = function() {
+            var subjectSel = document.getElementById("entidade");
+            var topicSel = document.getElementById("app");
+            for (var x in subjectObject) {
+                subjectSel.options[subjectSel.options.length] = new Option(x, x);
+            }
+            subjectSel.onchange = function() {
+                //empty Chapters- and Topics- dropdowns
+                topicSel.length = 1;
+                //display correct values
+                for (var y in subjectObject[this.value]) {
+                topicSel.options[topicSel.options.length] = new Option(y, y);
+                }
+            }
+            
+            }
+        </script>
+
+        <h2 style="font-weight:bold; margin-bottom:25px; color:#117B76">Cascading Dropdowns</h2>
+        
+        <form name="form1" id="espaco">
+            <h6>Entidades:</h6> 
+            <p></p>
+            <select name="entidade" id="entidade">
+            <option value="" selected="selected">------------</option>
+          </select>
+          <br><br>
+            <h6>Apps:</h6>
+            <p></p> 
+            <select name="app" id="app">
+            <option value="" selected="selected">------------</option>
+          </select>
+          <br><br>
+          <input type="submit" value="Submit"></input>
+        </form>
+
+       
 {% endblock content %}

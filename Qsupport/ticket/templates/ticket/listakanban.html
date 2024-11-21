@@ -151,7 +151,7 @@
 
         .ticket-data {
             font-size: 15px;
-            color: #117B76; 
+            color: gray; 
             text-align: right;
             margin-bottom: 0cm;
             margin-top: 0cm;
@@ -184,7 +184,7 @@
                             
                                     <div class="ticket-nome-data">
                                         <p class="ticket-nome"><small>{{ ticket.id_Proprietario.nome }}</small></p>
-                                        <p class="ticket-data"><small>{{ ticket.dataAtualizacao }}</small></p>
+                                        <p class="ticket-data">{{ ticket.dataAtualizacao }}</p>
                                     </div>
                                 </div>
                                 <form class="form-mudar-estado" action="{% url 'mudar_estado_ticket' ticket.id %}" method="POST" style="display: none;">

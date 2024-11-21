@@ -200,6 +200,8 @@ def lista_user(request):
 #Registar um ticket
 def create_ticket(request):
 
+    apps = Apps.objects.all().values("nome")
+    
     if request.method == 'POST':
         
         form = TicketForm(data=request.POST,current_user=request.user)
@@ -223,7 +225,7 @@ def create_ticket(request):
             return redirect('listaticket')
     else:
         form = TicketForm(current_user=request.user)
-    return render(request, 'ticket/novoticket.html', {'form': form})
+    return render(request, 'ticket/novoticket.html', {'form': form, 'apps':apps})
 
 #Ver detalhes do ticket
 @login_required

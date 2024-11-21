@@ -5,33 +5,40 @@
 <head>
     <title>Gráfico de Fluxo de Tíckets</title>
     <style>
-      .chart-container {
-          display: flex;
-          width: 600px; /* Largura máxima */
+      #chart1, #chart2, #chart3, #chart4 {
+          width: 750px; /* Largura máxima */
           height: 2000px; /* Altura máxima */
           display: block;
-          align-items: center;
-          justify-content: space-between;
         }
   </style>
 </head>
 <body>
+        <!-- Primeiro Gráfico -->
     <div class="chart-container">
-      <div>
-        <canvas id="myChart"></canvas>
+      <div style="float:left;margin-left:25px">
+        <canvas id="chart1"></canvas>
       </div>
-      <div>
         <!-- Segundo Gráfico -->
-        <canvas id="chart2"></canvas>
+      <div style="float:right;margin-right:25px">
+        <canvas id="chart2" style="display:inline"></canvas>
       </div>
-    </div>  
+    
+        <!-- Terceiro Gráfico -->
+      <div style="float:left;margin-left:25px">
+        <canvas id="chart3" style="display:inline"></canvas>
+      </div>
+        <!-- Quarto Gráfico -->
+      <div style="float:right;margin-right:25px">
+        <canvas id="chart4" style="display:inline"></canvas>
+      </div>
+    </div>
 
-      {{ final.values }}
-      {{ finali.values }}
+      <!--{{ final.values }}
+      {{ finali.values }}-->
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       
       <script>
-        const ctx = document.getElementById('myChart');
+        const ctx = document.getElementById('chart1');
 
         new Chart(ctx, {
           type: 'line',
@@ -74,6 +81,50 @@
                 }
             }
         });
+
+        const ctx3 = document.getElementById('chart3');
+
+        new Chart(ctx3, {
+          type: 'line',
+          data: {
+            //labels: [final.labels],
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'] ,
+            datasets: [{
+              label: 'Flúxo de Tickets Abertos',
+              data: {{ final.values }},
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        // Dados do segundo gráfico
+        const ctx4 = document.getElementById('chart4');
+        new Chart(ctx4, {
+            type: 'line',
+            data: {
+            //labels: [final.labels],
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'] ,
+            datasets: [{
+              label: 'Flúxo de Tickets Fechados',
+              data: {{ finali.values }},
+              borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }); 
       </script>
        
 </body>
