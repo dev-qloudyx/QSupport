@@ -71,39 +71,39 @@ def ticket_list(request):
         ticketall = Ticket.objects.all().filter(Q(estado=6) | Q(estado=7))
     if (ordem == "1"):
         ticketall = ticketall.order_by("id")
-    if (ordem == "-1"):
-        ticketall = ticketall.order_by("-id")
     if (ordem == "2"):
-        ticketall = ticketall.order_by("prioridade")
-    if (ordem == "-2"):
-        ticketall = ticketall.order_by("-prioridade")
+        ticketall = ticketall.order_by("-id")
     if (ordem == "3"):
-        ticketall = ticketall.order_by("app")
-    if (ordem == "-3"):
-        ticketall = ticketall.order_by("-app")    
+        ticketall = ticketall.order_by("prioridade")
     if (ordem == "4"):
-        ticketall = ticketall.order_by("nome")
-    if (ordem == "-4"):
-        ticketall = ticketall.order_by("-nome")
+        ticketall = ticketall.order_by("-prioridade")
     if (ordem == "5"):
-        ticketall = ticketall.order_by("id_Proprietario")
-    if (ordem == "-5"):
-        ticketall = ticketall.order_by("-id_Proprietario")
+        ticketall = ticketall.order_by("app")
     if (ordem == "6"):
-        ticketall = ticketall.order_by("dataCriacao")
-    if (ordem == "-6"):
-        ticketall = ticketall.order_by("-dataCriacao")
+        ticketall = ticketall.order_by("-app")    
     if (ordem == "7"):
-        ticketall = ticketall.order_by("usuarios")
-    if (ordem == "-7"):
-        ticketall = ticketall.order_by("-usuarios")
+        ticketall = ticketall.order_by("nome")
     if (ordem == "8"):
-        ticketall = ticketall.order_by("dataAtualizacao")
-    if (ordem == "-8"):
-        ticketall = ticketall.order_by("-dataAtualizacao")
+        ticketall = ticketall.order_by("-nome")
     if (ordem == "9"):
+        ticketall = ticketall.order_by("id_Proprietario")
+    if (ordem == "10"):
+        ticketall = ticketall.order_by("-id_Proprietario")
+    if (ordem == "11"):
+        ticketall = ticketall.order_by("dataCriacao")
+    if (ordem == "12"):
+        ticketall = ticketall.order_by("-dataCriacao")
+    if (ordem == "13"):
+        ticketall = ticketall.order_by("usuarios")
+    if (ordem == "14"):
+        ticketall = ticketall.order_by("-usuarios")
+    if (ordem == "15"):
+        ticketall = ticketall.order_by("dataAtualizacao")
+    if (ordem == "16"):
+        ticketall = ticketall.order_by("-dataAtualizacao")
+    if (ordem == "17"):
         ticketall = ticketall.order_by("estado")
-    if (ordem == "-9"):
+    if (ordem == "18"):
         ticketall = ticketall.order_by("-estado")
     
     ticketfilter = TicketFilter(request.GET, ticketall)

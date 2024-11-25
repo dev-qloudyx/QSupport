@@ -33,9 +33,11 @@
             <h6>Tipo problema:</h6>
             {{ form.app_tpPedidos }}
             <p></p>
+            {% if user.role == "Interno" or user.role == "Operador" or user.is_admin %}
             <h6>Prioridade:</h6>
             {{ form.prioridade }}
             <p></p>
+            {% endif %}
             <h6>Titulo:</h6>
             {{ form.nome }}
             <p></p>
@@ -80,7 +82,7 @@
             
             }
         </script>
-
+        <!--
         <h2 style="font-weight:bold; margin-bottom:25px; color:#117B76">Cascading Dropdowns</h2>
         
         <form name="form1" id="espaco">
@@ -98,6 +100,7 @@
           <br><br>
           <input type="submit" value="Submit"></input>
         </form>
+        -->
 
        
 {% endblock content %}

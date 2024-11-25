@@ -342,7 +342,11 @@
         </div>
         {% endif %}
 
-        
+        {% if user.role == "Cliente" %}
+        <div class="col-10" style="width:832px;margin-bottom:50px">    
+            <a href="{% url 'listaticket' %}?aberto=1" class="btn btn-secondary">Voltar</a>
+        </div>
+        {% endif %}
         
         {% if user.is_admin or user.role == "Interno"%}
         <!-- Comentários dos operadores, internos e admin -->
@@ -382,5 +386,6 @@
             {% endif %}
         {% endif %}
         </div>
+
     </body>
 {% endblock content %}

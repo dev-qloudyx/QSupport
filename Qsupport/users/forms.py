@@ -99,13 +99,12 @@ class TicketForm(forms.ModelForm):
         
     class Meta:
         model = Ticket
-        fields = ['app_tpPedidos','nome','descricao','app','prioridade']
+        fields = ['app_tpPedidos','nome','descricao','app']
         labels = {
         "app_tpPedidos": "Tipo de problema",
         "nome": "Titulo",
         "descricao":"Descrição",
         "app": "Apps",
-        "prioridade":"Prioridade",
     }
 
 #Formulário para os tickets registados internamente
@@ -121,12 +120,12 @@ class TicketFormAdmin(forms.ModelForm):
         model = Ticket
         fields = ['nome','usuarios','descricao','app_tpPedidos','estado','prioridade', 'app','resolucao']
         labels = {
-        "nome": "Titulo",
+        "nome":"Titulo",
         "descricao":"Descrição",
         "app_tpPedidos": "Tipo de problema",
-        "estado": "Estado",
+        "estado":"Estado",
         "prioridade":"Prioridade",
-        "app" : "Aplicação",
+        "app":"Aplicação",
         "resolucao":"Resolução"
     }
         

@@ -161,7 +161,7 @@ class Ticket(models.Model):
     descricao = models.CharField(max_length=300, verbose_name='Descrição')
     usuarios = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="responsavel", verbose_name='Responsável')
     app_tpPedidos = models.ForeignKey(Apps_tpPedidos, on_delete=models.CASCADE, verbose_name='Tipo de Problema')
-    prioridade = models.ForeignKey(Prioridade, null = True , on_delete=models.CASCADE, verbose_name='Prioridade')
+    prioridade = models.ForeignKey(Prioridade, null=True , on_delete=models.CASCADE, verbose_name='Prioridade')
     resolucao = models.ForeignKey(Resolucao, null = True, on_delete=models.CASCADE, verbose_name='Resolução')
     comresolucao = models.CharField(max_length=200, null=True, verbose_name='Comentário de Resolução')
     id_Proprietario = models.ForeignKey(Usuarios, null = True, on_delete=models.CASCADE, related_name="criador", verbose_name='Criador do Ticket')

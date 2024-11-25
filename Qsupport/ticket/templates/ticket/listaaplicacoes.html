@@ -1,22 +1,76 @@
 {% extends "ticket/base.html" %}
 {% block content %}
 <body>
+    <style>
+        #labelA
+          {
+            color:#5e5f5f;
+            margin-right: 5px;
+            display: inline-block;
+            font-weight:bold;    
+          }
+        input,select
+          {
+            border-radius: 7px;
+            margin-right: 7px;
+            border-width:1px;
+            border-color:#117B76;        
+          }
+        #contrario:hover{
+            background-color:#117B76;
+            border-color:#117B76;
+            color:#fafafa;
+            transition: 0.5s
+          }
+    
+        #contrario
+          {
+              background-color:#fafafa;
+              border-color:#117B76;
+              color:#117B76;
+              transition: 0.5s
+          }
+    </style>
+    
     <!-- Formulário para pesquisa com filtro -->
     <div class="card-header">
         <form method="get">
-            {{ filter.form.as_p }}
-            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <label id="labelA">ID</label>
+            {{ filter.form.id}} 
+            <label id="labelA">Utilizador</label>
+            {{ filter.form.nome}}
+            <label id="labelA">Ativo?</label>
+            {{ filter.form.ativo}} 
+            <br>
+              <hr style="background-color:black"></hr>
+            <br>
+            <button type="submit" class="btn btn-primary">Procurar</button>
+            
+            <!--<form method="get">
+                {{ filter.form.as_p }}
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </form>-->
         </form>
     </div>
+
     <hr>
-    <button type="button" class="btn btn-primary"><a href="{% url 'criar_app' %}">Registar Nova Aplicação</a></button>
-    <button type="button" class="btn btn-primary"><a href="{% url 'associar_entid_app' %}">Associar Entidade a uma App</a></button>
+    <button type="button" class="btn btn-primary"><a href="{% url 'criar_app' %}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+        </svg>
+    </a></button>
+    <button type="button" class="btn btn-primary"><a href="{% url 'associar_entid_app' %}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
+            <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+            <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+        </svg> Ligar App a Entidade
+    </a></button>
     <hr>
-    <!-- Apresentação do número de itens que a lista apresentada possui -->
+    <!-- Apresentação do número de itens que a lista apresentada possui
     <h3>Resultados: {{ total }} aplicação(ões) encontrada(s)</h3>
-    <hr>
+    <hr> -->
     <table class="table table-bordered table-light">
-        <thead>
+        <thead style="color:#117B76; background-color:#dbf5f3">
             <tr>
                 <th>ID#</th>
                 <th>Nome</th>

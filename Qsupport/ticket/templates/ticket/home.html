@@ -88,12 +88,12 @@
 {% if user.is_authenticated %}
     
   {% if user.is_admin or user.role == "Interno"%} <!-- Lado Operador -->
-
-  <h2 style="margin-bottom:25px">Qsupport - Pagina Inicial</h2>
-
+  <h2 style="margin-bottom:25px; border-radius:5px; background-color:#117B76; color:white; text-align:center">Qsupport - Bem-vindo {{user.nome}}</h2>
+<!--
+  
   <hr>
-
   <h3 style="margin-bottom:25px">Estatisticas</h3>
+-->
 
   <div align="center">
       <div class="row">
@@ -137,7 +137,7 @@
   <div align="center">
       <div class="row">
         <div class="col-md-6">
-          <button type="button" class="btn btn-primary" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px"><font size="6">+ Estatisticas</font></button>
+          <button type="button" class="btn btn-primary" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px"><a href={% url 'ticketcharts' %}><font size="6">+ Estatisticas</font></a></button>
         </div>
       <div class="col-md-6">
             <button type="button" class="btn btn-primary" aria-haspopup="true" aria-expanded="false" style="width:100%; border-radius:5px;border-color:#117B76;border-width:5px"><a href={% url 'ticket-novo' %}><font size="6">Novo Ticket</font></a></button>

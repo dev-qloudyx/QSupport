@@ -156,7 +156,7 @@
                         {% if user.role == "Interno" or user.role == "Operador" or user.is_admin %}
                             <a class= "nav-item nav-link"href="{% url 'listakanban' %}">Kanban</a>
                             
-                            <a class= "nav-item nav-link"href="{% url 'ticketcharts' %}">charts</a>
+                            <a class= "nav-item nav-link"href="{% url 'ticketcharts' %}">Estatisticas</a>
                         {% endif %}
                     {% endif %}
                         
@@ -226,7 +226,7 @@
                                     <a class="nav-link" style="display:inline;text-align:center" href="#">{{user.nome}}</a>
                                     <img src= "{{ user.foto.url }} " alt="Menu" class="rounded-circle" width="120" />
                                     <center>
-                                    <div style="right: -19%; top: 100%; color:gray;" class="dropdown-content">
+                                    <div style="right: -16%; top: 75%; color:gray;" class="dropdown-content">
                                     <p></p>
                                     <a href="{% url 'profile' %}">Perfil</a>
                                     <p><p>
