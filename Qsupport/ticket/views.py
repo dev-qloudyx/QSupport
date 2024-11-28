@@ -136,6 +136,11 @@ def ticket_list(request):
 def lista_kanban(request):
     modo_exibicao = request.GET.get("modo", "estado")
 
+    if request.user.is_admin:
+        tickets = Ticket.objects.all()
+    else:
+        tickets = Ticket.objects.filter(id_Proprietario=request.user)
+
     if modo_exibicao == "prioridade":
         prioridades = Ticket.objects.values_list("prioridade", flat=True).distinct().order_by()
         tickets_por_categoria = {prioridade: Ticket.objects.filter(prioridade=prioridade) for prioridade in prioridades}
