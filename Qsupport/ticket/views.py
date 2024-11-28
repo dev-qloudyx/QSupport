@@ -134,17 +134,24 @@ def ticket_list(request):
 
 #Lista em modelo Kanban
 def lista_kanban(request):
-    estados = Estado.objects.order_by("id")
-    tickets_por_estado = {estado: Ticket.objects.filter(estado=estado) for estado in estados}
+    modo_exibicao = request.GET.get("modo", "estado")
 
-    #filtros para o kanban
-    ticket = Ticket.objects.all()
-    ticketfilter= KanbanFilter(request.GET, ticket)
-    
+    if modo_exibicao == "prioridade":
+        prioridades = Ticket.objects.values_list("prioridade", flat=True).distinct().order_by()
+        tickets_por_categoria = {prioridade: Ticket.objects.filter(prioridade=prioridade) for prioridade in prioridades}
+    else:
+        estados = Estado.objects.order_by("id")
+        tickets_por_categoria = {estado: Ticket.objects.filter(estado=estado) for estado in estados}
+
+    # Filtros para o Kanban
+    tickets = Ticket.objects.all()
+    ticketfilter = KanbanFilter(request.GET, tickets)
+
     return render(request, 'ticket/listakanban.html', {
-        'tickets_por_estado': tickets_por_estado,
-        'estados': estados,
-        'filter':ticketfilter,
+        'tickets_por_categoria': tickets_por_categoria,
+        'categorias': estados if modo_exibicao == "estado" else prioridades,
+        'modo_exibicao': modo_exibicao,
+        'filter': ticketfilter,
     })
 
 #Mudar estado no Kanban

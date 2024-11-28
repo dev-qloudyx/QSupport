@@ -159,81 +159,102 @@
     </style>
 </head>
 <body>
+    <div class="container-fluid mt-4">
+        <h1 class="text-center" style="font-weight:bold; color:#117B76">Kanban</h1>
+        <hr>
+    
+        <!-- Botões para alternar exibição -->
+        <div class="text-center mb-4">
+            <a href="?modo=estado" class="btn btn-primary {% if modo_exibicao == 'estado' %}active{% endif %}">
+                Por Estado
+            </a>
+            <a href="?modo=prioridade" class="btn btn-primary {% if modo_exibicao == 'prioridade' %}active{% endif %}">
+                Por Prioridade
+            </a>
+        </div>
+        
+    
+        <!-- Exibição do Kanban -->
+        <div class="kanban-board">
+            {% for categoria, tickets in tickets_por_categoria.items %}
+                <div class="kanban-column" id="categoria-{{ categoria }}" data-categoria="{{ categoria }}">
+                    <h3 style="background-color: 
+                        {% if modo_exibicao == 'estado' %}
+                            {{ categoria.font_color }}
+                        {% else %}
+                            #117B76
+                        {% endif %}
+                        ;">
+                            {{ categoria }}
+                    </h3>
 
-<div class="container-fluid mt-4">
-    <h1 class="text-center" style="font-weight:bold; color:#117B76">Kanban</h1>
-    <hr>
-    <div class="kanban-board">
-        {% for estado, tickets in tickets_por_estado.items %}
-            <div class="kanban-column" id="estado-{{ estado }}" data-estado="{{ estado }}">
-                <h3 style="background-color:{{ estado.font_color }};">{{ estado }} {{ tickets_por_estado.font_color }}</h3>
-                <div class="kanban-tickets" data-estado="{{ estado }}">
-                    {% for ticket in tickets %}
-                        <a href="{% url 'detalheticket' ticket.uuid %}">
-                            <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
-                                <p class="ticket-container">
-                                    <button class="id-botao"><strong class="letra-id">ID#</strong>{{ ticket.id }}</button>
-                                    <strong class="ticket-app">{{ ticket.app }}</strong>
-                                </p>
-                                <hr class="linha-baixo">
-                                <p><strong>{{ ticket.nome|truncatewords:3 }}</strong></p>
-                                <p class="ticket-texto"><strong class="ticket-descricao">Descrição:</strong> {{ ticket.descricao|truncatewords:4 }}</p>
-                                <hr class="linha-baixo">
-                                <div class="ticket-info">
-                                    <p class="ticket-prioridade"><small>{{ ticket.prioridade }}</small></p>
-                            
-                                    <div class="ticket-nome-data">
-                                        <p class="ticket-nome"><small>{{ ticket.id_Proprietario.nome }}</small></p>
-                                        <p class="ticket-data">{{ ticket.dataAtualizacao }}</p>
+                    <div class="kanban-tickets" data-categoria="{{ categoria }}">
+                        {% for ticket in tickets %}
+                            <a href="{% url 'detalheticket' ticket.uuid %}">
+                                <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
+                                    <p class="ticket-container">
+                                        <button class="id-botao"><strong class="letra-id">ID#</strong>{{ ticket.id }}</button>
+                                        <strong class="ticket-app">{{ ticket.app }}</strong>
+                                    </p>
+                                    <hr class="linha-baixo">
+                                    <p><strong>{{ ticket.nome|truncatewords:3 }}</strong></p>
+                                    <p class="ticket-texto"><strong class="ticket-descricao">Descrição:</strong> {{ ticket.descricao|truncatewords:4 }}</p>
+                                    <hr class="linha-baixo">
+                                    <div class="ticket-info">
+                                        <p class="ticket-prioridade"><small>{{ ticket.prioridade }}</small></p>
+    
+                                        <div class="ticket-nome-data">
+                                            <p class="ticket-nome"><small>{{ ticket.id_Proprietario.nome }}</small></p>
+                                            <p class="ticket-data">{{ ticket.dataAtualizacao }}</p>
+                                        </div>
                                     </div>
+                                    <form class="form-mudar-estado" action="{% url 'mudar_estado_ticket' ticket.id %}" method="POST" style="display: none;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="estado" value="{{ categoria }}">
+                                    </form>
                                 </div>
-                                <form class="form-mudar-estado" action="{% url 'mudar_estado_ticket' ticket.id %}" method="POST" style="display: none;">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="estado" value="{{ estado }}">
-                                </form>
-                            </div>
-                        </a>
-                    {% endfor %}
+                            </a>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
-<script>
-    document.querySelectorAll('.kanban-tickets').forEach(function(column) {
-        new Sortable(column, {
-            group: 'kanban',
-            animation: 150,
-            onEnd: function(evt) {
-                let ticketId = evt.item.dataset.id;
-                let novoEstado = evt.to.dataset.estado;
-
-                let form = evt.item.querySelector('.form-mudar-estado');
-                form.querySelector('input[name="estado"]').value = novoEstado;
-
-                fetch(form.action, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}',
-                    },
-                    body: new FormData(form)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('Estado atualizado com sucesso');
-                    } else {
-                        alert("Erro ao atualizar o ticket.");
-                    }
-                })
-                .catch(error => {
-                    console.log("Erro:", error);
-                });
-            }
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
+    <script>
+        document.querySelectorAll('.kanban-tickets').forEach(function(column) {
+            new Sortable(column, {
+                group: 'kanban',
+                animation: 150,
+                onEnd: function(evt) {
+                    let ticketId = evt.item.dataset.id;
+                    let novoCategoria = evt.to.dataset.categoria;
+    
+                    let form = evt.item.querySelector('.form-mudar-estado');
+                    form.querySelector('input[name="estado"]').value = novoCategoria;
+    
+                    fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        body: new FormData(form)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('Categoria atualizada com sucesso');
+                        } else {
+                            alert("Erro ao atualizar o ticket.");
+                        }
+                    })
+                    .catch(error => {
+                        console.log("Erro:", error);
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 </body>
 {% endblock content %}
