@@ -1,10 +1,22 @@
 {% extends "ticket/base.html" %}
 {% block content %}
 <body>
-    <h2 class="mt-2">Registar App</h2>
+    <style>
+        #id_nome, #id_entidade
+        {
+            width: 300px;
+        }
+
+    </style>
+    <h2 style="font-weight:bold; margin-bottom:25px; color:#117B76">Criar Aplicação</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <h6>Nome da App:</h6>
+        {{ form.nome }}
+        <p></p>
+        <h6>Entidade:</h6>
+        {{ form.entidade }}
+        <p></p>
         <button type="submit" class="btn btn-primary">Salvar</button>
         <a href="{% url 'listaticket' %}" class="btn btn-secondary">Cancelar</a>
     </form>

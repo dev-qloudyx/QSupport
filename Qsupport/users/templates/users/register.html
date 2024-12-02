@@ -1,24 +1,56 @@
 {% extends "ticket/base.html" %}
 {% block content %}
     <style>
-        input 
-        {
-            
-        }
         #id_nome, #id_email, #id_date_of_birth, #id_telefone 
         {
-            width: 350px;
+            width: 500px;
+            margin-right: 15px;
+        }
+        #espaco h6
+        {
+            width: 500px;
+            font-weight:bold;
+        }
+        #espaco select
+        {  
+            width:500px;
+            margin-right: 10px;
+        }
+        #id_descricao
+        {
+            height:210px;
+            width:1250px;
+            padding-left:10px;
         }
     </style>
     <div class="content-section">
-        <form method="post" action="{% url 'register' %}" enctype="multipart/form-data" >
+        <form method="post" id="espaco" action="{% url 'register' %}" enctype="multipart/form-data" >
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Crie um utilizador</legend>
-                {{ form.as_p }}
+                <h2 style="font-weight:bold; margin-bottom:25px; color:#117B76">Criar Utilizador</h2>
+                <h6 style="display:inline; padding-right:14px;">Nome de Utilizador:</h6>
+                {{ form.nome }}
+                <h6 style="display:inline; padding-left:4px; padding-right:10px;">Email:</h6>
+                {{ form.email }}
+                <p></p>
+                <h6 style="display:inline; padding-right:10px;">Data de Nascimento:</h6>
+                {{ form.date_of_birth }}
+                <h6 style="display:inline; padding-right:10px;">Cargo:</h6>
+                {{ form.role }}
+                <p></p>
+                <h6 style="display:inline; padding-right:10px;">Entidades:</h6>
+                {% for form in form.entidade%}
+                {{form}}<a style="padding-right:20px;"></a>
+                {% endfor %}
+                <p></p>
+                <h6 style="padding-right:10px;">Descrição:</h6>
+                {{ form.descricao }}
+                <p></p>
+                <p></p>
+                <!--{{ form.as_p }}-->
             </fieldset>
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Inscreve-te</button>
+                <button class="btn btn-outline-info" type="submit">Registar Utilizador</button>
             </div>
         </form>
         <!--

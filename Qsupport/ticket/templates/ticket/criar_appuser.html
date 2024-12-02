@@ -1,10 +1,22 @@
 {% extends "ticket/base.html" %}
 {% block content %}
 <body>
-    <h2 class="mt-2">Associar User a App</h2>
+    <style>
+        #id_app, #id_entidade
+        {
+            width: 300px;
+        }
+
+    </style>
+    <h2 style="font-weight:bold; margin-bottom:25px; color:#117B76">Associar Utilizador a Aplicação</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <h6>Utilizador:</h6>
+        {{ form.usuario }}
+        <p></p>
+        <h6>Aplicação:</h6>
+        {{ form.app }}
+        <p></p>
         <button type="submit" class="btn btn-primary">Salvar</button>
         <a href="{% url 'listaticket' %}" class="btn btn-secondary">Cancelar</a>
     </form>
