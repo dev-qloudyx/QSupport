@@ -88,7 +88,7 @@
     </button>
     <div class="filtros-rapidos" style="margin: auto; width: 30%;">
       <a id="contrario" style="width:120px;" href="{% url 'listaticket' %}?aberto=1" class="btn btn-primary">Abertos</a>
-      <button id="contrario" style="width:120px;" type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Assignar</a></button>
+      <button id="contrario" style="width:120px;" type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Designar</a></button>
       <a id="contrario" style="width:120px;" href="{% url 'listaticket' %}?aberto=2" class="btn btn-secondary">Fechados</a>
       <!--<a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>-->
     </div>
@@ -380,7 +380,7 @@
         </button>
         <div class="filtros-rapidos" style="margin: auto; width: 20%;">
           <a href="{% url 'listaticket' %}?estado=1" class="btn btn-primary">Abertos</a>
-          <button type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Assignar</a></button>
+          <button type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Designar</a></button>
           <a href="{% url 'listaticket' %}?estado=6" class="btn btn-secondary">Fechados</a>
           <!--<a href="{% url 'listaticket' %}" class="btn btn-info">Todos</a>-->
         </div>
@@ -438,7 +438,7 @@
       </button>
       <div class="filtros-rapidos" style="margin: auto; width: 20%;">
         <a href="{% url 'listaticket' %}?estado=1" id="contrario" class="btn btn-primary">Abertos</a>
-        <button id="contrario" style="width:120px;" type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Assignar</a></button>
+        <button id="contrario" style="width:120px;" type="button" class="btn btn-info"><a href="{% url 'ticketsnaoatribuidos' %}">Por Designar</a></button>
         <a href="{% url 'listaticket' %}?estado=6" id="contrario" class="btn btn-secondary">Fechados</a>
       </div>
 

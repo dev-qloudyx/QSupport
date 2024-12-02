@@ -94,17 +94,19 @@ class TicketForm(forms.ModelForm):
         apps = Apps.objects.filter(entidade__in=entidades_do_usuario)
 
         self.fields['app'].choices = [(app.id, app.nome) for app in apps]
+        self.fields['prioridade'].required = False
 
     descricao = forms.CharField(widget=forms.Textarea(),label="Descrição")
         
     class Meta:
         model = Ticket
-        fields = ['app_tpPedidos','nome','descricao','app']
+        fields = ['app_tpPedidos','nome','descricao','app','prioridade']
         labels = {
         "app_tpPedidos": "Tipo de problema",
         "nome": "Titulo",
         "descricao":"Descrição",
         "app": "Apps",
+        "prioridade":"Prioridade",
     }
 
 #Formulário para os tickets registados internamente

@@ -111,6 +111,9 @@ def ticket_list(request):
     ticketfiltercliente = TicketFilter(request.GET, cliente)
     total_resultados = ticketfilter.qs.count()
     estado_filtro = request.GET.get('estado')
+
+    #Aqui no paginator, no numero significa o numero de entradas antes de criar uma pagina, 
+    #mudar aqui caso queira mais entradas numa unica pagina
     paginator = Paginator(ticketfilter.qs,2)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -203,23 +206,102 @@ def tickets_charts(request):
 #ver lista de entidades
 def lista_entidades(request):
     entidade = Entidades.objects.all()
+    ordem = request.GET.get('ordem')
+    if (ordem == "1"):
+        entidade = entidade.order_by("id")
+    if (ordem == "2"):
+        entidade = entidade.order_by("-id")
+    if (ordem == "3"):
+        entidade = entidade.order_by("nome")
+    if (ordem == "4"):
+        entidade = entidade.order_by("-nome")
+    if (ordem == "5"):
+        entidade = entidade.order_by("externo")
+    if (ordem == "6"):
+        entidade = entidade.order_by("-externo")    
+
     entfiltro = EntidadesFilter(request.GET, entidade)
     total_resultados = entfiltro.qs.count()
-    return render (request,'ticket/listaentidades.html', {'entidade': entfiltro.qs, 'total':total_resultados, 'filter':entfiltro})
+
+    #Aqui no paginator, no numero significa o numero de entradas antes de criar uma pagina, 
+    #mudar aqui caso queira mais entradas numa unica pagina
+    paginator = Paginator(entfiltro.qs,2)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render (request,'ticket/listaentidades.html', {'entidade': entfiltro.qs, 'total':total_resultados, 'filter':entfiltro, 'page_obj':page_obj,
+                   'paginator':paginator,})
 
 #ver lista de apps
 def lista_apps(request):
+    
     aplicacao = Apps.objects.all()
+    ordem = request.GET.get('ordem')
+    if (ordem == "1"):
+        aplicacao = aplicacao.order_by("id")
+    if (ordem == "2"):
+        aplicacao = aplicacao.order_by("-id")
+    if (ordem == "3"):
+        aplicacao = aplicacao.order_by("nome")
+    if (ordem == "4"):
+        aplicacao = aplicacao.order_by("-nome")
+    if (ordem == "5"):
+        aplicacao = aplicacao.order_by("is_active")
+    if (ordem == "6"):
+        aplicacao = aplicacao.order_by("-is_active") 
+
     appfiltro = AppsFilter(request.GET, aplicacao)
     total_resultados = appfiltro.qs.count()
-    return render (request,'ticket/listaaplicacoes.html', {'total':total_resultados, 'aplicacao': appfiltro.qs, 'filter':appfiltro})
+    paginator = Paginator(appfiltro.qs,2)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render (request,'ticket/listaaplicacoes.html', {'total':total_resultados, 'aplicacao': appfiltro.qs, 'filter':appfiltro, 'page_obj':page_obj,
+                   'paginator':paginator,})
 
 #ver lista de usuários
 def lista_user(request):
     usuario =  Usuarios.objects.all()
+    ordem = request.GET.get('ordem')
+    if (ordem == "1"):
+        usuario = usuario.order_by("id")
+    if (ordem == "2"):
+        usuario = usuario.order_by("-id")
+    if (ordem == "3"):
+        usuario = usuario.order_by("nome")
+    if (ordem == "4"):
+        usuario = usuario.order_by("-nome")
+    if (ordem == "5"):
+        usuario = usuario.order_by("nomes_entidade")
+    if (ordem == "6"):
+        usuario = usuario.order_by("-nomes_entidade")    
+    if (ordem == "7"):
+        usuario = usuario.order_by("email")
+    if (ordem == "8"):
+        usuario = usuario.order_by("-email")
+    if (ordem == "9"):
+        usuario = usuario.order_by("telefone")
+    if (ordem == "10"):
+        usuario = usuario.order_by("-telefone")
+    if (ordem == "11"):
+        usuario = usuario.order_by("role")
+    if (ordem == "12"):
+        usuario = usuario.order_by("-role")
+    if (ordem == "13"):
+        usuario = usuario.order_by("is_active")
+    if (ordem == "14"):
+        usuario = usuario.order_by("-is_active")
+    if (ordem == "15"):
+        usuario = usuario.order_by("is_admin")
+    if (ordem == "16"):
+        usuario = usuario.order_by("-is_admin")
+
     userfiltro = UserFilter(request.GET, usuario)
     total_resultados = userfiltro.qs.count()
-    return render (request,'ticket/listausuarios.html', {'total':total_resultados,'usuario': userfiltro.qs, 'filter':userfiltro})
+    paginator = Paginator(userfiltro.qs,2)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render (request,'ticket/listausuarios.html', {'total':total_resultados,'usuario': userfiltro.qs, 'filter':userfiltro, 'paginator': paginator, 'page_obj':page_obj})
 
 #Registar um ticket
 def create_ticket(request):
