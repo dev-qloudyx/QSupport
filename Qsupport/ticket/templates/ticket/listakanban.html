@@ -16,9 +16,18 @@
         }
 
         .kanban-column {
-            min-width: 300px;
+            min-width: 0px;
             flex: 1;
             max-width: 25%;
+            background: white;
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+
+        .kanban-column2 {
+            min-width: 0px;
+            flex: 1;
+            max-width: 20%;
             background: white;
             border-radius: 8px;
             overflow-y: auto;
@@ -156,6 +165,21 @@
             margin-bottom: 0cm;
             margin-top: 0cm;
         }
+
+        #contrario:hover{
+            background-color:#117B76;
+            border-color:#117B76;
+            color:#fafafa;
+            transition: 0.5s
+          }
+    
+          #contrario
+          {
+              background-color:#fafafa;
+              border-color:#117B76;
+              color:#117B76;
+              transition: 0.5s
+          }
     </style>
 </head>
 <body>
@@ -165,10 +189,10 @@
     
         <!-- Botões para alternar exibição -->
         <div class="text-center mb-4">
-            <a href="?modo=estado" class="btn btn-primary {% if modo_exibicao == 'estado' %}active{% endif %}">
+            <a href="?modo=estado" id="contrario" class="btn btn-primary {% if modo_exibicao == 'estado' %}active{% endif %}">
                 Por Estado
             </a>
-            <a href="?modo=prioridade" class="btn btn-primary {% if modo_exibicao == 'prioridade' %}active{% endif %}">
+            <a href="?modo=prioridade" id="contrario" class="btn btn-primary {% if modo_exibicao == 'prioridade' %}active{% endif %}">
                 Por Prioridade
             </a>
         </div>
@@ -177,7 +201,11 @@
         <!-- Exibição do Kanban -->
         <div class="kanban-board">
             {% for categoria, tickets in tickets_por_categoria.items %}
+                {% if modo_exibicao == 'prioridade' %}
+                <div class="kanban-column2" id="categoria-{{ categoria }}" data-categoria="{{ categoria }}">
+                {% else %}
                 <div class="kanban-column" id="categoria-{{ categoria }}" data-categoria="{{ categoria }}">
+                {% endif %}
                     <h3 style="background-color: 
                         {% if modo_exibicao == 'estado' %}
                             {{ categoria.font_color }}
@@ -185,12 +213,16 @@
                             #117B76
                         {% endif %}
                         ;">
+                        {% if modo_exibicao == 'estado' %}
                             {{ categoria }}
+                        {% else %}
+                            {{ categoria }}
+                        {% endif %}
                     </h3>
 
                     <div class="kanban-tickets" data-categoria="{{ categoria }}">
                         {% for ticket in tickets %}
-                            <a href="{% url 'detalheticket' ticket.uuid %}">
+                            <a href="{% url 'detalheticket' ticket.uuid %}" >
                                 <div class="kanban-card" id="ticket-{{ ticket.id }}" data-id="{{ ticket.id }}">
                                     <p class="ticket-container">
                                         <button class="id-botao"><strong class="letra-id">ID#</strong>{{ ticket.id }}</button>

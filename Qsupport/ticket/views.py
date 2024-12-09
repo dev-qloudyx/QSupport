@@ -145,8 +145,8 @@ def lista_kanban(request):
         tickets = Ticket.objects.filter(id_Proprietario=request.user)
 
     if modo_exibicao == "prioridade":
-        prioridades = Ticket.objects.values_list("prioridade", flat=True).distinct().order_by()
-        tickets_por_categoria = {prioridade: Ticket.objects.filter(prioridade=prioridade) for prioridade in prioridades}
+        prioridades = Ticket.objects.values_list("prioridade__nome", flat=True).order_by("id")
+        tickets_por_categoria = {prioridade: Ticket.objects.filter(prioridade__nome=prioridade) for prioridade in prioridades}
     else:
         estados = Estado.objects.order_by("id")
         tickets_por_categoria = {estado: Ticket.objects.filter(estado=estado) for estado in estados}

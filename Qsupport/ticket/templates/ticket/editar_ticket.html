@@ -1,12 +1,95 @@
 {% extends "ticket/base.html" %}
 {% block content %}
     <body>
-        <h2 class="mt-2">Editar Ticket: {{ object.uuid }} {{ object.titulo }}</h2>
+        <style>
+            #id_nome, #id_app, #id_usuarios, #id_resolucao
+                {
+                    width: 550px;
+                }
+            #espaco h6
+                {
+                    font-weight:bold;
+                }
+            #espaco select
+                {  
+                    width:380px;
+                }
+            #id_app_tpPedidos, #id_prioridade, #id_estado 
+                {
+                    width:362px;
+                }
+            #id_descricao
+                {
+                    height:210px;
+                    width:1110px;
+                }
+            th{
+                padding-right: 10px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <!--<h2 class="mt-2">Editar Ticket: {{ ticket.uuid }} {{ ticket.titulo }}</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Salvar</button>
             <a href="{% url 'listaticket' %}?aberto=1" class="btn btn-secondary">Cancelar</a>
-        </form>
+        </form>-->
+        
+        <h2 style="font-weight:bold; margin-bottom:25px; color:#117B76">Editar Ticket: {{ ticket.id }} - {{ ticket.nome }}</h2>
+        <form method="post">
+        {% csrf_token %}
+        <h6>Titulo:</h6>
+        <table>
+            <tr>
+                <th>
+                    <h6>Titulo:</h6>
+                    {{ form.nome }}
+                </th>
+                <th>
+                    <h6>Responsável:</h6>
+                    {{ form.usuarios }}
+                </th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>
+                    <h6>Descrição:</h6>
+                    {{ form.descricao }}
+                </th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>
+                    <h6>Tipo de Pedido:</h6>
+                    {{ form.app_tpPedidos }}
+                </th>
+                <th>
+                    <h6>Descrição:</h6>
+                    {{ form.estado }}
+                </th>
+                <th>
+                    <h6>Tipo de Pedido:</h6>
+                    {{ form.prioridade }}
+                </th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>
+                    <h6>Aplicação:</h6>
+                    {{ form.app }}
+                </th>
+                <th>
+                    <h6>Resolução:</h6>
+                    {{ form.resolucao }}
+                </th>
+            </tr>
+        </table>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{% url 'listaentidades' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
     </body>
 {% endblock content %}
